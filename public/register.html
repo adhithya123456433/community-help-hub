@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - CommunityHelp Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/explore-tasks.html">Explore Tasks</a></li>
+        <li><a href="/impact.html">Impact Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <a href="/login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="/register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Banner (Standardized Across All Pages) -->
+  <section class="page-banner">
+    <div class="container" style="text-align: center;">
+      <span class="badge badge-primary" style="margin-bottom: 0.6rem;">JOIN THE NETWORK</span>
+      <h1>Create an Account</h1>
+      <p style="margin-bottom: 0; font-size: 1.1rem; color: var(--text-muted);">Register as an active Volunteer or verified partner NGO.</p>
+    </div>
+  </section>
+
+  <!-- Registration Section -->
+  <main style="padding: 2.75rem 0; flex: 1;">
+    <div class="container" style="max-width: 760px;">
+      
+      <div class="card">
+        <!-- Registration Tabs -->
+        <div class="tabs" style="justify-content: center;">
+          <button type="button" class="tab-btn active" id="tab-vol-btn" onclick="switchRegisterTab('volunteer')">
+            Register as Volunteer
+          </button>
+          <button type="button" class="tab-btn" id="tab-ngo-btn" onclick="switchRegisterTab('ngo')">
+            Register as NGO
+          </button>
+        </div>
+
+        <div id="alert-container"></div>
+
+        <!-- Volunteer Registration Form -->
+        <form id="volunteer-register-form">
+          <div class="form-group">
+            <label for="vol-name" class="form-label">Full Name</label>
+            <input type="text" id="vol-name" class="form-control" placeholder="e.g., Rahul Sharma" required>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label for="vol-email" class="form-label">Email Address</label>
+              <input type="email" id="vol-email" class="form-control" placeholder="rahul@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="vol-password" class="form-label">Password</label>
+              <input type="password" id="vol-password" class="form-control" placeholder="Min. 6 characters" minlength="6" required>
+            </div>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label for="vol-phone" class="form-label">Contact Phone</label>
+              <input type="tel" id="vol-phone" class="form-control" placeholder="10-digit mobile number" pattern="[6-9][0-9]{9}" title="10-digit mobile number starting with 6, 7, 8, or 9" required>
+            </div>
+            <div class="form-group">
+              <label for="vol-city" class="form-label">City / Locality</label>
+              <input type="text" id="vol-city" class="form-control" placeholder="e.g., Bengaluru" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="vol-skills" class="form-label">Skills & Interests (Comma separated)</label>
+            <input type="text" id="vol-skills" class="form-control" placeholder="e.g., Teaching, First Aid, Packaging, Clean-up">
+            <div class="form-hint">Used for algorithmic skill matching with published tasks.</div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.65rem; margin-top: 0.5rem;">
+            Register as Volunteer
+          </button>
+        </form>
+
+        <!-- NGO Registration Form -->
+        <form id="ngo-register-form" style="display: none;">
+          <div class="form-group">
+            <label for="ngo-name" class="form-label">Organization Name</label>
+            <input type="text" id="ngo-name" class="form-control" placeholder="e.g., Vidya Seva Foundation" required>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label for="ngo-reg" class="form-label">NGO Registration Number</label>
+              <input type="text" id="ngo-reg" class="form-control" placeholder="e.g., NGO-KA-2021-00892" required>
+            </div>
+            <div class="form-group">
+              <label for="ngo-contact" class="form-label">Contact Person Name</label>
+              <input type="text" id="ngo-contact" class="form-control" placeholder="e.g., Arun Kumar" required>
+            </div>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label for="ngo-email" class="form-label">Official Email</label>
+              <input type="email" id="ngo-email" class="form-control" placeholder="contact@ngo.org" required>
+            </div>
+            <div class="form-group">
+              <label for="ngo-password" class="form-label">Password</label>
+              <input type="password" id="ngo-password" class="form-control" placeholder="Min. 6 characters" minlength="6" required>
+            </div>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label for="ngo-phone" class="form-label">Phone Number</label>
+              <input type="tel" id="ngo-phone" class="form-control" placeholder="10-digit mobile number" pattern="[6-9][0-9]{9}" title="10-digit mobile number starting with 6, 7, 8, or 9" required>
+            </div>
+            <div class="form-group">
+              <label for="ngo-city" class="form-label">City</label>
+              <input type="text" id="ngo-city" class="form-control" placeholder="e.g., Bengaluru" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ngo-address" class="form-label">Office Address</label>
+            <input type="text" id="ngo-address" class="form-control" placeholder="e.g., 14, Malleshwaram, Bengaluru">
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.65rem; margin-top: 0.5rem;">
+            Register Organization
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.88rem; color: var(--text-muted);">
+          Already have an account? <a href="/login.html">Sign in here</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.3rem;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    function switchRegisterTab(role) {
+      clearAlert();
+      const volForm = document.getElementById('volunteer-register-form');
+      const ngoForm = document.getElementById('ngo-register-form');
+      const volBtn = document.getElementById('tab-vol-btn');
+      const ngoBtn = document.getElementById('tab-ngo-btn');
+
+      if (role === 'volunteer') {
+        volForm.style.display = 'block';
+        ngoForm.style.display = 'none';
+        volBtn.classList.add('active');
+        ngoBtn.classList.remove('active');
+      } else {
+        volForm.style.display = 'none';
+        ngoForm.style.display = 'block';
+        volBtn.classList.remove('active');
+        ngoBtn.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

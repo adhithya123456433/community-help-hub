@@ -1,0 +1,633 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>CommunityHelp Hub - Project Study Guide</title>
+<style>
+  body {
+    font-family: Calibri, 'Segoe UI', Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #1f2937;
+    margin: 40px;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #064e3b;
+    border-bottom: 2pt solid #047857;
+    padding-bottom: 6px;
+    margin-top: 20px;
+  }
+  h2 {
+    font-size: 16pt;
+    color: #047857;
+    border-bottom: 1pt solid #cbd5e1;
+    padding-bottom: 4px;
+    margin-top: 24px;
+  }
+  h3 {
+    font-size: 13pt;
+    color: #1e40af;
+    margin-top: 18px;
+  }
+  h4 {
+    font-size: 11pt;
+    color: #334155;
+    margin-top: 12px;
+  }
+  p {
+    margin-bottom: 10px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1pt solid #cbd5e1;
+    padding: 8px 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #f1f5f9;
+    font-weight: bold;
+    color: #0f172a;
+  }
+  tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+  .code-block {
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 9.5pt;
+    padding: 12px;
+    border-radius: 4px;
+    margin: 12px 0;
+    line-height: 1.4;
+    white-space: pre-wrap;
+  }
+  .highlight-box {
+    background-color: #ecfdf5;
+    border-left: 4pt solid #047857;
+    padding: 10px 14px;
+    margin: 14px 0;
+    font-size: 10.5pt;
+  }
+  .qa-box {
+    background-color: #f8fafc;
+    border: 1pt solid #cbd5e1;
+    border-left: 4pt solid #1d4ed8;
+    padding: 10px 14px;
+    margin: 12px 0;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 8.5pt;
+    font-weight: bold;
+    border-radius: 3px;
+    background-color: #e2e8f0;
+    color: #0f172a;
+  }
+</style>
+</head>
+<body>
+
+<h1>COMMUNITYHELP HUB - PROJECT STUDY GUIDE & CODE WALKTHROUGH</h1>
+<p><strong>Project Name:</strong> CommunityHelp Hub (Volunteer & Social Service Platform)</p>
+<p><strong>Course / Subject:</strong> Full Stack Development (FSD) Mini Project</p>
+<p><strong>Architecture:</strong> Model-View-Controller (MVC) RESTful Architecture</p>
+<p><strong>Core Tech Stack:</strong> Node.js, Express.js, MongoDB, Mongoose, HTML5, CSS3, JavaScript (Fetch API), Chart.js, PDFKit</p>
+
+<hr/>
+
+<h2>SECTION 1: HIGH-LEVEL ARCHITECTURE & SYSTEM DESIGN</h2>
+
+<h3>1.1 Problem Statement & Solution</h3>
+<p><strong>Problem:</strong> In India, local community organizations and grassroots NGOs frequently face volunteer shortages for short-duration civic drives (e.g., food packaging, remedial teaching, lake cleanup). Simultaneously, university students need verified community service hours for academic credits (such as AICTE/NSS points) but lack a transparent platform to discover opportunities, track hours, and obtain tamper-verifiable certificates.</p>
+
+<p><strong>Solution:</strong> CommunityHelp Hub acts as a centralized, role-based platform that:</p>
+<ul>
+  <li>Separates user roles into <strong>Volunteers</strong>, <strong>NGOs</strong>, and <strong>Admins</strong>.</li>
+  <li>Provides full <strong>CRUD operations</strong> for social-service tasks across 6 mandatory categories.</li>
+  <li>Uses <strong>algorithmic skill matching</strong> and <strong>location proximity</strong> to match volunteers with tasks.</li>
+  <li>Features an <strong>AI-inspired recommendation engine</strong> scoring tasks out of 100 points.</li>
+  <li>Generates <strong>tamper-verifiable PDF certificates</strong> dynamically via PDFKit upon NGO completion approval.</li>
+  <li>Visualizes community impact through dynamic <strong>Chart.js</strong> visualizations.</li>
+</ul>
+
+<h3>1.2 How the Full-Stack Flow Works</h3>
+<ol>
+  <li><strong>Client Layer (Browser):</strong> The user opens HTML pages (served statically by Express from <code>public/</code>). When buttons are clicked or forms submitted, vanilla JavaScript functions in <code>public/js/</code> trigger asynchronous <code>fetch()</code> requests to Express API routes.</li>
+  <li><strong>Server Layer (Node.js & Express):</strong> Express handles incoming HTTP requests, passes them through authentication middleware (<code>authMiddleware.js</code>) to verify JWT tokens, and routes them to appropriate controller routes in <code>routes/</code>.</li>
+  <li><strong>Database Layer (MongoDB & Mongoose):</strong> Mongoose models validate and query data from MongoDB running on <code>mongodb://127.0.0.1:27017/community_help_hub</code> and return JSON responses to the frontend.</li>
+</ol>
+
+<hr/>
+
+<h2>SECTION 2: MONGODB DATABASE SCHEMAS (LINE-BY-LINE)</h2>
+<p>The project is structured into 6 interconnected Mongoose collections:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Collection</th>
+      <th>Primary Purpose</th>
+      <th>Key Relationships</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>users</strong></td>
+      <td>Stores authentication credentials and user role</td>
+      <td>Linked 1-to-1 with Volunteer or NGO profile</td>
+    </tr>
+    <tr>
+      <td><strong>volunteers</strong></td>
+      <td>Stores volunteer name, city, skills, hours, points</td>
+      <td>Foreign key: <code>userId</code></td>
+    </tr>
+    <tr>
+      <td><strong>ngos</strong></td>
+      <td>Stores organization name, registration ID, phone, city</td>
+      <td>Foreign key: <code>userId</code></td>
+    </tr>
+    <tr>
+      <td><strong>tasks</strong></td>
+      <td>Stores task details, category, required skills, status</td>
+      <td>Foreign key: <code>createdBy</code> (ref: NGO)</td>
+    </tr>
+    <tr>
+      <td><strong>applications</strong></td>
+      <td>Tracks volunteer task applications and status lifecycle</td>
+      <td>Foreign keys: <code>taskId</code>, <code>volunteerId</code></td>
+    </tr>
+    <tr>
+      <td><strong>certificates</strong></td>
+      <td>Stores generated certificate records and unique IDs</td>
+      <td>Foreign keys: <code>volunteerId</code>, <code>taskId</code>, <code>ngoId</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>2.1 User Model (<code>models/User.js</code>)</h3>
+<p>Handles credentials and password encryption using <code>bcryptjs</code>:</p>
+<div class="code-block">
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+  password: { type: String, required: true, minlength: 6 },
+  role: { type: String, enum: ['volunteer', 'ngo', 'admin'], default: 'volunteer' },
+  createdAt: { type: Date, default: Date.now }
+});
+
+// Pre-save hook: Hashes password before saving to MongoDB
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
+// Helper method: Compares user entered password with hashed password
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+</div>
+<p><strong>Viva Explanation:</strong> "Sir/Ma'am, we never store plain-text passwords. We use <code>bcryptjs</code> with a salt round of 10. The <code>pre('save')</code> middleware runs automatically before any user document is written to MongoDB. The <code>comparePassword</code> method allows secure verification during login."</p>
+
+<h3>2.2 Task Model (<code>models/Task.js</code>)</h3>
+<p>Strictly enforces the 6 required categories and status tracking:</p>
+<div class="code-block">
+const taskSchema = new mongoose.Schema({
+  title: { type: String, required: true, trim: true },
+  description: { type: String, required: true, trim: true },
+  category: {
+    type: String,
+    required: true,
+    enum: [
+      'Education',
+      'Food distribution',
+      'Environment',
+      'Elder support',
+      'Disaster support',
+      'Community service'
+    ]
+  },
+  requiredSkills: { type: [String], default: [] },
+  location: { type: String, required: true },
+  city: { type: String, required: true },
+  dateTime: { type: Date, required: true },
+  hours: { type: Number, required: true, default: 3 },
+  volunteersRequired: { type: Number, required: true, min: 1 },
+  volunteersAssigned: { type: Number, default: 0 },
+  status: {
+    type: String,
+    enum: ['Open', 'In Progress', 'Completed', 'Cancelled'],
+    default: 'Open'
+  },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'NGO', required: true }
+});
+</div>
+
+<h3>2.3 Application Model (<code>models/Application.js</code>)</h3>
+<p>Tracks volunteer assignment lifecycle with a compound unique index to prevent duplicate applications:</p>
+<div class="code-block">
+const applicationSchema = new mongoose.Schema({
+  taskId: { type: mongoose.Schema.Types.ObjectId, ref: 'Task', required: true },
+  volunteerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Volunteer', required: true },
+  status: {
+    type: String,
+    enum: ['Applied', 'Assigned', 'Completed', 'Rejected'],
+    default: 'Applied'
+  },
+  notes: { type: String, default: '' },
+  appliedAt: { type: Date, default: Date.now },
+  completedAt: { type: Date }
+});
+
+// Prevents a volunteer from applying to the same task multiple times
+applicationSchema.index({ taskId: 1, volunteerId: 1 }, { unique: true });
+</div>
+
+<hr/>
+
+<h2>SECTION 3: AUTHENTICATION & SECURITY (JWT)</h2>
+
+<h3>3.1 How Login & Token Verification Work</h3>
+<ol>
+  <li>The user submits their email and password to <code>POST /api/auth/login</code>.</li>
+  <li>The backend verifies the credentials using <code>user.comparePassword()</code>.</li>
+  <li>If valid, the server signs a JSON Web Token using <code>jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: '7d' })</code>.</li>
+  <li>The client receives the token and stores it in <code>localStorage.setItem('token', token)</code>.</li>
+  <li>On every subsequent request, the frontend fetch wrapper (<code>public/js/api.js</code>) attaches the header: <code>Authorization: Bearer &lt;token&gt;</code>.</li>
+</ol>
+
+<h3>3.2 Protecting Routes (<code>middleware/authMiddleware.js</code>)</h3>
+<div class="code-block">
+const protect = async (req, res, next) => {
+  let token;
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.userId).select('-password');
+      req.user = { userId: user._id, email: user.email, role: user.role };
+
+      // Attach profile ID based on role
+      if (user.role === 'volunteer') {
+        const vol = await Volunteer.findOne({ userId: user._id });
+        if (vol) req.user.volunteerId = vol._id;
+      } else if (user.role === 'ngo') {
+        const ngo = await NGO.findOne({ userId: user._id });
+        if (ngo) req.user.ngoId = ngo._id;
+      }
+      next();
+    } catch (error) {
+      return res.status(401).json({ success: false, message: 'Invalid or expired token' });
+    }
+  }
+};
+</div>
+
+<hr/>
+
+<h2>SECTION 4: THE 6 ADVANCED FEATURES (HOW THE CODE WORKS)</h2>
+
+<h3>Feature 1: Skill-Based Volunteer Matching</h3>
+<p><strong>Endpoint:</strong> <code>GET /api/tasks/matching/skills</code> (in <code>routes/taskRoutes.js</code>)</p>
+<p><strong>How the Algorithm Works:</strong></p>
+<ol>
+  <li>Finds the logged-in volunteer's registered skills array (e.g. <code>['Teaching', 'English', 'First Aid']</code>).</li>
+  <li>Fetches all active community tasks from MongoDB.</li>
+  <li>For each task, counts how many required skills match the volunteer's skills (common skills intersection).</li>
+  <li>Calculates the match percentage: <code>(commonSkills / taskSkills.length) * 100</code>.</li>
+  <li>Sorts tasks descending by match score, displaying a dynamic badge: <code>[100% SKILL MATCH]</code>.</li>
+</ol>
+<div class="code-block">
+let commonSkills = 0;
+taskSkills.forEach((skill) => {
+  if (volunteerSkills.includes(skill)) commonSkills++;
+});
+
+let matchScore = 0;
+if (taskSkills.length > 0) {
+  matchScore = Math.round((commonSkills / taskSkills.length) * 100);
+} else {
+  matchScore = 50; // Neutral score
+}
+</div>
+
+<h3>Feature 2: Location-Based Matching</h3>
+<p><strong>Endpoint:</strong> <code>GET /api/tasks/matching/location</code></p>
+<p><strong>How it Works:</strong> Queries tasks matching the volunteer's city using a case-insensitive regular expression: <code>city: new RegExp(`^${volunteer.city}$`, 'i')</code>. Tasks in the volunteer's home metropolitan area are prioritized at the top.</p>
+
+<h3>Feature 3: AI Task Recommendation Engine</h3>
+<p><strong>Endpoint:</strong> <code>GET /api/tasks/recommendations/ai</code></p>
+<p><strong>How the Algorithm Works:</strong> Uses a 4-factor multi-criteria scoring algorithm calculating a composite score out of 100 points:</p>
+<ul>
+  <li><strong>Skill Match Weight (Up to 40 Points):</strong> <code>(matchedSkills / totalSkills) * 40</code></li>
+  <li><strong>Location Proximity (Up to 30 Points):</strong> 30 points if the task is located in the volunteer's registered city.</li>
+  <li><strong>Historical Category Interest (Up to 20 Points):</strong> 20 points if the volunteer previously completed tasks in this category.</li>
+  <li><strong>Urgent Need & Open Capacity (10 Points):</strong> 10 points if the task has open volunteer spots.</li>
+</ul>
+
+<h3>Feature 4: Volunteer Ranking & Leaderboard</h3>
+<p><strong>Endpoint:</strong> <code>GET /api/dashboard/rankings</code></p>
+<p><strong>Scoring Math:</strong></p>
+<ul>
+  <li>Each completed task awards <strong>10 base points</strong>.</li>
+  <li>Each hour of verified service awards <strong>2 points per hour</strong>.</li>
+  <li><code>rankingPoints = completedTasksCount * 10 + totalHours * 2</code>.</li>
+  <li><strong>Recognition Tiers:</strong>
+    <ul>
+      <li>0 to 39 Points: <strong>Bronze Tier</strong></li>
+      <li>40 to 79 Points: <strong>Silver Tier</strong></li>
+      <li>80+ Points: <strong>Gold Champion</strong></li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Feature 5: Automated PDF Certificate Generation (PDFKit)</h3>
+<p><strong>Endpoint:</strong> <code>GET /api/certificates/download/:id</code> (in <code>routes/certificateRoutes.js</code>)</p>
+<p><strong>How it Works:</strong></p>
+<ol>
+  <li>Finds the certificate record in MongoDB and populates volunteer name, task details, hours, and NGO name.</li>
+  <li>Initializes a landscape A4 PDF document: <code>new PDFDocument({ layout: 'landscape', size: 'A4' })</code>.</li>
+  <li>Sets HTTP response headers: <code>Content-Type: application/pdf</code> and <code>Content-Disposition: attachment; filename="Certificate-...pdf"</code>.</li>
+  <li>Pipes the document stream directly to the Express response: <code>doc.pipe(res)</code>.</li>
+  <li>Draws vector borders, headers, student details, hours, issue date, and a unique certificate ID.</li>
+  <li>Calls <code>doc.end()</code> to finalize and stream the file.</li>
+</ol>
+
+<h3>Feature 6: Impact Dashboard with Chart.js</h3>
+<p><strong>File:</strong> <code>public/impact.html</code> and <code>public/js/dashboard.js</code></p>
+<p>Uses MongoDB aggregation pipelines (<code>Task.aggregate([ { $group: { _id: '$category', count: { $sum: 1 } } } ])</code>) to group tasks by category and city. Renders an interactive Chart.js doughnut chart and bar chart with distinct category colors.</p>
+
+<hr/>
+
+<h2>SECTION 5: TASK CRUD & APPLICATION LIFECYCLE</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>HTTP Method</th>
+      <th>Endpoint</th>
+      <th>Authorized Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Create Task</td>
+      <td><code>POST</code></td>
+      <td><code>/api/tasks</code></td>
+      <td>NGO Only</td>
+    </tr>
+    <tr>
+      <td>Read All Tasks (Filters & Search)</td>
+      <td><code>GET</code></td>
+      <td><code>/api/tasks</code></td>
+      <td>Public</td>
+    </tr>
+    <tr>
+      <td>Read Single Task</td>
+      <td><code>GET</code></td>
+      <td><code>/api/tasks/:id</code></td>
+      <td>Public</td>
+    </tr>
+    <tr>
+      <td>Update Task</td>
+      <td><code>PUT</code></td>
+      <td><code>/api/tasks/:id</code></td>
+      <td>NGO Owner Only</td>
+    </tr>
+    <tr>
+      <td>Delete Task</td>
+      <td><code>DELETE</code></td>
+      <td><code>/api/tasks/:id</code></td>
+      <td>NGO Owner Only</td>
+    </tr>
+    <tr>
+      <td>Apply for Task</td>
+      <td><code>POST</code></td>
+      <td><code>/api/applications/apply</code></td>
+      <td>Volunteer Only</td>
+    </tr>
+    <tr>
+      <td>Update Application Status (Assign / Complete)</td>
+      <td><code>PUT</code></td>
+      <td><code>/api/applications/:id/status</code></td>
+      <td>NGO Owner Only</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr/>
+
+<h2>SECTION 6: 15 VIVA QUESTIONS & ANSWERS FOR YOUR EXAM</h2>
+
+<div class="qa-box">
+  <p><strong>Q1: What is the primary architecture of your project?</strong></p>
+  <p><strong>Answer:</strong> "Sir/Ma'am, it follows a 3-tier RESTful Client-Server architecture. The presentation layer consists of responsive HTML5, CSS3, and JavaScript calling REST API endpoints via asynchronous Fetch. The application layer is built on Node.js with Express.js handling routing and middleware. The database layer uses MongoDB with Mongoose for schema modeling."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q2: Why did you use MongoDB instead of a relational database like MySQL?</strong></p>
+  <p><strong>Answer:</strong> "MongoDB is a document-oriented NoSQL database that stores data in JSON-like BSON documents. Social service tasks have dynamic, semi-structured attributes such as arrays of required skills and variable location requirements. MongoDB handles arrays naturally without requiring complex many-to-many junction tables."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q3: How is authentication handled securely?</strong></p>
+  <p><strong>Answer:</strong> "We use JSON Web Tokens (JWT) and Bcrypt. Passwords are hashed using salted hashing before saving to MongoDB. When a user logs in, the server generates a signed JWT containing their user ID and role, which is stored in localStorage and sent in the Authorization header of subsequent requests."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q4: How do you prevent unauthorized users from creating tasks?</strong></p>
+  <p><strong>Answer:</strong> "In <code>middleware/authMiddleware.js</code>, we have the <code>requireNGO</code> middleware. When a request hits <code>POST /api/tasks</code>, Express first verifies the JWT token. If <code>req.user.role !== 'ngo'</code>, the request is immediately rejected with HTTP 403 Forbidden."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q5: What are the 6 mandatory task categories in your platform?</strong></p>
+  <p><strong>Answer:</strong> "The 6 categories are Education, Food distribution, Environment, Elder support, Disaster support, and Community service. These are strictly enforced using Mongoose schema validation in <code>models/Task.js</code>."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q6: How does the skill-based matching algorithm work?</strong></p>
+  <p><strong>Answer:</strong> "In <code>routes/taskRoutes.js</code>, the <code>/matching/skills</code> route compares the volunteer's registered skills array with the task's required skills array. It computes the intersection count of common skills and calculates a percentage match score: <code>(commonSkills / taskSkills.length) * 100</code>."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q7: How does your AI task recommendation engine score opportunities?</strong></p>
+  <p><strong>Answer:</strong> "In <code>GET /api/tasks/recommendations/ai</code>, we implement a multi-criteria heuristic scoring algorithm out of 100 points: up to 40 points for skill overlap, 30 points for city proximity, 20 points for historical interest in that category, and 10 points for available capacity."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q8: How does the certificate generation feature work?</strong></p>
+  <p><strong>Answer:</strong> "When an NGO marks a volunteer's assignment as 'Completed', a Certificate record with a unique ID is created. When the volunteer clicks 'Download PDF', our Express endpoint uses <code>pdfkit</code> to dynamically draw a vector Certificate of Appreciation in memory and streams it directly to the browser with <code>Content-Type: application/pdf</code>."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q9: How is the volunteer ranking leaderboard computed?</strong></p>
+  <p><strong>Answer:</strong> "Volunteers earn 10 points per completed task plus 2 points for every verified hour of service. The <code>/api/dashboard/rankings</code> endpoint queries volunteers sorted descending by <code>rankingPoints</code> and classifies them into Bronze, Silver, and Gold tiers."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q10: How do you prevent duplicate applications by the same volunteer?</strong></p>
+  <p><strong>Answer:</strong> "In <code>models/Application.js</code>, we defined a compound unique index: <code>applicationSchema.index({ taskId: 1, volunteerId: 1 }, { unique: true })</code>. If a volunteer attempts to apply twice, MongoDB enforces uniqueness and rejects the duplicate record."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q11: How is data visualized on the Impact Dashboard?</strong></p>
+  <p><strong>Answer:</strong> "We use <code>Chart.js</code> on the frontend. The backend runs a MongoDB aggregation pipeline using <code>$group</code> to aggregate task counts by category and city. The frontend feeds this aggregated data into a Chart.js doughnut chart and bar chart."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q12: What happens when an NGO marks an assignment as 'Completed'?</strong></p>
+  <p><strong>Answer:</strong> "Three actions occur automatically: 1) The volunteer's <code>completedTasksCount</code> and <code>totalHours</code> are incremented, 2) Their <code>rankingPoints</code> are updated, and 3) An official <code>Certificate</code> document with a unique ID is created in MongoDB."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q13: Why did you not use a frontend framework like React or Angular?</strong></p>
+  <p><strong>Answer:</strong> "Using pure HTML5, CSS3, and vanilla JavaScript demonstrates core proficiency in asynchronous DOM manipulation, fetch requests, and state synchronization without the overhead of build tools or external compilation dependencies."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q14: How are passwords compared during login if they are hashed?</strong></p>
+  <p><strong>Answer:</strong> "Bcrypt uses a one-way mathematical hashing algorithm. We cannot decrypt a hash. Instead, <code>bcrypt.compare()</code> takes the plain-text password entered at login, applies the same salt, hashes it, and checks if the resulting hash matches the hash stored in MongoDB."</p>
+</div>
+
+<div class="qa-box">
+  <p><strong>Q15: What npm packages are used and why?</strong></p>
+  <p><strong>Answer:</strong> "<code>express</code> for HTTP routing, <code>mongoose</code> for MongoDB modeling, <code>bcryptjs</code> for password hashing, <code>jsonwebtoken</code> for token authorization, <code>dotenv</code> for environment variables, <code>cors</code> for cross-origin requests, and <code>pdfkit</code> for server-side PDF generation."</p>
+</div>
+
+<h2>6. Pre-Configured Test Accounts (65 Total Users)</h2>
+<p>All accounts use standard demonstration password: <code>password123</code></p>
+<table>
+  <tr>
+    <th>User Role</th>
+    <th>Name / Organization</th>
+    <th>City</th>
+    <th>Email Address</th>
+    <th>Status / Tier</th>
+  </tr>
+  <tr>
+    <td>Volunteer</td>
+    <td>Karthik Raman</td>
+    <td>Chennai</td>
+    <td><code>karthik.raman@gmail.com</code></td>
+    <td>Gold Tier (Rank 1, 134 Pts)</td>
+  </tr>
+  <tr>
+    <td>Volunteer</td>
+    <td>Rahul Sharma</td>
+    <td>Bengaluru</td>
+    <td><code>rahul.volunteer@gmail.com</code></td>
+    <td>Gold Tier (Rank 2, 122 Pts)</td>
+  </tr>
+  <tr>
+    <td>Volunteer</td>
+    <td>Senthil Kumar</td>
+    <td>Coimbatore</td>
+    <td><code>senthil.kumar@gmail.com</code></td>
+    <td>Gold Tier (Rank 3, 118 Pts)</td>
+  </tr>
+  <tr>
+    <td>Volunteer</td>
+    <td>Aravind Swaminathan</td>
+    <td>Tiruchirappalli</td>
+    <td><code>aravind.swaminathan@gmail.com</code></td>
+    <td>Gold Tier (Rank 4, 102 Pts)</td>
+  </tr>
+  <tr>
+    <td>Volunteer</td>
+    <td>Meera Joshi</td>
+    <td>Pune</td>
+    <td><code>meera.joshi@gmail.com</code></td>
+    <td>Gold Tier (Rank 5, 88 Pts)</td>
+  </tr>
+  <tr>
+    <td>Volunteer</td>
+    <td>Vikram Singh</td>
+    <td>Delhi NCR</td>
+    <td><code>vikram.singh@gmail.com</code></td>
+    <td>Gold Tier (Rank 6, 84 Pts)</td>
+  </tr>
+  <tr>
+    <td>Volunteer</td>
+    <td>Murugan Selvam</td>
+    <td>Madurai</td>
+    <td><code>murugan.selvam@gmail.com</code></td>
+    <td>Silver Tier (82 Pts)</td>
+  </tr>
+  <tr>
+    <td>Volunteer</td>
+    <td>Ananya Sen</td>
+    <td>Kolkata</td>
+    <td><code>ananya.sen@gmail.com</code></td>
+    <td>Silver Tier (70 Pts)</td>
+  </tr>
+  <tr>
+    <td>NGO</td>
+    <td>Kavalar Youth Welfare Foundation</td>
+    <td>Chennai</td>
+    <td><code>chennaiseva@ngo.org</code></td>
+    <td>Verified Partner NGO</td>
+  </tr>
+  <tr>
+    <td>NGO</td>
+    <td>Kovai Green Earth Trust</td>
+    <td>Coimbatore</td>
+    <td><code>kovaigreen@ngo.org</code></td>
+    <td>Verified Partner NGO</td>
+  </tr>
+  <tr>
+    <td>NGO</td>
+    <td>Rashtra Seva Trust</td>
+    <td>Delhi NCR</td>
+    <td><code>annaseva@ngo.org</code></td>
+    <td>Verified Partner NGO</td>
+  </tr>
+  <tr>
+    <td>NGO</td>
+    <td>Sahyadri Nisarga Mitra</td>
+    <td>Mumbai</td>
+    <td><code>sahyadri@ngo.org</code></td>
+    <td>Verified Partner NGO</td>
+  </tr>
+  <tr>
+    <td>Admin</td>
+    <td>System Administrator</td>
+    <td>National Portal</td>
+    <td><code>admin@communityhelphub.in</code></td>
+    <td>Superuser Admin Role</td>
+  </tr>
+</table>
+
+<h2>7. Input Validations, Security & Quality Audit Checklist</h2>
+<p>The entire platform has been audited against 25 automated end-to-end test cases (<code>npm run audit</code>):</p>
+<ul>
+  <li><strong>Email Validation:</strong> Evaluated using regex (<code>/^[^\s@]+@[^\s@]+\.[^\s@]+$/</code>), normalized to lowercase, and checked for uniqueness before saving.</li>
+  <li><strong>Phone Validation:</strong> Validates 10-digit Indian mobile numbers (<code>/^[6-9]\d{9}$/</code>), automatically stripping country codes (+91), spaces, and dashes.</li>
+  <li><strong>Password Security:</strong> Enforces minimum 6 characters and hashes passwords using <code>bcryptjs</code> with 10 salt rounds.</li>
+  <li><strong>Duplicate Prevention:</strong> Enforces unique email on <code>users</code>, unique compound index on <code>applications</code> (<code>{ taskId: 1, volunteerId: 1 }</code>), and unique NGO registration numbers.</li>
+  <li><strong>Task Integrity & Category Enforcement:</strong> Strictly validates the 6 mandatory categories (Education, Food distribution, Environment, Elder support, Disaster support, Community service) and enforces positive integers for volunteers and hours.</li>
+  <li><strong>Role-Based Access Control:</strong> Uses signed JSON Web Tokens (JWT) with <code>protect</code>, <code>requireVolunteer</code>, <code>requireNGO</code>, and <code>requireAdmin</code> middleware.</li>
+  <li><strong>CRUD Completeness:</strong> NGOs can Create, Read, Update (inline status and modal edit), and Delete their published tasks with cascading clean-up of associated records.</li>
+</ul>
+
+<h2>8. System Administrator Access & Governance Architecture</h2>
+<p><strong>Root Cause of Previous "Access Denied":</strong> An administrator (<code>role: 'admin'</code>) is a platform superuser, not an individual volunteer or a single NGO. When logging in, the frontend previously redirected all non-NGO accounts to <code>/volunteer-dashboard.html</code>, which is protected by the <code>requireVolunteer</code> middleware. Because the admin has role <code>'admin'</code> and does not possess a volunteer profile, the backend correctly enforced role boundaries and rejected the call with <code>403 Forbidden (Access denied: Volunteers only)</code>.</p>
+<p><strong>Solution Implemented:</strong></p>
+<ul>
+  <li><strong>Dedicated Superuser Portal:</strong> Created <code>admin-dashboard.html</code> with platform metrics, user directory, partner NGO registry, and all community tasks.</li>
+  <li><strong>Superuser REST API:</strong> Created <code>routes/adminRoutes.js</code> protected by <code>requireAdmin</code> for platform overview (<code>GET /api/admin/overview</code>), user management (<code>GET/DELETE /api/admin/users</code>), and task moderation (<code>GET/PUT/DELETE /api/admin/tasks</code>).</li>
+  <li><strong>Intelligent Role Routing:</strong> On login, administrators are automatically routed directly to the <code>Admin Portal</code>, and the navbar renders a dedicated <code>ADMINISTRATOR</code> badge and shortcut button.</li>
+</ul>
+
+<hr/>
+<p style="text-align: center; color: #64748b; font-size: 9pt;">CommunityHelp Hub - Prepared for Full Stack Development Mini Project Evaluation</p>
+
+</body>
+</html>

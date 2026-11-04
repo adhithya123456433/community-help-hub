@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Details - CommunityHelp Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/explore-tasks.html">Explore Tasks</a></li>
+        <li><a href="/impact.html">Impact Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <a href="/login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="/register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Task Details View Container -->
+  <main style="padding: 2.75rem 0; flex: 1;">
+    <div class="container" style="max-width: 1040px;" id="task-details-view">
+      <div style="text-align: center; padding: 3rem;">Loading task specifications...</div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.3rem;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/tasks.js"></script>
+</body>
+</html>

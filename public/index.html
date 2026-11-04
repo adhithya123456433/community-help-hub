@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CommunityHelp Hub - Volunteer & Social Service Platform</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="active">Home</a></li>
+        <li><a href="/explore-tasks.html">Explore Tasks</a></li>
+        <li><a href="/impact.html">Impact Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <!-- Dynamically rendered by api.js -->
+        <a href="/login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="/register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- High-Impact Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <span class="badge badge-primary" style="margin-bottom: 1.25rem;">CENTRALIZED SOCIAL SERVICE PLATFORM</span>
+      <h1 class="hero-title">Connect Volunteers with Community Needs</h1>
+      <p class="hero-subtitle">
+        Bridging dedicated volunteers with registered NGOs and grassroots social-service initiatives.
+        Contribute your skills, complete verified tasks, and track your social impact.
+      </p>
+      <div class="hero-actions">
+        <a href="/explore-tasks.html" class="btn btn-primary" style="padding: 0.85rem 1.85rem; font-size: 1.05rem;">Find Opportunities</a>
+        <a href="/register.html" class="btn btn-outline" style="padding: 0.85rem 1.85rem; font-size: 1.05rem;">Register as NGO</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Statistics Banner -->
+  <section style="padding: 2.75rem 0; background-color: var(--bg-surface); border-bottom: 2px solid var(--border-color);">
+    <div class="container">
+      <div class="grid-4">
+        <div class="stat-box">
+          <div class="stat-label">Verified Volunteers</div>
+          <div class="stat-value" id="home-stat-volunteers" style="color: var(--primary);">150+</div>
+          <div class="stat-meta">Active community participants</div>
+        </div>
+        <div class="stat-box stat-blue">
+          <div class="stat-label">Partner NGOs</div>
+          <div class="stat-value" id="home-stat-ngos" style="color: var(--secondary);">25+</div>
+          <div class="stat-meta">Registered social enterprises</div>
+        </div>
+        <div class="stat-box stat-amber">
+          <div class="stat-label">Tasks Published</div>
+          <div class="stat-value" id="home-stat-tasks" style="color: var(--accent);">80+</div>
+          <div class="stat-meta">Across 6 core categories</div>
+        </div>
+        <div class="stat-box stat-purple">
+          <div class="stat-label">Hours Contributed</div>
+          <div class="stat-value" id="home-stat-hours" style="color: #7e22ce;">1,200+</div>
+          <div class="stat-meta">Logged community service</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Task Categories Section -->
+  <section style="padding: 4rem 0;">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 2.75rem;">
+        <span class="badge badge-primary" style="margin-bottom: 0.6rem;">AREAS OF ENGAGEMENT</span>
+        <h2>Explore By Task Category</h2>
+        <p>Choose an initiative aligned with your skills, availability, and community passion.</p>
+      </div>
+
+      <div class="grid-3">
+        <!-- 1. Education -->
+        <div class="card" style="border-top: 4px solid #1d4ed8;">
+          <span class="badge badge-cat-education" style="margin-bottom: 0.75rem;">EDUCATION</span>
+          <h3>Education & Tutoring</h3>
+          <p>Support remedial tutoring, digital literacy, and basic language skills for underprivileged children and students.</p>
+          <a href="/explore-tasks.html?category=Education" class="btn btn-outline btn-sm" style="color: #1d4ed8; border-color: #1d4ed8;">Browse Education Tasks</a>
+        </div>
+
+        <!-- 2. Food Distribution -->
+        <div class="card" style="border-top: 4px solid #c2410c;">
+          <span class="badge badge-cat-food" style="margin-bottom: 0.75rem;">FOOD DISTRIBUTION</span>
+          <h3>Food Distribution</h3>
+          <p>Assist in surplus food rescue, food packaging, and distribution drives to shelters and disadvantaged communities.</p>
+          <a href="/explore-tasks.html?category=Food%20distribution" class="btn btn-outline btn-sm" style="color: #c2410c; border-color: #c2410c;">Browse Food Drives</a>
+        </div>
+
+        <!-- 3. Environment -->
+        <div class="card" style="border-top: 4px solid #047857;">
+          <span class="badge badge-cat-environment" style="margin-bottom: 0.75rem;">ENVIRONMENT</span>
+          <h3>Environment & Ecology</h3>
+          <p>Participate in urban afforestation, neighborhood clean-ups, lake rejuvenation, and waste management drives.</p>
+          <a href="/explore-tasks.html?category=Environment" class="btn btn-outline btn-sm" style="color: #047857; border-color: #047857;">Browse Eco Drives</a>
+        </div>
+
+        <!-- 4. Elder Support -->
+        <div class="card" style="border-top: 4px solid #7e22ce;">
+          <span class="badge badge-cat-elder" style="margin-bottom: 0.75rem;">ELDER SUPPORT</span>
+          <h3>Elder Support & Care</h3>
+          <p>Provide digital assistance, companionship, and healthcare access support for residents in senior care homes.</p>
+          <a href="/explore-tasks.html?category=Elder%20support" class="btn btn-outline btn-sm" style="color: #7e22ce; border-color: #7e22ce;">Browse Elder Care</a>
+        </div>
+
+        <!-- 5. Disaster Support -->
+        <div class="card" style="border-top: 4px solid #b91c1c;">
+          <span class="badge badge-cat-disaster" style="margin-bottom: 0.75rem;">DISASTER SUPPORT</span>
+          <h3>Disaster & Emergency Aid</h3>
+          <p>Mobilize for rapid relief kit packaging, emergency supply logistics, and seasonal relief coordination.</p>
+          <a href="/explore-tasks.html?category=Disaster%20support" class="btn btn-outline btn-sm" style="color: #b91c1c; border-color: #b91c1c;">Browse Relief Tasks</a>
+        </div>
+
+        <!-- 6. Community Service -->
+        <div class="card" style="border-top: 4px solid #0f766e;">
+          <span class="badge badge-cat-community" style="margin-bottom: 0.75rem;">COMMUNITY SERVICE</span>
+          <h3>Community Service</h3>
+          <p>Engage in stray animal welfare, local civic campaigns, blood donation drives, and public awareness camps.</p>
+          <a href="/explore-tasks.html?category=Community%20service" class="btn btn-outline btn-sm" style="color: #0f766e; border-color: #0f766e;">Browse Community Tasks</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section style="padding: 4rem 0; background-color: var(--bg-surface); border-top: 2px solid var(--border-color); border-bottom: 2px solid var(--border-color);">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 2.75rem;">
+        <span class="badge badge-primary" style="margin-bottom: 0.6rem;">PLATFORM WORKFLOW</span>
+        <h2>How CommunityHelp Hub Works</h2>
+        <p>A transparent, structured process for volunteers and organizations.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card" style="border-left: 5px solid var(--primary);">
+          <div style="font-size: 0.8rem; font-weight: 800; color: var(--primary); margin-bottom: 0.4rem;">STEP 1</div>
+          <h3>Register & Create Profile</h3>
+          <p>Volunteers register with their skills and location. NGOs register with their organization details and registration number.</p>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--secondary);">
+          <div style="font-size: 0.8rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.4rem;">STEP 2</div>
+          <h3>Publish & Discover Tasks</h3>
+          <p>NGOs publish social-service tasks. Volunteers explore opportunities using smart skill matching and location proximity.</p>
+        </div>
+
+        <div class="card" style="border-left: 5px solid var(--accent);">
+          <div style="font-size: 0.8rem; font-weight: 800; color: var(--accent); margin-bottom: 0.4rem;">STEP 3</div>
+          <h3>Complete & Get Certified</h3>
+          <p>After assignment and task completion, volunteers earn ranking points and receive downloadable, verified PDF certificates.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.4rem; font-weight: 700; color: #ffffff;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script>
+    // Dynamically load live impact stats on the homepage
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await apiRequest('/dashboard/impact', 'GET');
+        if (res.ok && res.data.success) {
+          const { metrics } = res.data;
+          const volEl = document.getElementById('home-stat-volunteers');
+          const ngoEl = document.getElementById('home-stat-ngos');
+          const taskEl = document.getElementById('home-stat-tasks');
+          const hoursEl = document.getElementById('home-stat-hours');
+
+          if (volEl) volEl.innerText = `${metrics.totalVolunteers}+`;
+          if (ngoEl) ngoEl.innerText = `${metrics.totalNGOs}+`;
+          if (taskEl) taskEl.innerText = `${metrics.totalTasks}+`;
+          if (hoursEl) hoursEl.innerText = `${metrics.totalHoursServed}+`;
+        }
+      } catch (e) {
+        // Fallback default numbers are already displayed
+      }
+    });
+  </script>
+</body>
+</html>

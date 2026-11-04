@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Tasks - CommunityHelp Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/explore-tasks.html" class="active">Explore Tasks</a></li>
+        <li><a href="/impact.html">Impact Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <a href="/login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="/register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Header (Standardized Across All Pages) -->
+  <section class="page-banner">
+    <div class="container">
+      <span class="badge badge-primary" style="margin-bottom: 0.6rem;">OPPORTUNITIES DIRECTORY</span>
+      <h1>Explore Social-Service Tasks</h1>
+      <p style="margin-bottom: 0; font-size: 1.1rem; color: var(--text-muted);">Browse verified community drives, filter by category or city, and utilize algorithmic matching.</p>
+    </div>
+  </section>
+
+  <!-- Filter & Match Controls -->
+  <main style="padding: 2.75rem 0; flex: 1;">
+    <div class="container">
+
+      <!-- Exploration Mode Tabs -->
+      <div class="tabs" style="margin-bottom: 1.25rem;">
+        <button type="button" class="tab-btn mode-tab active" data-mode="all">
+          All Opportunities
+        </button>
+        <button type="button" class="tab-btn mode-tab" data-mode="skills">
+          Skill-Based Match
+        </button>
+        <button type="button" class="tab-btn mode-tab" data-mode="location">
+          Location-Based Match
+        </button>
+        <button type="button" class="tab-btn mode-tab" data-mode="ai">
+          AI Recommendations
+        </button>
+      </div>
+
+      <!-- Filter Controls Bar -->
+      <div class="filter-bar">
+        <div class="filter-item" style="flex: 2;">
+          <input type="text" id="filter-search" class="form-control" placeholder="Search tasks by title, description, or locality...">
+        </div>
+
+        <div class="filter-item">
+          <select id="filter-category" class="form-control">
+            <option value="All">All Categories</option>
+            <option value="Education">Education</option>
+            <option value="Food distribution">Food distribution</option>
+            <option value="Environment">Environment</option>
+            <option value="Elder support">Elder support</option>
+            <option value="Disaster support">Disaster support</option>
+            <option value="Community service">Community service</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <select id="filter-city" class="form-control">
+            <option value="All">All Cities</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Amritsar">Amritsar</option>
+            <option value="Bengaluru">Bengaluru</option>
+            <option value="Bhopal">Bhopal</option>
+            <option value="Bhubaneswar">Bhubaneswar</option>
+            <option value="Chandigarh">Chandigarh</option>
+            <option value="Chennai">Chennai</option>
+            <option value="Coimbatore">Coimbatore</option>
+            <option value="Delhi">Delhi NCR</option>
+            <option value="Erode">Erode</option>
+            <option value="Guwahati">Guwahati</option>
+            <option value="Hyderabad">Hyderabad</option>
+            <option value="Indore">Indore</option>
+            <option value="Jaipur">Jaipur</option>
+            <option value="Kochi">Kochi</option>
+            <option value="Kolkata">Kolkata</option>
+            <option value="Lucknow">Lucknow</option>
+            <option value="Madurai">Madurai</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Patna">Patna</option>
+            <option value="Pune">Pune</option>
+            <option value="Salem">Salem</option>
+            <option value="Thanjavur">Thanjavur</option>
+            <option value="Tiruchirappalli">Tiruchirappalli (Trichy)</option>
+            <option value="Tirunelveli">Tirunelveli</option>
+            <option value="Varanasi">Varanasi</option>
+            <option value="Vellore">Vellore</option>
+            <option value="Visakhapatnam">Visakhapatnam</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tasks Grid Container -->
+      <div class="grid-3" id="tasks-grid">
+        <!-- Rendered dynamically by tasks.js -->
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">Loading opportunities...</div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.3rem;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js?v=2.2"></script>
+  <script src="/js/tasks.js?v=2.2"></script>
+  <script>
+    // Check if category is passed via URL query
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('category');
+      if (catParam) {
+        const select = document.getElementById('filter-category');
+        if (select) {
+          select.value = catParam;
+          currentFilter.category = catParam;
+          loadTasks();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "community-help-hub",
+  "version": "1.0.0",
+  "description": "CommunityHelp Hub - Volunteer & Social Service Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js",
+    "dev": "nodemon server.js",
+    "build": "npm --prefix client install && npm --prefix client run build",
+    "client:dev": "npm run dev --prefix client",
+    "db:view": "node scripts/view-db.js",
+    "audit": "node scripts/audit-test.js"
+  },
+  "keywords": [
+    "volunteer",
+    "ngo",
+    "social-service",
+    "community-help-hub"
+  ],
+  "author": "CommunityHelp Hub",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.4",
+    "pdfkit": "^0.15.0"
+  }
+}

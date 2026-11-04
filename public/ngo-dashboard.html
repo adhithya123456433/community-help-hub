@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGO Dashboard - CommunityHelp Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/explore-tasks.html">Explore Tasks</a></li>
+        <li><a href="/ngo-dashboard.html" class="active">NGO Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <!-- Rendered by api.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Banner (Standardized Across All Pages) -->
+  <section class="page-banner">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.25rem;">
+        <div>
+          <span class="badge badge-primary" style="margin-bottom: 0.6rem;">ORGANIZATION DASHBOARD</span>
+          <h1 id="ngo-header-title">NGO Organization</h1>
+          <p id="ngo-header-sub" style="margin-bottom: 0; font-size: 1.1rem; color: var(--text-muted);">Verified Community Partner</p>
+        </div>
+        <div>
+          <a href="/create-task.html" class="btn btn-primary" style="padding: 0.75rem 1.6rem; font-size: 1.05rem;">+ Publish New Task</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NGO Dashboard View -->
+  <main style="padding: 2.75rem 0; flex: 1;" id="ngo-dashboard-view">
+    <div class="container">
+
+      <!-- Stats Grid -->
+      <div class="grid-4" style="margin-bottom: 2.5rem;">
+        <div class="stat-box">
+          <div class="stat-label">Tasks Created</div>
+          <div class="stat-value" id="stat-created" style="color: var(--primary);">0</div>
+          <div class="stat-meta">Total opportunities published</div>
+        </div>
+        <div class="stat-box stat-blue">
+          <div class="stat-label">Active Drives</div>
+          <div class="stat-value" id="stat-active-tasks" style="color: var(--secondary);">0</div>
+          <div class="stat-meta">Open or In Progress</div>
+        </div>
+        <div class="stat-box stat-purple">
+          <div class="stat-label">Completed Drives</div>
+          <div class="stat-value" id="stat-completed-tasks" style="color: #7e22ce;">0</div>
+          <div class="stat-meta">Successfully completed</div>
+        </div>
+        <div class="stat-box stat-amber">
+          <div class="stat-label">Volunteers Assigned</div>
+          <div class="stat-value" id="stat-assigned-vols" style="color: var(--accent);">0</div>
+          <div class="stat-meta"><span id="stat-applications" style="font-weight: 700; color: var(--accent);">0</span> total applicants</div>
+        </div>
+      </div>
+
+      <!-- Incoming Volunteer Applications Section -->
+      <div style="margin-bottom: 2.5rem;">
+        <div style="margin-bottom: 1rem;">
+          <h2>Volunteer Applications & Task Assignment</h2>
+          <p>Review volunteer applications, assign volunteers to tasks, and mark tasks completed upon event conclusion.</p>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Applicant Name</th>
+                <th>Applied Task</th>
+                <th>Volunteer Skills</th>
+                <th>Message / Notes</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="ngo-applications-tbody">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-light); padding: 1.5rem;">
+                  Loading volunteer applications...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Published Tasks Management Section -->
+      <div>
+        <div style="margin-bottom: 1rem;">
+          <h2>Manage Published Tasks</h2>
+          <p>Update task statuses or remove concluded activities.</p>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Task Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Volunteers</th>
+                <th>Status</th>
+                <th>Manage Status</th>
+              </tr>
+            </thead>
+            <tbody id="ngo-tasks-tbody">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-light); padding: 1.5rem;">
+                  Loading tasks...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Edit Task Modal -->
+  <div id="edit-task-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); z-index: 1000; justify-content: center; align-items: center; overflow-y: auto; padding: 1.5rem;">
+    <div class="card" style="width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; background: #ffffff; padding: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="margin: 0;">Edit Task Details (CRUD Update)</h3>
+        <button type="button" onclick="closeEditTaskModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light);">&times;</button>
+      </div>
+
+      <div id="modal-alert-container"></div>
+
+      <form id="edit-task-form">
+        <input type="hidden" id="edit-task-id">
+
+        <div class="form-group">
+          <label for="edit-task-title" class="form-label">Task Title</label>
+          <input type="text" id="edit-task-title" class="form-control" required>
+        </div>
+
+        <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+          <div class="form-group">
+            <label for="edit-task-category" class="form-label">Category</label>
+            <select id="edit-task-category" class="form-control" required>
+              <option value="Education">Education</option>
+              <option value="Food distribution">Food distribution</option>
+              <option value="Environment">Environment</option>
+              <option value="Elder support">Elder support</option>
+              <option value="Disaster support">Disaster support</option>
+              <option value="Community service">Community service</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-task-status" class="form-label">Task Status</label>
+            <select id="edit-task-status" class="form-control" required>
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-task-desc" class="form-label">Description</label>
+          <textarea id="edit-task-desc" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+          <div class="form-group">
+            <label for="edit-task-location" class="form-label">Locality / Address</label>
+            <input type="text" id="edit-task-location" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-task-city" class="form-label">City</label>
+            <input type="text" id="edit-task-city" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+          <div class="form-group">
+            <label for="edit-task-hours" class="form-label">Estimated Hours</label>
+            <input type="number" id="edit-task-hours" class="form-control" min="1" max="24" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-task-volunteers" class="form-label">Volunteers Required</label>
+            <input type="number" id="edit-task-volunteers" class="form-control" min="1" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-task-skills" class="form-label">Required Skills (Comma separated)</label>
+          <input type="text" id="edit-task-skills" class="form-control">
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+          <button type="submit" class="btn btn-primary" style="flex: 2;">Save Changes</button>
+          <button type="button" onclick="closeEditTaskModal()" class="btn btn-outline" style="flex: 1;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.3rem;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js?v=2.2"></script>
+  <script src="/js/dashboard.js?v=2.2"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impact Dashboard & Rankings - CommunityHelp Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/explore-tasks.html">Explore Tasks</a></li>
+        <li><a href="/impact.html" class="active">Impact Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <a href="/login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="/register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Banner (Standardized Across All Pages) -->
+  <section class="page-banner">
+    <div class="container">
+      <span class="badge badge-primary" style="margin-bottom: 0.6rem;">PLATFORM ANALYTICS</span>
+      <h1>Community Impact & Volunteer Rankings</h1>
+      <p style="margin-bottom: 0; font-size: 1.1rem; color: var(--text-muted);">Live metrics illustrating volunteer mobilization, category contributions, and top community contributors.</p>
+    </div>
+  </section>
+
+  <!-- Impact Dashboard View -->
+  <main style="padding: 2.75rem 0; flex: 1;" id="impact-dashboard-view">
+    <div class="container">
+
+      <!-- Stat Counters -->
+      <div class="grid-4" style="margin-bottom: 2.5rem;">
+        <div class="stat-box">
+          <div class="stat-label">Registered Volunteers</div>
+          <div class="stat-value" id="impact-volunteers" style="color: var(--primary);">0</div>
+          <div class="stat-meta">Active individuals</div>
+        </div>
+        <div class="stat-box stat-blue">
+          <div class="stat-label">Partner NGOs</div>
+          <div class="stat-value" id="impact-ngos" style="color: var(--secondary);">0</div>
+          <div class="stat-meta">Grassroots organizations</div>
+        </div>
+        <div class="stat-box stat-amber">
+          <div class="stat-label">Total Tasks Published</div>
+          <div class="stat-value" id="impact-tasks" style="color: var(--accent);">0</div>
+          <div class="stat-meta">Community drives</div>
+        </div>
+        <div class="stat-box stat-purple">
+          <div class="stat-label">Hours Served</div>
+          <div class="stat-value" id="impact-hours" style="color: #7e22ce;">0 Hrs</div>
+          <div class="stat-meta">Verified volunteer hours</div>
+        </div>
+      </div>
+
+      <!-- Chart.js Visualizations Grid -->
+      <div class="grid-2" style="margin-bottom: 3rem;">
+        <!-- Category Distribution Chart -->
+        <div class="card">
+          <h3>Task Distribution by Category</h3>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.25rem;">
+            Allocation across all 6 social-service categories
+          </p>
+          <div style="max-height: 280px; display: flex; justify-content: center;">
+            <canvas id="categoryImpactChart"></canvas>
+          </div>
+        </div>
+
+        <!-- City Engagement Chart -->
+        <div class="card">
+          <h3>Task Distribution by City</h3>
+          <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1.25rem;">
+            Community opportunities categorized by city
+          </p>
+          <div style="max-height: 280px;">
+            <canvas id="cityImpactChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Volunteer Rankings Leaderboard -->
+      <div>
+        <div style="margin-bottom: 1rem;">
+          <span class="badge badge-category" style="margin-bottom: 0.3rem;">LEADERBOARD</span>
+          <h2>Volunteer Ranking & Recognition</h2>
+          <p>Recognizing top volunteers ranked by completed social-service activities and verified service hours.</p>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Volunteer Name & City</th>
+                <th>Tasks Completed</th>
+                <th>Service Hours</th>
+                <th>Recognition Level & Points</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-tbody">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-light); padding: 1.5rem;">
+                  Loading volunteer leaderboard...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.3rem;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

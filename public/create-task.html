@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Task - CommunityHelp Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/explore-tasks.html">Explore Tasks</a></li>
+        <li><a href="/ngo-dashboard.html">NGO Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <!-- Rendered by api.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Banner (Standardized Across All Pages) -->
+  <section class="page-banner">
+    <div class="container">
+      <span class="badge badge-primary" style="margin-bottom: 0.6rem;">NGO OPERATIONS</span>
+      <h1>Publish New Social-Service Task</h1>
+      <p style="margin-bottom: 0; font-size: 1.1rem; color: var(--text-muted);">Create a community opportunity for volunteers across India to discover and apply.</p>
+    </div>
+  </section>
+
+  <!-- Create Task Form Section -->
+  <main style="padding: 2.75rem 0; flex: 1;">
+    <div class="container" style="max-width: 860px;">
+
+      <div class="card">
+
+        <div id="ngo-status-banner"></div>
+        <div id="alert-container"></div>
+
+        <form id="create-task-form" novalidate>
+          <div class="form-group">
+            <label for="task-title" class="form-label">Task Title</label>
+            <input type="text" id="task-title" class="form-control" placeholder="e.g., Weekend English Tutoring for Primary Students" required>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label for="task-category" class="form-label">Category</label>
+              <select id="task-category" class="form-control" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="Education">Education</option>
+                <option value="Food distribution">Food distribution</option>
+                <option value="Environment">Environment</option>
+                <option value="Elder support">Elder support</option>
+                <option value="Disaster support">Disaster support</option>
+                <option value="Community service">Community service</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="task-skills" class="form-label">Required Skills (Comma separated)</label>
+              <input type="text" id="task-skills" class="form-control" placeholder="e.g., Teaching, English, Patience">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="task-desc" class="form-label">Activity Description</label>
+            <textarea id="task-desc" class="form-control" placeholder="Detailed objectives, volunteer expectations, and reporting location instructions..." required></textarea>
+          </div>
+
+          <div class="grid-2" style="gap: 0.75rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label for="task-location" class="form-label">Area / Locality Address</label>
+              <input type="text" id="task-location" class="form-control" placeholder="e.g., Malleshwaram Model School" required>
+            </div>
+            <div class="form-group">
+              <label for="task-city" class="form-label">City</label>
+              <select id="task-city" class="form-control" required>
+                <option value="" disabled selected>Select Task City</option>
+                <option value="Ahmedabad">Ahmedabad</option>
+                <option value="Amritsar">Amritsar</option>
+                <option value="Bengaluru">Bengaluru</option>
+                <option value="Bhopal">Bhopal</option>
+                <option value="Bhubaneswar">Bhubaneswar</option>
+                <option value="Chandigarh">Chandigarh</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Coimbatore">Coimbatore</option>
+                <option value="Delhi">Delhi NCR</option>
+                <option value="Erode">Erode</option>
+                <option value="Guwahati">Guwahati</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Indore">Indore</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Kochi">Kochi</option>
+                <option value="Kolkata">Kolkata</option>
+                <option value="Lucknow">Lucknow</option>
+                <option value="Madurai">Madurai</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Patna">Patna</option>
+                <option value="Pune">Pune</option>
+                <option value="Salem">Salem</option>
+                <option value="Thanjavur">Thanjavur</option>
+                <option value="Tiruchirappalli">Tiruchirappalli (Trichy)</option>
+                <option value="Tirunelveli">Tirunelveli</option>
+                <option value="Varanasi">Varanasi</option>
+                <option value="Vellore">Vellore</option>
+                <option value="Visakhapatnam">Visakhapatnam</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-3" style="gap: 0.75rem; margin-bottom: 0;">
+            <div class="form-group">
+              <label for="task-datetime" class="form-label">Date & Time</label>
+              <input type="datetime-local" id="task-datetime" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="task-hours" class="form-label">Estimated Hours</label>
+              <input type="number" id="task-hours" class="form-control" min="1" max="24" value="3" required>
+            </div>
+            <div class="form-group">
+              <label for="task-volunteers" class="form-label">Volunteers Required</label>
+              <input type="number" id="task-volunteers" class="form-control" min="1" value="5" required>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+            <button type="submit" class="btn btn-primary" style="flex: 2; padding: 0.65rem;">
+              Publish Task
+            </button>
+            <a href="/ngo-dashboard.html" class="btn btn-outline" style="flex: 1;">Cancel</a>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.3rem;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js?v=2.2"></script>
+  <script src="/js/tasks.js?v=2.2"></script>
+</body>
+</html>

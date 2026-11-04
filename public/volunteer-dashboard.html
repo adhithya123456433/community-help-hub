@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volunteer Dashboard - CommunityHelp Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/explore-tasks.html">Explore Tasks</a></li>
+        <li><a href="/my-tasks.html">My Tasks</a></li>
+        <li><a href="/volunteer-dashboard.html" class="active">Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <!-- Rendered by api.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Banner (Standardized Across All Pages) -->
+  <section class="page-banner">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.25rem;">
+        <div>
+          <span class="badge badge-primary" style="margin-bottom: 0.6rem;">VOLUNTEER PORTAL</span>
+          <h1 id="volunteer-name-header">Welcome, Volunteer</h1>
+          <p id="volunteer-sub-header" style="margin-bottom: 0; font-size: 1.1rem; color: var(--text-muted);">Active Community Contributor</p>
+        </div>
+        <div>
+          <a href="/explore-tasks.html" class="btn btn-primary" style="padding: 0.75rem 1.6rem; font-size: 1.05rem;">Find New Opportunities</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard View -->
+  <main style="padding: 2.75rem 0; flex: 1;" id="volunteer-dashboard-view">
+    <div class="container">
+
+      <!-- Volunteer Profile & Registered Skills Card -->
+      <div class="card" style="margin-bottom: 2rem; border-left: 5px solid var(--primary); background: #ffffff;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span class="badge badge-primary" style="margin-bottom: 0.4rem;">VERIFIED VOLUNTEER PROFILE</span>
+            <h3 style="margin: 0.2rem 0 0.4rem 0;" id="volunteer-profile-name">Volunteer Profile</h3>
+            <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.4rem;" id="volunteer-profile-meta">
+              Registered City: - | Contact: -
+            </p>
+          </div>
+          <div id="volunteer-tier-badge">
+            <span class="badge badge-accent" style="font-size: 0.9rem; padding: 0.4rem 0.85rem;">[RANK TIER]</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color);">
+          <div style="font-size: 0.82rem; text-transform: uppercase; color: var(--text-light); font-weight: 800; letter-spacing: 0.5px; margin-bottom: 0.5rem;">
+            Your Registered Volunteer Skills & Competencies:
+          </div>
+          <div id="volunteer-skills-container" style="display: flex; flex-wrap: wrap; gap: 0.45rem;">
+            <span class="badge badge-skill">Loading skills...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Boxes -->
+      <div class="grid-4" style="margin-bottom: 2.5rem;">
+        <div class="stat-box">
+          <div class="stat-label">Tasks Completed</div>
+          <div class="stat-value" id="stat-completed" style="color: var(--primary);">0</div>
+          <div class="stat-meta">Verified by NGOs</div>
+        </div>
+        <div class="stat-box stat-blue">
+          <div class="stat-label">Active Assignments</div>
+          <div class="stat-value" id="stat-active" style="color: var(--secondary);">0</div>
+          <div class="stat-meta">In progress / Applied</div>
+        </div>
+        <div class="stat-box stat-purple">
+          <div class="stat-label">Hours Contributed</div>
+          <div class="stat-value" id="stat-hours" style="color: #7e22ce;">0 Hrs</div>
+          <div class="stat-meta">Logged service time</div>
+        </div>
+        <div class="stat-box stat-amber">
+          <div class="stat-label">Leaderboard Rank</div>
+          <div class="stat-value" id="stat-rank" style="color: var(--accent);">#1</div>
+          <div class="stat-meta"><span id="stat-points" style="font-weight: 700; color: var(--accent);">0 Pts</span> (Ranking score)</div>
+        </div>
+      </div>
+
+      <!-- Active Assignments Section -->
+      <div style="margin-bottom: 2.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2>Active Tasks & Applications</h2>
+          <a href="/my-tasks.html" class="btn btn-outline btn-sm">View Full History</a>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Task Title</th>
+                <th>Category</th>
+                <th>City</th>
+                <th>Application Note Entered</th>
+                <th>Scheduled Date</th>
+                <th>Assignment Status</th>
+              </tr>
+            </thead>
+            <tbody id="active-assignments-tbody">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-light); padding: 1.5rem;">
+                  Loading active assignments...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Earned Certificates Section -->
+      <div>
+        <div style="margin-bottom: 1rem;">
+          <h2>Earned Certificates of Appreciation</h2>
+          <p>Official completion certificates generated automatically upon NGO verification.</p>
+        </div>
+
+        <div id="certificates-list">
+          <div style="text-align: center; color: var(--text-light); padding: 2rem;">Loading certificates...</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.3rem;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js?v=2.2"></script>
+  <script src="/js/dashboard.js?v=2.2"></script>
+</body>
+</html>

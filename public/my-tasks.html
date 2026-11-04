@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tasks - CommunityHelp Hub</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        CommunityHelp Hub
+        <span class="brand-badge">INDIA</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/explore-tasks.html">Explore Tasks</a></li>
+        <li><a href="/my-tasks.html" class="active">My Tasks</a></li>
+        <li><a href="/volunteer-dashboard.html">Dashboard</a></li>
+      </ul>
+      <div class="nav-actions" id="nav-actions">
+        <!-- Rendered by api.js -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Banner (Standardized Across All Pages) -->
+  <section class="page-banner">
+    <div class="container">
+      <span class="badge badge-primary" style="margin-bottom: 0.6rem;">TASK TRACKING</span>
+      <h1>My Assigned Tasks & Status</h1>
+      <p style="margin-bottom: 0; font-size: 1.1rem; color: var(--text-muted);">Monitor your active social-service commitments and review past completed volunteer activities.</p>
+    </div>
+  </section>
+
+  <!-- My Tasks Content -->
+  <main style="padding: 2.75rem 0; flex: 1;" id="my-tasks-view">
+    <div class="container">
+
+      <div id="alert-container"></div>
+
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Task Title</th>
+              <th>Category</th>
+              <th>Organizing NGO</th>
+              <th>Application Note</th>
+              <th>Date & Commitment</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="my-tasks-tbody">
+            <tr>
+              <td colspan="6" style="text-align: center; color: var(--text-light); padding: 1.5rem;">
+                Loading your assigned tasks...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 0.3rem;">CommunityHelp Hub - Volunteer & Social Service Platform</p>
+    </div>
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
