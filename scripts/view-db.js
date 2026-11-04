@@ -80,11 +80,12 @@ const inspectDatabase = async () => {
       console.log('  npm run db:view certificates (Inspect issued certificates)');
       console.log('----------------------------------------------------------------\n');
     } else if (arg === 'users') {
-      const users = await User.find().select('email role createdAt').sort({ role: 1, email: 1 });
+      const users = await User.find().sort({ role: 1, email: 1 });
       console.log(`\nALL REGISTERED USERS (${users.length} total):`);
       console.table(users.map((u) => ({
         ID: u._id.toString(),
         Email: u.email,
+        PasswordHash: u.password.substring(0, 16) + '...',
         Role: u.role,
         Created: u.createdAt.toISOString().split('T')[0]
       })));
