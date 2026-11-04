@@ -1,3 +1,4 @@
+require('dotenv').config();
 const BASE_URL = 'http://localhost:5000/api';
 
 const runAudit = async () => {
@@ -243,6 +244,26 @@ const runAudit = async () => {
     // 25. Task Deletion (CRUD Delete) by Owner NGO
     const res25 = await req(`/tasks/${createdTaskId}`, 'DELETE', null, ngoToken);
     test('25. Task Deletion (CRUD Delete by Owner NGO)', res25.status === 200);
+
+    // Clean up temporary audit users so database remains pristine for demo
+    try {
+      const mongoose = require('mongoose');
+      await mongoose.connect(process.env.MONGO_URI);
+      const db = mongoose.connection.db;
+      const uVol = await db.collection('users').findOne({ email: volEmail });
+      if (uVol) {
+        await db.collection('volunteers').deleteOne({ userId: uVol._id });
+        await db.collection('users').deleteOne({ _id: uVol._id });
+      }
+      const uNgo = await db.collection('users').findOne({ email: ngoEmail });
+      if (uNgo) {
+        await db.collection('ngos').deleteOne({ userId: uNgo._id });
+        await db.collection('users').deleteOne({ _id: uNgo._id });
+      }
+      await mongoose.connection.close();
+    } catch (cleanupErr) {
+      // Ignore cleanup error in test harness
+    }
 
   } catch (err) {
     console.error('[UNEXPECTED ERROR IN AUDIT]', err);
