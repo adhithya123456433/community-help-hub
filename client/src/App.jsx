@@ -16,6 +16,7 @@ import ImpactDashboard from './pages/ImpactDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import NotFound from './pages/NotFound';
 
 // Legacy URL redirect handler for task-details.html?id=...
 function LegacyTaskRedirect() {
@@ -99,8 +100,8 @@ export default function App() {
         <Route path="/login.html" element={<Navigate to="/login" replace />} />
         <Route path="/register.html" element={<Navigate to="/register" replace />} />
 
-        {/* Catch-all fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Catch-all 404 Page Not Found */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </div>
