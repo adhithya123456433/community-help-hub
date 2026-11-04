@@ -58,7 +58,7 @@ export default function Login() {
       <section className="page-banner">
         <div className="container" style={{ textAlign: 'center' }}>
           <span className="badge badge-primary" style={{ marginBottom: '0.6rem' }}>USER AUTHENTICATION</span>
-          <h1>Sign In to CommunityHelp Hub</h1>
+          <h1>Sign In to Community Hub</h1>
           <p style={{ marginBottom: 0, fontSize: '1.1rem' }}>
             Access your personalized Volunteer, NGO, or Administrator Dashboard.
           </p>

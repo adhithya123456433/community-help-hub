@@ -1,7 +1,7 @@
 {
-  "name": "community-help-hub",
+  "name": "community-hub",
   "version": "1.0.0",
-  "description": "CommunityHelp Hub - Volunteer & Social Service Platform",
+  "description": "Community Hub - Volunteer & Social Service Platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -18,7 +18,7 @@
     "social-service",
     "community-help-hub"
   ],
-  "author": "CommunityHelp Hub",
+  "author": "Community Hub",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

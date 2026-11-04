@@ -86,7 +86,7 @@ export default function Navbar() {
       <div className="container nav-container">
         <div className="nav-left">
           <Link to="/" className="brand-logo">
-            CommunityHelp Hub
+            Community Hub
             <span className="brand-badge">INDIA</span>
           </Link>
 
