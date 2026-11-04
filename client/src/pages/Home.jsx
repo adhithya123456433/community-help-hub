@@ -230,7 +230,7 @@ export default function Home() {
             <span className="badge badge-primary" style={{ marginBottom: '0.6rem' }}>
               PLATFORM WORKFLOW
             </span>
-            <h2>How Community Hub Works</h2>
+            <h2>How CommunityHelp Hub Works</h2>
             <p>A transparent, structured process for volunteers and organizations.</p>
           </div>
 

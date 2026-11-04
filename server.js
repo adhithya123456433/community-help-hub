@@ -46,7 +46,7 @@ app.use('/api/admin', adminRoutes);
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    platform: 'Community Hub',
+    platform: 'CommunityHelp Hub',
     timestamp: new Date().toISOString()
   });
 });
