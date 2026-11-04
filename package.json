@@ -10,6 +10,7 @@
     "build": "npm --prefix client install && npm --prefix client run build",
     "client:dev": "npm run dev --prefix client",
     "db:view": "node scripts/view-db.js",
+    "db:export": "node scripts/export-html-viewer.js",
     "audit": "node scripts/audit-test.js"
   },
   "keywords": [
