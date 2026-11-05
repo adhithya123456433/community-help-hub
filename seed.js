@@ -354,7 +354,7 @@ const seedData = async () => {
         skills: ['Patience', 'Communication', 'First Aid', 'Cooking'],
         completed: 5,
         hours: 17,
-        points: 82 // Silver
+        points: 84 // Gold
       },
       {
         email: 'priya.sundaram@gmail.com',
@@ -364,7 +364,7 @@ const seedData = async () => {
         skills: ['Teaching', 'English', 'Patience', 'Communication'],
         completed: 4,
         hours: 14,
-        points: 66 // Silver
+        points: 68 // Silver
       },
       {
         email: 'deepa.natarajan@gmail.com',
@@ -374,7 +374,7 @@ const seedData = async () => {
         skills: ['Gardening', 'Planting', 'Clean-up'],
         completed: 4,
         hours: 13,
-        points: 62 // Silver
+        points: 66 // Silver
       },
       {
         email: 'kavitha.sridharan@gmail.com',
@@ -394,7 +394,7 @@ const seedData = async () => {
         skills: ['Clean-up', 'Planting', 'Driving'],
         completed: 3,
         hours: 10,
-        points: 48 // Silver
+        points: 50 // Silver
       },
       {
         email: 'dinesh.chandran@gmail.com',
@@ -404,7 +404,7 @@ const seedData = async () => {
         skills: ['Cooking', 'Packaging', 'Logistics'],
         completed: 2,
         hours: 7,
-        points: 38 // Bronze
+        points: 34 // Bronze
       },
       {
         email: 'vigneshwar.raj@gmail.com',
@@ -414,7 +414,7 @@ const seedData = async () => {
         skills: ['Patience', 'Communication', 'Technology'],
         completed: 2,
         hours: 6,
-        points: 34 // Bronze
+        points: 32 // Bronze
       },
       {
         email: 'meenakshi.s@gmail.com',
@@ -434,7 +434,7 @@ const seedData = async () => {
         skills: ['Teaching', 'English', 'Clean-up'],
         completed: 1,
         hours: 4,
-        points: 26 // Bronze
+        points: 18 // Bronze
       },
 
       // Pan-India Volunteers
@@ -466,7 +466,7 @@ const seedData = async () => {
         skills: ['First Aid', 'Packaging', 'Logistics', 'Carpentry'],
         completed: 5,
         hours: 18,
-        points: 84 // Gold
+        points: 86 // Gold
       },
       {
         email: 'ananya.sen@gmail.com',
@@ -496,7 +496,7 @@ const seedData = async () => {
         skills: ['Technology', 'Teaching', 'Communication'],
         completed: 4,
         hours: 13,
-        points: 62 // Silver
+        points: 66 // Silver
       },
       {
         email: 'priya.patel@gmail.com',
@@ -526,7 +526,7 @@ const seedData = async () => {
         skills: ['Teaching', 'English', 'Logistics', 'First Aid'],
         completed: 3,
         hours: 10,
-        points: 46 // Silver
+        points: 50 // Silver
       },
       {
         email: 'alok.tiwari@gmail.com',
@@ -536,7 +536,7 @@ const seedData = async () => {
         skills: ['Teaching', 'English', 'Communication'],
         completed: 2,
         hours: 7,
-        points: 44 // Silver
+        points: 34 // Bronze
       },
       {
         email: 'rohan.mehta@gmail.com',
@@ -546,7 +546,7 @@ const seedData = async () => {
         skills: ['Communication', 'First Aid', 'Patience'],
         completed: 2,
         hours: 8,
-        points: 40 // Bronze
+        points: 36 // Bronze
       },
       {
         email: 'tanmay.k@gmail.com',
@@ -556,7 +556,7 @@ const seedData = async () => {
         skills: ['Clean-up', 'Logistics', 'Driving'],
         completed: 2,
         hours: 7,
-        points: 38 // Bronze
+        points: 34 // Bronze
       },
       {
         email: 'sai.teja@gmail.com',
@@ -566,7 +566,7 @@ const seedData = async () => {
         skills: ['First Aid', 'Logistics', 'Clean-up'],
         completed: 2,
         hours: 6,
-        points: 34 // Bronze
+        points: 32 // Bronze
       },
       {
         email: 'ravi.teja@gmail.com',
@@ -586,7 +586,7 @@ const seedData = async () => {
         skills: ['Cooking', 'Packaging', 'Communication'],
         completed: 1,
         hours: 5,
-        points: 30 // Bronze
+        points: 20 // Bronze
       },
       {
         email: 'soumya.m@gmail.com',
@@ -596,7 +596,7 @@ const seedData = async () => {
         skills: ['Teaching', 'Communication', 'Patience'],
         completed: 1,
         hours: 4,
-        points: 28 // Bronze
+        points: 18 // Bronze
       },
       {
         email: 'rajesh.tanwar@gmail.com',
@@ -606,7 +606,7 @@ const seedData = async () => {
         skills: ['Communication', 'Clean-up', 'Driving'],
         completed: 1,
         hours: 4,
-        points: 28 // Bronze
+        points: 18 // Bronze
       },
       {
         email: 'simran.kaur@gmail.com',
@@ -616,7 +616,7 @@ const seedData = async () => {
         skills: ['Clean-up', 'Planting', 'Gardening'],
         completed: 1,
         hours: 4,
-        points: 28 // Bronze
+        points: 18 // Bronze
       },
       {
         email: 'nitin.saxena@gmail.com',
@@ -626,7 +626,7 @@ const seedData = async () => {
         skills: ['Patience', 'Communication', 'First Aid'],
         completed: 1,
         hours: 4,
-        points: 28 // Bronze
+        points: 18 // Bronze
       },
       {
         email: 'jasleen.gill@gmail.com',
@@ -636,7 +636,7 @@ const seedData = async () => {
         skills: ['Cooking', 'Packaging', 'Logistics'],
         completed: 1,
         hours: 4,
-        points: 28 // Bronze
+        points: 18 // Bronze
       },
       {
         email: 'divya.agrawal@gmail.com',
@@ -646,7 +646,7 @@ const seedData = async () => {
         skills: ['Packaging', 'Cooking', 'Communication'],
         completed: 1,
         hours: 3,
-        points: 26 // Bronze
+        points: 16 // Bronze
       },
       {
         email: 'sourav.patnaik@gmail.com',
@@ -656,7 +656,7 @@ const seedData = async () => {
         skills: ['First Aid', 'Packaging', 'Logistics'],
         completed: 1,
         hours: 3,
-        points: 26 // Bronze
+        points: 16 // Bronze
       },
       {
         email: 'jatin.baruah@gmail.com',
@@ -666,7 +666,7 @@ const seedData = async () => {
         skills: ['Logistics', 'First Aid', 'Clean-up'],
         completed: 1,
         hours: 3,
-        points: 26 // Bronze
+        points: 16 // Bronze
       },
       {
         email: 'kavitha.nair@gmail.com',
@@ -676,7 +676,7 @@ const seedData = async () => {
         skills: ['Patience', 'Communication', 'First Aid'],
         completed: 1,
         hours: 3,
-        points: 26 // Bronze
+        points: 16 // Bronze
       },
       {
         email: 'aman.mishra@gmail.com',
@@ -686,7 +686,7 @@ const seedData = async () => {
         skills: ['Clean-up', 'Communication', 'Logistics'],
         completed: 1,
         hours: 3,
-        points: 24 // Bronze
+        points: 16 // Bronze
       }
     ];
 
@@ -703,7 +703,8 @@ const seedData = async () => {
         skills: v.skills,
         completedTasksCount: v.completed,
         totalHours: v.hours,
-        rankingPoints: v.points
+        // 10 base points per task + 2 points per hour
+        rankingPoints: (v.completed * 10) + (v.hours * 2)
       });
       await vol.save();
       createdVolunteers.push(vol);

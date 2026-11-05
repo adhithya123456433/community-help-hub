@@ -33,11 +33,14 @@ router.get('/volunteer', protect, requireVolunteer, async (req, res) => {
 
     const displayCount = completedCount > 0 ? completedCount : (volunteer.completedTasksCount || 0);
     const displayHours = dynamicHours > 0 ? dynamicHours : (volunteer.totalHours || 0);
+    // 10 base points per task + 2 points per hour
+    const displayPoints = (displayCount * 10) + (displayHours * 2);
 
     // Keep volunteer document synchronized in database
-    if (volunteer.totalHours !== displayHours || volunteer.completedTasksCount !== displayCount) {
+    if (volunteer.totalHours !== displayHours || volunteer.completedTasksCount !== displayCount || volunteer.rankingPoints !== displayPoints) {
       volunteer.totalHours = displayHours;
       volunteer.completedTasksCount = displayCount;
+      volunteer.rankingPoints = displayPoints;
       await volunteer.save();
     }
 
@@ -72,7 +75,7 @@ router.get('/volunteer', protect, requireVolunteer, async (req, res) => {
         activeAssignmentsCount: activeAssignments.length,
         availableOpportunities,
         totalHours: displayHours,
-        rankingPoints: volunteer.rankingPoints,
+        rankingPoints: displayPoints,
         rank: currentRank,
         certificatesCount: certificates.length
       },
