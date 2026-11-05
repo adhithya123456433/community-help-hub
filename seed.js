@@ -324,7 +324,7 @@ const seedData = async () => {
         skills: ['Logistics', 'First Aid', 'Clean-up', 'Communication'],
         completed: 8,
         hours: 28,
-        points: 134 // Gold
+        points: 136 // Gold
       },
       {
         email: 'senthil.kumar@gmail.com',
@@ -334,7 +334,7 @@ const seedData = async () => {
         skills: ['Planting', 'Clean-up', 'Logistics', 'First Aid'],
         completed: 7,
         hours: 25,
-        points: 118 // Gold
+        points: 120 // Gold
       },
       {
         email: 'aravind.swaminathan@gmail.com',
@@ -1497,6 +1497,164 @@ const seedData = async () => {
       issueDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
     });
     await cert6.save();
+
+    // Additional completed applications to mathematically match completedTasksCount and totalHours
+    const additionalCompletedApplications = [
+      // Karthik Raman (7 more tasks + 1 cert1 task = 8 completed tasks, exactly 28 hours)
+      {
+        task: 'Remedial Evening Coaching for Coastal Children',
+        vol: 'karthik.raman@gmail.com',
+        notes: 'Provided evening coaching in arithmetic and Tamil for coastal school kids.',
+        daysAgoApplied: 14,
+        daysAgoCompleted: 12
+      },
+      {
+        task: 'Weekend Surplus Food Packaging & Slum Distribution',
+        vol: 'karthik.raman@gmail.com',
+        notes: 'Supported surplus food packaging and distributed dinner boxes to 150 families.',
+        daysAgoApplied: 12,
+        daysAgoCompleted: 10
+      },
+      {
+        task: 'Senior Citizen Digital Literacy & Smartphone Assistance Camp',
+        vol: 'karthik.raman@gmail.com',
+        notes: 'Trained elderly residents on smartphone use, UPI payments, and emergency calling.',
+        daysAgoApplied: 10,
+        daysAgoCompleted: 8
+      },
+      {
+        task: 'Monsoon Waterlogging Relief & Sandbag Embankment Reinforcement',
+        vol: 'karthik.raman@gmail.com',
+        notes: 'Assisted in sandbag barrier construction to prevent street flooding in low-lying zones.',
+        daysAgoApplied: 9,
+        daysAgoCompleted: 7
+      },
+      {
+        task: 'Public Library Book Cataloging & Blind Student Audio Recording',
+        vol: 'karthik.raman@gmail.com',
+        notes: 'Narrated audio textbooks and indexed academic reference materials for visually impaired students.',
+        daysAgoApplied: 8,
+        daysAgoCompleted: 5
+      },
+      {
+        task: 'Free Food Ration Packing for Destitute Widows & Daily Wagers',
+        vol: 'karthik.raman@gmail.com',
+        notes: 'Helped package dry ration kits of grains, lentils, and cooking oil for vulnerable families.',
+        daysAgoApplied: 6,
+        daysAgoCompleted: 4
+      },
+      {
+        task: 'Geriatric Recreation, Newspaper Reading & Companionship Circle',
+        vol: 'karthik.raman@gmail.com',
+        notes: 'Facilitated morning news discussions, memory games, and music circle for senior residents.',
+        daysAgoApplied: 5,
+        daysAgoCompleted: 3
+      },
+
+      // Rahul Sharma (6 more tasks + 1 cert3 task = 7 completed tasks, exactly 26 hours)
+      {
+        task: 'Weekend Surplus Food Packaging & Slum Distribution',
+        vol: 'rahul.volunteer@gmail.com',
+        notes: 'Packaged dinner parcels for migrant laborers and homeless individuals.',
+        daysAgoApplied: 12,
+        daysAgoCompleted: 10
+      },
+      {
+        task: 'Urban Flood First Aid & Emergency Dry Ration Packaging',
+        vol: 'rahul.volunteer@gmail.com',
+        notes: 'Managed relief dry ration distribution desks and assembled trauma hygiene packets.',
+        daysAgoApplied: 11,
+        daysAgoCompleted: 9
+      },
+      {
+        task: 'Public Library Book Cataloging & Blind Student Audio Recording',
+        vol: 'rahul.volunteer@gmail.com',
+        notes: 'Cataloged reference titles and recorded study notes for college students.',
+        daysAgoApplied: 9,
+        daysAgoCompleted: 7
+      },
+      {
+        task: 'Mega Blood Donation Camp Donor Registration & Refreshment Management',
+        vol: 'rahul.volunteer@gmail.com',
+        notes: 'Supervised voluntary donor check-ins and recovery hydration counters.',
+        daysAgoApplied: 7,
+        daysAgoCompleted: 5
+      },
+      {
+        task: 'Health Vital Checkup Assistance & Mobility Support for Seniors',
+        vol: 'rahul.volunteer@gmail.com',
+        notes: 'Assisted geriatric medical triage, record keeping, and blood pressure tests.',
+        daysAgoApplied: 6,
+        daysAgoCompleted: 4
+      },
+      {
+        task: 'Primary School Science Experiments & Interactive STEM Lab',
+        vol: 'rahul.volunteer@gmail.com',
+        notes: 'Led practical science demonstration experiments to promote scientific curiosity.',
+        daysAgoApplied: 4,
+        daysAgoCompleted: 2
+      },
+
+      // Senthil Kumar (6 more tasks + 1 cert2 task = 7 completed tasks, exactly 25 hours)
+      {
+        task: 'Sunday Morning Nutritious Breakfast Drive for Pavement Dwellers',
+        vol: 'senthil.kumar@gmail.com',
+        notes: 'Distributed fresh breakfast boxes to pavement dwellers and transit commuters.',
+        daysAgoApplied: 13,
+        daysAgoCompleted: 11
+      },
+      {
+        task: 'Rockfort Heritage Temple Cleanliness & Pilgrim Guidance Drive',
+        vol: 'senthil.kumar@gmail.com',
+        notes: 'Guided elderly pilgrims and coordinated heritage walkway waste clearing.',
+        daysAgoApplied: 11,
+        daysAgoCompleted: 9
+      },
+      {
+        task: 'Monsoon Waterlogging Relief & Sandbag Embankment Reinforcement',
+        vol: 'senthil.kumar@gmail.com',
+        notes: 'Placed sandbags along canal flood walls to safeguard residential streets.',
+        daysAgoApplied: 9,
+        daysAgoCompleted: 7
+      },
+      {
+        task: 'Foundational English & Math Workshop for Textile Mill Children',
+        vol: 'senthil.kumar@gmail.com',
+        notes: 'Tutored children of textile weavers in basic mathematics and spoken English.',
+        daysAgoApplied: 6,
+        daysAgoCompleted: 4
+      },
+      {
+        task: 'Tamirabarani River Ghat Cleaning & Seed Ball Dispersion',
+        vol: 'senthil.kumar@gmail.com',
+        notes: 'Cleared riverside ghats and dispersed indigenous tree seed balls.',
+        daysAgoApplied: 4,
+        daysAgoCompleted: 2
+      },
+      {
+        task: 'Free Food Ration Packing for Destitute Widows & Daily Wagers',
+        vol: 'senthil.kumar@gmail.com',
+        notes: 'Sorted grains and oil provisions into monthly support parcels.',
+        daysAgoApplied: 3,
+        daysAgoCompleted: 1
+      }
+    ];
+
+    for (const item of additionalCompletedApplications) {
+      const taskDoc = taskMap[item.task];
+      const volDoc = getVol(item.vol);
+      if (taskDoc && volDoc) {
+        const app = new Application({
+          taskId: taskDoc._id,
+          volunteerId: volDoc._id,
+          status: 'Completed',
+          notes: item.notes,
+          appliedAt: new Date(Date.now() - item.daysAgoApplied * 24 * 60 * 60 * 1000),
+          completedAt: new Date(Date.now() - item.daysAgoCompleted * 24 * 60 * 60 * 1000)
+        });
+        await app.save();
+      }
+    }
 
     // Active Field Assignments (Assigned status) across Indian and Tamil Nadu cities
     const activeAssignments = [

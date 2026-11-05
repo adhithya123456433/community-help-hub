@@ -17,11 +17,29 @@ router.get('/volunteer', protect, requireVolunteer, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Volunteer profile not found' });
     }
 
-    // Total tasks completed
-    const completedCount = await Application.countDocuments({
+    // Total tasks completed and dynamic hours calculation from completed applications
+    const completedApps = await Application.find({
       volunteerId: volunteer._id,
       status: 'Completed'
+    }).populate('taskId');
+
+    const completedCount = completedApps.length;
+    let dynamicHours = 0;
+    completedApps.forEach((app) => {
+      if (app.taskId && app.taskId.hours) {
+        dynamicHours += app.taskId.hours;
+      }
     });
+
+    const displayCount = completedCount > 0 ? completedCount : (volunteer.completedTasksCount || 0);
+    const displayHours = dynamicHours > 0 ? dynamicHours : (volunteer.totalHours || 0);
+
+    // Keep volunteer document synchronized in database
+    if (volunteer.totalHours !== displayHours || volunteer.completedTasksCount !== displayCount) {
+      volunteer.totalHours = displayHours;
+      volunteer.completedTasksCount = displayCount;
+      await volunteer.save();
+    }
 
     // Active assignments (Assigned or In Progress)
     const activeAssignments = await Application.find({
@@ -50,10 +68,10 @@ router.get('/volunteer', protect, requireVolunteer, async (req, res) => {
         fullName: volunteer.fullName,
         city: volunteer.city,
         skills: volunteer.skills,
-        totalTasksCompleted: completedCount,
+        totalTasksCompleted: displayCount,
         activeAssignmentsCount: activeAssignments.length,
         availableOpportunities,
-        totalHours: volunteer.totalHours,
+        totalHours: displayHours,
         rankingPoints: volunteer.rankingPoints,
         rank: currentRank,
         certificatesCount: certificates.length
