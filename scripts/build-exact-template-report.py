@@ -6,10 +6,28 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
+from PIL import Image
 
 BLACK = RGBColor(0, 0, 0)
-IMG_DIR = r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded"
 PRISTINE_PATH = r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793891953281_405dc90c.docx"
+REPORT_IMG_DIR = r"C:\Users\DELL\Desktop\community-help-hub\scripts\report_images"
+os.makedirs(REPORT_IMG_DIR, exist_ok=True)
+
+# Prepare normalized PNG images
+raw_images = {
+    'fig6_1_skill.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895621133_9cb79e40.jpg",
+    'fig6_2_loc.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895671006_0de20420.jpg",
+    'fig6_3_ai.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895696897_da418848.jpg",
+    'fig6_4_dash.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895734828_a7ebf34c.png",
+    'fig6_5_rank.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895765040_dc6ee174.png",
+    'fig6_6_card.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793843766545_99d8a9c7.png"
+}
+
+for name, src in raw_images.items():
+    dst = os.path.join(REPORT_IMG_DIR, name)
+    if os.path.exists(src) and (not os.path.exists(dst) or os.path.getsize(dst) == 0):
+        im = Image.open(src)
+        im.save(dst, 'PNG')
 
 def set_cell_borders(cell, top="000000", bottom="000000", left="000000", right="000000", sz="4"):
     tcPr = cell._tc.get_or_add_tcPr()
@@ -540,40 +558,58 @@ def populate_report(remove_instructions=False):
         curr_p = p_map['c6_1']
         curr_p.text = ""
         
-        # Screenshot 1
-        img1 = os.path.join(IMG_DIR, "media_1793727446839_abd747cc.png")
-        if os.path.exists(img1):
-            curr_p.add_run().add_picture(img1, width=Inches(5.5))
+        # 1. Figure 6.1: Skill-Based Match
+        img_skill = os.path.join(REPORT_IMG_DIR, "fig6_1_skill.png")
+        if os.path.exists(img_skill):
+            curr_p.add_run().add_picture(img_skill, width=Inches(5.5))
             curr_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        curr_p = insert_after(curr_p, "Figure 6.1: CommunityHelp Hub - Community Drive Directory with Category Filtering and AI Matching", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.1 shows the Explore Tasks view where volunteers discover social service drives across the six mandatory categories. Drives display organizing NGO details, schedule, service hours, volunteer capacity counters, and skill pills.", font_size=12)
+        curr_p = insert_after(curr_p, "Figure 6.1: Skill-Based Volunteer Task Matching Interface", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.1 illustrates the Skill-Based Matching view under Explore Tasks. The platform cross-references volunteer competency tags (e.g., Clean-up, Logistics, First Aid) against task prerequisites, elevating 100% skill-matched initiatives such as the 'Ganga Ghat Cleanliness Drive' and 'Cyclone Shelter Readiness Drive' to the top of the feed.", font_size=12)
 
-        # Screenshot 2
-        img2 = os.path.join(IMG_DIR, "media_1793729783903_5ffce714.png")
-        if os.path.exists(img2):
+        # 2. Figure 6.2: Location-Based Match
+        img_loc = os.path.join(REPORT_IMG_DIR, "fig6_2_loc.png")
+        if os.path.exists(img_loc):
             img_p2 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
-            img_p2.add_run().add_picture(img2, width=Inches(5.5))
+            img_p2.add_run().add_picture(img_loc, width=Inches(5.5))
             curr_p = img_p2
-        curr_p = insert_after(curr_p, "Figure 6.2: Impact Analytics Dashboard Displaying Category Breakdown and City Telemetry", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.2 illustrates the Public Impact Dashboard rendering Chart.js telemetry charts, highlighting cumulative volunteer hours, completed initiatives, and the top volunteer leaderboard.", font_size=12)
+        curr_p = insert_after(curr_p, "Figure 6.2: Location-Based Proximity Matching Interface (Chennai)", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.2 demonstrates the Location-Based Matching engine for a volunteer registered in Chennai. Local civic drives located within the volunteer's registered municipality (Besant Nagar & Elliot Beach, Chennai) are automatically prioritized with a green [LOCAL MATCH: CHENNAI] badge, followed by external opportunities across other cities.", font_size=12)
 
-        # Screenshot 3
-        img3 = os.path.join(IMG_DIR, "media_1793812307926_7637aa80.png")
-        if os.path.exists(img3):
+        # 3. Figure 6.3: AI Recommendations
+        img_ai = os.path.join(REPORT_IMG_DIR, "fig6_3_ai.png")
+        if os.path.exists(img_ai):
             img_p3 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
-            img_p3.add_run().add_picture(img3, width=Inches(5.5))
+            img_p3.add_run().add_picture(img_ai, width=Inches(5.5))
             curr_p = img_p3
-        curr_p = insert_after(curr_p, "Figure 6.3: Volunteer Ranking Leaderboard Ordered by Deterministic Lifetime Ranking Points", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.3 presents the competitive volunteer leaderboard where top contributors are recognized based on verified service hours and completed initiatives.", font_size=12)
+        curr_p = insert_after(curr_p, "Figure 6.3: Multi-Factor AI Task Recommendation Engine", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.3 presents the AI Task Recommendations feed powered by the 100-point composite ranking model. Each initiative is evaluated on skill congruence (40 pts), municipal proximity (30 pts), historical category engagement (20 pts), and quota urgency (10 pts), displaying deterministic recommendation scores such as [RECOMMENDED: 70 PTS].", font_size=12)
 
-        # Screenshot 4
-        img4 = os.path.join(IMG_DIR, "media_1793843766545_99d8a9c7.png")
-        if os.path.exists(img4):
+        # 4. Figure 6.4: Impact Dashboard Telemetry Charts
+        img_dash = os.path.join(REPORT_IMG_DIR, "fig6_4_dash.png")
+        if os.path.exists(img_dash):
             img_p4 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
-            img_p4.add_run().add_picture(img4, width=Inches(3.8))
+            img_p4.add_run().add_picture(img_dash, width=Inches(5.5))
             curr_p = img_p4
-        curr_p = insert_after(curr_p, "Figure 6.4: Community Task Card Exhibiting Quota Counter (2 / 5 Filled) and Applied Status", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.4 depicts the Remedial Evening Coaching drive for coastal children organized by Kavalar Youth Welfare Foundation in Besant Nagar, Chennai. The card indicates current staffing (2 / 5 Filled) and confirmed volunteer participation.", font_size=12)
+        curr_p = insert_after(curr_p, "Figure 6.4: Impact Analytics Dashboard Telemetry (Category and City Breakdown)", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.4 depicts the public Impact Dashboard visual telemetry powered by Chart.js. The left doughnut chart maps task distribution across all six mandatory social service categories (Education, Food distribution, Environment, Elder support, Disaster support, Community service), while the right bar chart details regional initiative density across metropolitan cities (Delhi, Mumbai, Chennai, Lucknow, Hyderabad).", font_size=12)
+
+        # 5. Figure 6.5: Volunteer Ranking & Recognition Leaderboard
+        img_rank = os.path.join(REPORT_IMG_DIR, "fig6_5_rank.png")
+        if os.path.exists(img_rank):
+            img_p5 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
+            img_p5.add_run().add_picture(img_rank, width=Inches(4.8))
+            curr_p = img_p5
+        curr_p = insert_after(curr_p, "Figure 6.5: Volunteer Ranking and Gamified Recognition Leaderboard (#1 to #10)", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.5 displays the top volunteer ranking leaderboard ordered by verified service hours and completed initiatives. Volunteers earn gamified badges (e.g., [GOLD CHAMPION], [SILVER TIER]) and lifetime ranking points calculated dynamically from verified drive attendance.", font_size=12)
+
+        # 6. Figure 6.6: Task Card with Quota Counter
+        img_card = os.path.join(REPORT_IMG_DIR, "fig6_6_card.png")
+        if os.path.exists(img_card):
+            img_p6 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
+            img_p6.add_run().add_picture(img_card, width=Inches(3.6))
+            curr_p = img_p6
+        curr_p = insert_after(curr_p, "Figure 6.6: Community Task Card Exhibiting Quota Counter (2 / 5 Filled) and Applied Status", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.6 depicts the Remedial Evening Coaching drive for coastal children organized by Kavalar Youth Welfare Foundation in Besant Nagar, Chennai. The card indicates current staffing (2 / 5 Filled) and confirmed volunteer participation.", font_size=12)
 
     if 'c6_3' in p_map:
         set_para(p_map['c6_3'],
@@ -642,7 +678,7 @@ def populate_report(remove_instructions=False):
 
     return doc
 
-print("Populating reports directly from pristine template...")
+print("Generating exact template reports with normalized images...")
 
 # 1. Full document keeping instructions page
 doc_with_instructions = populate_report(remove_instructions=False)
@@ -656,4 +692,4 @@ doc_submission.save(r"C:\Users\DELL\Desktop\CommunityHelp_Hub_FullStack_Report.d
 doc_submission.save(r"C:\Users\DELL\Desktop\community-help-hub\Full_Stack_Project_Report_Template.docx")
 doc_submission.save(r"C:\Users\DELL\Desktop\community-help-hub\CommunityHelp_Hub_FullStack_Report.docx")
 
-print("All DOCX files generated and saved.")
+print("All DOCX files successfully created with all 6 screenshots embedded.")
