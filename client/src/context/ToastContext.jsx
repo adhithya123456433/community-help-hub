@@ -5,20 +5,27 @@ const ToastContext = createContext(null);
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
+  const removeToast = useCallback((id) => {
+    setToasts((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, isExiting: true } : t))
+    );
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 220);
+  }, []);
+
   const showToast = useCallback((message, type = 'info', duration = 3500) => {
     const id = Date.now() + Math.random().toString(36).substring(2, 9);
     const normalizedType = type === 'danger' ? 'error' : type;
 
-    setToasts((prev) => [...prev, { id, message, type: normalizedType }]);
+    setToasts((prev) => [...prev, { id, message, type: normalizedType, isExiting: false }]);
 
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, duration);
-  }, []);
-
-  const removeToast = useCallback((id) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  }, []);
+    if (duration > 0) {
+      setTimeout(() => {
+        removeToast(id);
+      }, duration);
+    }
+  }, [removeToast]);
 
   return (
     <ToastContext.Provider value={{ showToast }}>
@@ -31,10 +38,13 @@ export function ToastProvider({ children }) {
           if (toast.type === 'warning') tagLabel = 'WARNING';
 
           return (
-            <div key={toast.id} className={`toast toast-${toast.type}`}>
+            <div
+              key={toast.id}
+              className={`toast toast-${toast.type} ${toast.isExiting ? 'toast-fade-out' : ''}`}
+            >
               <div className="toast-content">
                 <span className={`toast-tag toast-tag-${toast.type}`}>{tagLabel}</span>
-                <span className="toast-message">{toast.message}</span>
+                <div className="toast-msg">{toast.message}</div>
               </div>
               <button
                 type="button"

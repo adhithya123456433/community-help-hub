@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { apiRequest } from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -14,6 +14,16 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Auto-dismiss warning after 4.5 seconds
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage('');
+      }, 4500);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,7 +77,36 @@ export default function Login() {
       <main style={{ padding: '2.75rem 0', flex: 1 }}>
         <div className="container" style={{ maxWidth: '580px' }}>
           <div className="card">
-            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+            {errorMessage && (
+              <div
+                className="alert alert-danger"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '1.25rem'
+                }}
+              >
+                <span>{errorMessage}</span>
+                <button
+                  type="button"
+                  onClick={() => setErrorMessage('')}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '1.3rem',
+                    cursor: 'pointer',
+                    color: 'inherit',
+                    lineHeight: 1,
+                    padding: '0 4px',
+                    fontWeight: 700
+                  }}
+                  aria-label="Close"
+                >
+                  &times;
+                </button>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -78,7 +117,10 @@ export default function Login() {
                   className="form-control"
                   placeholder="name@example.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    if (errorMessage) setErrorMessage('');
+                    setEmail(e.target.value);
+                  }}
                   required
                 />
               </div>
@@ -91,7 +133,10 @@ export default function Login() {
                   className="form-control"
                   placeholder="Enter your password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    if (errorMessage) setErrorMessage('');
+                    setPassword(e.target.value);
+                  }}
                   required
                 />
               </div>

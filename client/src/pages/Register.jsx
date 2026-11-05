@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiRequest } from '../api/client';
 import { useAuth } from '../context/AuthContext';
@@ -12,6 +12,16 @@ export default function Register() {
   const [activeTab, setActiveTab] = useState('volunteer');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Auto-dismiss warning after 4.5 seconds
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage('');
+      }, 4500);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
 
   // Volunteer state
   const [volForm, setVolForm] = useState({
@@ -186,7 +196,12 @@ export default function Register() {
               </button>
             </div>
 
-            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+            {errorMessage && (
+              <div className="alert alert-danger" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                <span>{errorMessage}</span>
+                <button type="button" onClick={() => setErrorMessage('')} className="toast-close-btn" style={{ color: 'inherit', fontSize: '1.25rem' }} aria-label="Close">&times;</button>
+              </div>
+            )}
             {activeTab === 'volunteer' && (
               <form onSubmit={handleVolunteerSubmit}>
                 <div className="form-group">

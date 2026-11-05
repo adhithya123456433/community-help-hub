@@ -64,6 +64,16 @@ export default function NgoDashboard() {
     requiredSkills: ''
   });
   const [editModalError, setEditModalError] = useState('');
+
+  // Auto-dismiss modal error alert after 4.5 seconds
+  useEffect(() => {
+    if (editModalError) {
+      const timer = setTimeout(() => {
+        setEditModalError('');
+      }, 4500);
+      return () => clearTimeout(timer);
+    }
+  }, [editModalError]);
   const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   useEffect(() => {
@@ -539,7 +549,12 @@ export default function NgoDashboard() {
               </button>
             </div>
 
-            {editModalError && <div className="alert alert-danger">{editModalError}</div>}
+            {editModalError && (
+              <div className="alert alert-danger" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                <span>{editModalError}</span>
+                <button type="button" onClick={() => setEditModalError('')} className="toast-close-btn" style={{ color: 'inherit', fontSize: '1.25rem' }} aria-label="Close">&times;</button>
+              </div>
+            )}
 
             <form onSubmit={handleEditSubmit}>
               <div className="form-group">

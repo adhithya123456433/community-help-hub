@@ -73,6 +73,16 @@ export default function CreateTask() {
   });
 
   const [errorAlert, setErrorAlert] = useState('');
+
+  // Auto-dismiss error alert after 4.5 seconds
+  useEffect(() => {
+    if (errorAlert) {
+      const timer = setTimeout(() => {
+        setErrorAlert('');
+      }, 4500);
+      return () => clearTimeout(timer);
+    }
+  }, [errorAlert]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Pre-select NGO city
@@ -237,7 +247,12 @@ export default function CreateTask() {
               </div>
             </div>
 
-            {errorAlert && <div className="alert alert-danger">{errorAlert}</div>}
+            {errorAlert && (
+              <div className="alert alert-danger" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                <span>{errorAlert}</span>
+                <button type="button" onClick={() => setErrorAlert('')} className="toast-close-btn" style={{ color: 'inherit', fontSize: '1.25rem' }} aria-label="Close">&times;</button>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} noValidate>
               <div className="form-group">

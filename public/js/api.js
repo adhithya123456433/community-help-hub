@@ -134,10 +134,14 @@ function showAlert(message, type = 'danger', containerId = 'alert-container') {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = `
-    <div class="alert alert-${type}">
-      ${message}
+    <div class="alert alert-${type}" style="display: flex; justify-content: space-between; align-items: center;">
+      <span>${message}</span>
+      <button type="button" onclick="clearAlert('${containerId}')" class="toast-close-btn" aria-label="Close" style="color: inherit; font-size: 1.25rem;">&times;</button>
     </div>
   `;
+  setTimeout(() => {
+    clearAlert(containerId);
+  }, 4500);
 }
 
 function clearAlert(containerId = 'alert-container') {
