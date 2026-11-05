@@ -45,7 +45,17 @@ export async function apiRequest(endpoint, method = 'GET', data = null) {
 
   try {
     const response = await fetch(`${API_BASE}${endpoint}`, options);
-    const result = await response.json();
+    let result = null;
+    try {
+      result = await response.json();
+    } catch (e) {
+      result = { success: response.ok };
+    }
+
+    if (response.status === 401 && token) {
+      clearAuthSession();
+    }
+
     return { ok: response.ok, status: response.status, data: result };
   } catch (error) {
     return {

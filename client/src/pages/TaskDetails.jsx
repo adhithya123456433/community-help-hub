@@ -270,8 +270,13 @@ export default function TaskDetails() {
               >
                 Volunteers Needed
               </div>
-              <div style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--secondary)', marginTop: '0.3rem' }}>
+              <div style={{ fontSize: '1.05rem', fontWeight: 700, color: (task.volunteersAssigned || 0) >= task.volunteersRequired ? '#059669' : 'var(--secondary)', marginTop: '0.3rem' }}>
                 {task.volunteersAssigned || 0} / {task.volunteersRequired} Assigned
+                {(task.volunteersAssigned || 0) >= task.volunteersRequired && (
+                  <span style={{ fontSize: '0.75rem', marginLeft: '0.45rem', color: '#059669', fontWeight: 800 }}>
+                    [FULL CAPACITY]
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -361,6 +366,72 @@ export default function TaskDetails() {
                   Go to Volunteer Dashboard
                 </Link>
               </>
+            ) : task.status === 'Completed' ? (
+              <button
+                type="button"
+                disabled
+                className="btn"
+                style={{
+                  height: '46px',
+                  padding: '0 1.5rem',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  backgroundColor: '#10b981',
+                  color: '#ffffff',
+                  cursor: 'not-allowed',
+                  boxSizing: 'border-box',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: 1
+                }}
+              >
+                Drive Completed
+              </button>
+            ) : task.status === 'Cancelled' ? (
+              <button
+                type="button"
+                disabled
+                className="btn"
+                style={{
+                  height: '46px',
+                  padding: '0 1.5rem',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  backgroundColor: '#ef4444',
+                  color: '#ffffff',
+                  cursor: 'not-allowed',
+                  boxSizing: 'border-box',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: 1
+                }}
+              >
+                Drive Cancelled
+              </button>
+            ) : (task.volunteersAssigned || 0) >= task.volunteersRequired ? (
+              <button
+                type="button"
+                disabled
+                className="btn"
+                style={{
+                  height: '46px',
+                  padding: '0 1.5rem',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  backgroundColor: '#64748b',
+                  color: '#ffffff',
+                  cursor: 'not-allowed',
+                  boxSizing: 'border-box',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: 1
+                }}
+              >
+                Volunteer Quota Full
+              </button>
             ) : (
               <button
                 type="button"

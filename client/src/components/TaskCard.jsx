@@ -44,6 +44,13 @@ export default function TaskCard({ task, onApply, appliedApp }) {
   const catBadgeClass = getCategoryBadgeClass(task.category);
   const accentColor = getCategoryAccentColor(task.category);
 
+  let statusBadgeClass = 'badge-open';
+  if (task.status === 'In Progress') statusBadgeClass = 'badge-assigned';
+  if (task.status === 'Completed') statusBadgeClass = 'badge-completed';
+  if (task.status === 'Cancelled') statusBadgeClass = 'badge-danger';
+
+  const isQuotaFull = (task.volunteersAssigned || 0) >= task.volunteersRequired;
+
   const formattedDate = new Date(task.dateTime).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'short',
@@ -140,7 +147,7 @@ export default function TaskCard({ task, onApply, appliedApp }) {
               </span>
             )}
           </div>
-          <span className="badge badge-open">[{task.status.toUpperCase()}]</span>
+          <span className={`badge ${statusBadgeClass}`}>[{task.status.toUpperCase()}]</span>
         </div>
 
         {isApplied ? (
@@ -193,8 +200,26 @@ export default function TaskCard({ task, onApply, appliedApp }) {
           </div>
           <div>
             <strong>Volunteers:</strong>{' '}
-            <span style={{ color: 'var(--primary)', fontWeight: 700 }}>
+            <span
+              style={{
+                color: isQuotaFull ? '#059669' : 'var(--primary)',
+                fontWeight: 700
+              }}
+            >
               {task.volunteersAssigned || 0} / {task.volunteersRequired} Filled
+              {isQuotaFull && (
+                <span
+                  style={{
+                    fontSize: '0.74rem',
+                    marginLeft: '0.4rem',
+                    color: '#059669',
+                    fontWeight: 800,
+                    letterSpacing: '0.3px'
+                  }}
+                >
+                  [FULL CAPACITY]
+                </span>
+              )}
             </span>
           </div>
           {task.targetBeneficiaries && (
@@ -236,6 +261,51 @@ export default function TaskCard({ task, onApply, appliedApp }) {
           >
             Applied ({appliedApp.status})
           </Link>
+        ) : task.status === 'Completed' ? (
+          <button
+            type="button"
+            disabled
+            className="btn btn-sm"
+            style={{
+              backgroundColor: '#10b981',
+              color: '#ffffff',
+              opacity: 0.85,
+              cursor: 'not-allowed',
+              fontWeight: 700
+            }}
+          >
+            Drive Completed
+          </button>
+        ) : task.status === 'Cancelled' ? (
+          <button
+            type="button"
+            disabled
+            className="btn btn-sm"
+            style={{
+              backgroundColor: '#ef4444',
+              color: '#ffffff',
+              opacity: 0.85,
+              cursor: 'not-allowed',
+              fontWeight: 700
+            }}
+          >
+            Drive Cancelled
+          </button>
+        ) : isQuotaFull ? (
+          <button
+            type="button"
+            disabled
+            className="btn btn-sm"
+            style={{
+              backgroundColor: '#64748b',
+              color: '#ffffff',
+              opacity: 0.9,
+              cursor: 'not-allowed',
+              fontWeight: 700
+            }}
+          >
+            Quota Filled
+          </button>
         ) : (
           <button type="button" onClick={() => onApply(task)} className="btn btn-primary btn-sm">
             Apply for Task

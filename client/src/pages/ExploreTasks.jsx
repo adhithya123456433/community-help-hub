@@ -205,6 +205,16 @@ export default function ExploreTasks() {
       return;
     }
 
+    if ((task.volunteersAssigned || 0) >= task.volunteersRequired) {
+      showToast('This task has already met its volunteer capacity limit.', 'warning');
+      return;
+    }
+
+    if (task.status === 'Completed' || task.status === 'Cancelled') {
+      showToast('This task is no longer accepting applications.', 'warning');
+      return;
+    }
+
     setSelectedTaskForApply(task);
     setIsApplyModalOpen(true);
   };

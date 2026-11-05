@@ -26,6 +26,22 @@ router.post('/apply', protect, requireVolunteer, async (req, res) => {
       return res.status(400).json({ success: false, message: 'This task is no longer accepting applications' });
     }
 
+    // Check volunteer quota limit
+    if ((task.volunteersAssigned || 0) >= task.volunteersRequired) {
+      return res.status(400).json({
+        success: false,
+        message: 'This community task has already met its volunteer capacity limit'
+      });
+    }
+
+    // Check if task event date has passed
+    if (task.dateTime && new Date(task.dateTime) < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: 'This community task scheduled date has already passed and is no longer accepting applications'
+      });
+    }
+
     // Check if volunteer already applied
     const existingApp = await Application.findOne({
       taskId,
@@ -175,6 +191,12 @@ router.put('/:id/status', protect, requireNGO, async (req, res) => {
 
     // Handle Assignment
     if (status === 'Assigned' && previousStatus !== 'Assigned') {
+      if ((task.volunteersAssigned || 0) >= task.volunteersRequired) {
+        return res.status(400).json({
+          success: false,
+          message: `Cannot assign volunteer. Volunteer quota for this task is already met (${task.volunteersAssigned}/${task.volunteersRequired}).`
+        });
+      }
       task.volunteersAssigned = (task.volunteersAssigned || 0) + 1;
       if (task.status === 'Open') {
         task.status = 'In Progress';
@@ -183,7 +205,7 @@ router.put('/:id/status', protect, requireNGO, async (req, res) => {
     }
 
     // Handle Un-assignment / Rejection after assignment
-    if (status === 'Rejected' && previousStatus === 'Assigned') {
+    if (previousStatus === 'Assigned' && status !== 'Assigned' && status !== 'Completed') {
       if (task.volunteersAssigned > 0) {
         task.volunteersAssigned -= 1;
       }
@@ -196,15 +218,29 @@ router.put('/:id/status', protect, requireNGO, async (req, res) => {
     // Handle Task Completion for Volunteer
     if (status === 'Completed' && previousStatus !== 'Completed') {
       application.completedAt = new Date();
+      await application.save();
 
-      // Update volunteer record (hours, completed count, ranking points)
+      // Update volunteer record with zero data drift directly from completed applications
       const volunteer = await Volunteer.findById(application.volunteerId);
       if (volunteer) {
-        volunteer.completedTasksCount = (volunteer.completedTasksCount || 0) + 1;
-        const taskHours = task.hours || 3;
-        volunteer.totalHours = (volunteer.totalHours || 0) + taskHours;
-        // 10 base points per task + 2 points per hour
-        volunteer.rankingPoints = (volunteer.rankingPoints || 0) + (10 + taskHours * 2);
+        const completedApps = await Application.find({
+          volunteerId: volunteer._id,
+          status: 'Completed'
+        }).populate('taskId');
+
+        let dynamicHours = 0;
+        completedApps.forEach((app) => {
+          if (app.taskId && app.taskId.hours) {
+            dynamicHours += app.taskId.hours;
+          }
+        });
+
+        const completedCount = completedApps.length;
+        const rankingPoints = (completedCount * 10) + (dynamicHours * 2);
+
+        volunteer.completedTasksCount = completedCount;
+        volunteer.totalHours = dynamicHours;
+        volunteer.rankingPoints = rankingPoints;
         await volunteer.save();
 
         // Check if certificate already exists, otherwise create it
@@ -222,11 +258,21 @@ router.put('/:id/status', protect, requireNGO, async (req, res) => {
             volunteerId: volunteer._id,
             taskId: task._id,
             ngoId: task.createdBy,
-            hoursCompleted: taskHours,
+            hoursCompleted: task.hours || 3,
             issueDate: new Date()
           });
           await certificate.save();
         }
+      }
+
+      // Auto-complete task if all required volunteers have completed
+      const remainingAssigned = await Application.countDocuments({
+        taskId: task._id,
+        status: 'Assigned'
+      });
+      if (remainingAssigned === 0 && (task.volunteersAssigned || 0) >= task.volunteersRequired) {
+        task.status = 'Completed';
+        await task.save();
       }
     }
 

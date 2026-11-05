@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const PDFDocument = require('pdfkit');
 const Certificate = require('../models/Certificate');
 const Volunteer = require('../models/Volunteer');
@@ -30,14 +31,69 @@ router.get('/my-certificates', protect, requireVolunteer, async (req, res) => {
   }
 });
 
+// Verify Certificate authenticity
+// GET /api/certificates/verify/:id
+router.get('/verify/:id', async (req, res) => {
+  try {
+    let certificate = null;
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      certificate = await Certificate.findById(req.params.id)
+        .populate('volunteerId', 'fullName city')
+        .populate('taskId', 'title category dateTime hours')
+        .populate('ngoId', 'orgName registrationNumber city contactPerson');
+    }
+    if (!certificate) {
+      certificate = await Certificate.findOne({ certificateId: req.params.id })
+        .populate('volunteerId', 'fullName city')
+        .populate('taskId', 'title category dateTime hours')
+        .populate('ngoId', 'orgName registrationNumber city contactPerson');
+    }
+
+    if (!certificate) {
+      return res.status(404).json({ success: false, valid: false, message: 'Certificate record not found in system' });
+    }
+
+    res.json({
+      success: true,
+      valid: true,
+      certificate: {
+        certificateId: certificate.certificateId,
+        volunteerName: certificate.volunteerId ? certificate.volunteerId.fullName : 'Volunteer',
+        volunteerCity: certificate.volunteerId ? certificate.volunteerId.city : 'India',
+        taskTitle: certificate.taskId ? certificate.taskId.title : 'Community Service Drive',
+        category: certificate.taskId ? certificate.taskId.category : 'Community Service',
+        ngoName: certificate.ngoId ? certificate.ngoId.orgName : 'Community Organization',
+        ngoRegistration: certificate.ngoId ? certificate.ngoId.registrationNumber : 'Registered NGO',
+        hoursServed: certificate.hoursCompleted || 3,
+        issueDate: certificate.issueDate
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server error verifying certificate',
+      error: error.message
+    });
+  }
+});
+
 // Download Certificate as PDF (PDFKit)
 // GET /api/certificates/download/:id
 router.get('/download/:id', async (req, res) => {
   try {
-    const certificate = await Certificate.findById(req.params.id)
-      .populate('volunteerId', 'fullName city')
-      .populate('taskId', 'title category dateTime hours')
-      .populate('ngoId', 'orgName registrationNumber city contactPerson');
+    let certificate = null;
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      certificate = await Certificate.findById(req.params.id)
+        .populate('volunteerId', 'fullName city')
+        .populate('taskId', 'title category dateTime hours')
+        .populate('ngoId', 'orgName registrationNumber city contactPerson');
+    }
+    if (!certificate) {
+      certificate = await Certificate.findOne({ certificateId: req.params.id })
+        .populate('volunteerId', 'fullName city')
+        .populate('taskId', 'title category dateTime hours')
+        .populate('ngoId', 'orgName registrationNumber city contactPerson');
+    }
 
     if (!certificate) {
       return res.status(404).json({ success: false, message: 'Certificate not found' });

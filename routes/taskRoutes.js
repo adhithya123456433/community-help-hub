@@ -73,6 +73,14 @@ router.post('/', protect, requireNGO, async (req, res) => {
       });
     }
 
+    const parsedDate = new Date(dateTime);
+    if (isNaN(parsedDate.getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide a valid date and time for the community drive'
+      });
+    }
+
     // Parse required skills
     let parsedSkills = [];
     if (Array.isArray(requiredSkills)) {
@@ -451,7 +459,15 @@ router.put('/:id', protect, requireNGO, async (req, res) => {
     }
     if (volunteersRequired) {
       const numVolunteers = Number(volunteersRequired);
-      if (!isNaN(numVolunteers) && numVolunteers >= 1) task.volunteersRequired = numVolunteers;
+      if (!isNaN(numVolunteers) && numVolunteers >= 1) {
+        if (numVolunteers < (task.volunteersAssigned || 0)) {
+          return res.status(400).json({
+            success: false,
+            message: `Cannot reduce volunteers required to ${numVolunteers} because ${task.volunteersAssigned} volunteers are already assigned.`
+          });
+        }
+        task.volunteersRequired = numVolunteers;
+      }
     }
 
     if (requiredSkills) {
