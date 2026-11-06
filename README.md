@@ -6,11 +6,13 @@ A full-stack web application designed to connect dedicated student volunteers wi
 
 ## Academic Information & Team Credits
 
-- **Course:** Full Stack Web Development Lab (Course Code: 21AD502)
+- **Course:** Full Stack Development (Course Code: 24CSI013)
 - **Degree:** Bachelor of Technology in Artificial Intelligence and Data Science (B.Tech AI & DS)
 - **Year & Semester:** Third Year / Semester V
-- **Academic Year:** 2026 – 2027
-- **Institution:** Autonomous Institution, Affiliated to Anna University, Tamil Nadu
+- **Academic Year:** 2026 - 2027
+- **Institution:** Kumaraguru College of Technology, Coimbatore
+- **Department:** Department of Artificial Intelligence and Data Science
+- **Faculty Supervisor:** Rajasekaran S, Assistant Professor II
 - **Project Repository:** [https://github.com/adhithya123456433/community-help-hub.git](https://github.com/adhithya123456433/community-help-hub.git)
 
 ### Team Members & Contributions
@@ -18,7 +20,7 @@ A full-stack web application designed to connect dedicated student volunteers wi
 | Roll Number | Team Member Name | Project Role | Contribution (%) |
 | :---: | :--- | :--- | :---: |
 | **24BAD048** | **Jeevaprakash S** | Full Stack Architecture & Integration (MERN Stack) | **25%** |
-| **24BAD004** | **K Adhithya** | Backend & REST API (Node.js / Express.js) | **25%** |
+| **24BAD004** | **K Adhithya** | Backend & REST API (Node.js/Express.js) | **25%** |
 | **24BAD014** | **Aswin S** | Frontend & UI/UX (React.js) | **25%** |
 | **24BAD052** | **Kalvi Kannan B** | Database & Data Modeling (MongoDB Atlas) | **25%** |
 
@@ -26,12 +28,13 @@ A full-stack web application designed to connect dedicated student volunteers wi
 
 ## Project Documentation & Submission Reports
 
-The official university laboratory reports generated from the university template are located in the `docs/` directory:
+The official university laboratory reports are located in the docs/ directory:
 
-- **Submission Report (PDF):** [`docs/24BAD048_TeamHelpHub_FullStackReport.pdf`](docs/24BAD048_TeamHelpHub_FullStackReport.pdf) (35 Pages, Times New Roman 12pt, 1.5 spacing, 1-inch margins, Consolas 10pt code snippets, all 8 screenshots embedded)
-- **Submission Report (Word):** [`docs/24BAD048_TeamHelpHub_FullStackReport.docx`](docs/24BAD048_TeamHelpHub_FullStackReport.docx)
-- **Template Version with Instructions (PDF):** [`docs/Full_Stack_Project_Report_Template.pdf`](docs/Full_Stack_Project_Report_Template.pdf)
-- **Template Version with Instructions (Word):** [`docs/Full_Stack_Project_Report_Template.docx`](docs/Full_Stack_Project_Report_Template.docx)
+- **Official Submission Report (PDF):** [docs/24BAD048_TeamHelpHub_FullStackReport.pdf](docs/24BAD048_TeamHelpHub_FullStackReport.pdf) (40 Pages, Times New Roman 12pt, 1.5 line spacing, 1-inch margins, Consolas 10pt code excerpts, complete figure screenshots)
+- **Official Submission Report (Word):** [docs/24BAD048_TeamHelpHub_FullStackReport.docx](docs/24BAD048_TeamHelpHub_FullStackReport.docx)
+- **CommunityHelpHub Report Alias (PDF):** [docs/CommunityHelpHub_FullStackReport.pdf](docs/CommunityHelpHub_FullStackReport.pdf)
+- **CommunityHelpHub Report Alias (Word):** [docs/CommunityHelpHub_FullStackReport.docx](docs/CommunityHelpHub_FullStackReport.docx)
+
 
 ---
 
