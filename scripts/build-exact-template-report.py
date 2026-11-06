@@ -674,7 +674,7 @@ def populate_report(remove_instructions=False):
 
         # Listing 4.4: In-Memory PDF Certificate Generation
         curr_p = insert_after(curr_p, "Listing 4.4: In-Memory PDF Certificate Generation using PDFKit (certificateController.js)", bold=True, italic=True, font_size=11, space_after=2)
-        curr_p = insert_after(curr_p, "Our server-side PDF engine compiles verifiable Certificates of Appreciation directly into memory buffers using PDFKit (as showcased in Figure 6.15):", italic=True, font_size=11, space_after=4)
+        curr_p = insert_after(curr_p, "Our server-side PDF engine compiles verifiable Certificates of Appreciation directly into memory buffers using PDFKit (as showcased in Figure 6.12):", italic=True, font_size=11, space_after=4)
         code4 = (
             "const PDFDocument = require('pdfkit');\n"
             "exports.streamCertificatePDF = (certificate, res) => {\n"
@@ -765,41 +765,41 @@ def populate_report(remove_instructions=False):
         curr_p = add_figure(curr_p, "fig6_11_reg_ngo.png", "6.3", "NGO Partner Organization Registration Interface",
             "Figure 6.3 displays the NGO Partner Registration tab. Representatives register their organization by providing their Official Organization Name (e.g., Vidya Seva Foundation, Ganesh Foundation), Government NGO Registration Number (e.g., NGO-KA-2021-00892), Contact Person Name, Official Email, Phone Number, and Operating City. This ensures only verified trusts publish community initiatives.", width_in=5.4)
 
-        # 4. Figure 6.4: Skill-Based Match
-        curr_p = add_figure(curr_p, "fig6_1_skill.png", "6.4", "Skill-Based Volunteer Task Matching Feed",
-            "As shown in Figure 6.4, the Skill-Based Matching view under Explore Tasks demonstrates automated volunteer competency matching. When our test volunteer (Karthik Raman) logs in with skills including Clean-up, Logistics, and First Aid, our React frontend requests the matching tasks from the backend. The backend cross-references the volunteer's skill tags against task requirements and displays prominent '100% SKILL MATCH' badges on tasks like the Ganga Ghat Cleanliness Drive and Cyclone Shelter Readiness Drive, helping students quickly identify initiatives where their practical abilities are most needed.", width_in=5.6)
+        # 4. Figure 6.4: NGO Dashboard Overview
+        curr_p = add_figure(curr_p, "fig6_13_ngo_overview.png", "6.4", "NGO Organization Dashboard & Operations Overview",
+            "Figure 6.4 captures the NGO Coordinator Dashboard header for Kavalar Youth Welfare Foundation. The header highlights verified NGO credentials and displays dynamic operational metric cards: Tasks Created (2), Active Drives (1), Completed Drives (0), and Volunteers Assigned (2 / 3 total applicants), providing coordinators with instant operational visibility and quick access to manage or author initiatives.", width_in=5.6)
 
-        # 5. Figure 6.5: Location-Based Match
-        curr_p = add_figure(curr_p, "fig6_2_loc.png", "6.5", "Location-Based Volunteer Task Matching Feed",
-            "As shown in Figure 6.5, the Location-Based Matching tab prioritizes municipal proximity. Because our test volunteer is registered with home city Chennai, our matching algorithm prioritizes local drives first under the banner 'LOCATION MATCH ACTIVE FOR: CHENNAI'. Community drives like the Coastal Cleanup Drive and Remedial Evening Coaching in Besant Nagar appear at the top, while opportunities in other cities (such as Bengaluru) are clearly tagged with an '[OTHER CITY: BENGALURU]' badge so students can make informed travel decisions.", width_in=5.6)
+        # 5. Figure 6.5: NGO Task Authoring - Top
+        curr_p = add_figure(curr_p, "fig6_pub_top.png", "6.5", "NGO Task Authoring & Specification Interface",
+            "Figure 6.5 illustrates the upper section of our NGO Task Publishing page. Logged-in NGO coordinators from authorized organizations (such as Kavalar Youth Welfare Foundation, Registration: NGO-TN-2021-00744) enter the Task Title, select from the six predefined social-service categories, specify required skills (comma-separated), author a comprehensive activity description, and enter the physical locality address.", width_in=5.4)
 
-        # 6. Figure 6.6: AI Recommendations
-        curr_p = add_figure(curr_p, "fig6_3_ai.png", "6.6", "Multi-Factor AI Task Recommendation Feed",
-            "As shown in Figure 6.6, our Multi-Factor AI Task Recommendation feed showcases intelligent task prioritization. Leveraging our AI & Data Science coursework, our team implemented a 100-point composite scoring formula combining skill match (40%), city proximity (30%), past service category history (20%), and task urgency (10%). Drives with high compatibility are highlighted with dynamic tags like '[RECOMMENDED: 70 PTS]', guiding volunteers toward opportunities where their contribution will have the highest immediate impact.", width_in=5.6)
+        # 6. Figure 6.6: NGO Task Authoring - Bottom
+        curr_p = add_figure(curr_p, "fig6_pub_bottom.png", "6.6", "NGO Headcount Quota & Urgency Configuration Interface",
+            "Figure 6.6 demonstrates the lower configuration section of the NGO Task Publishing form. Organizers select the event city (Chennai), schedule date and time, define estimated service duration (3 Hours), enforce the exact Volunteer Quota (5 volunteers), specify the drive urgency level (Standard Priority), and document target beneficiaries (150 Primary School Children, 200 Families) before publishing.", width_in=5.4)
 
-        # 7. Figure 6.7: Task Card with Quota
-        curr_p = add_figure(curr_p, "fig6_7_card.png", "6.7", "Community Task Card with Real-Time Quota Counter",
-            "As shown in Figure 6.7, each Community Task Card features our real-time quota progress counter. The card clearly indicates the current enrollment status ('2 / 5 Filled') along with category badges, organization name, event address, and schedule. The 'Apply for Task' button is dynamically managed: once the volunteer applies, the button updates to 'Applied (Completed)', and if all slots are filled, the card disables further applications to prevent overcrowding.", width_in=3.6)
+        # 7. Figure 6.7: NGO Applicant Review & Task Assignment Panel
+        curr_p = add_figure(curr_p, "fig6_12_ngo_dash.png", "6.7", "NGO Volunteer Applications Review & Task Assignment Panel",
+            "Figure 6.7 illustrates the interactive Volunteer Applications & Task Assignment management table on the NGO dashboard. Coordinators inspect applicants (e.g., Priya Sundaram, Karthik Raman), review their verified skill tags and application notes, confirm completed service hours (`[COMPLETED]`), and manage active task statuses (Cancel, Edit, or Delete) with full administrative control.", width_in=5.6)
 
-        # 8. Figure 6.8: NGO Task Publishing - Top
-        curr_p = add_figure(curr_p, "fig6_pub_top.png", "6.8", "NGO Task Authoring & Specification Interface",
-            "Figure 6.8 illustrates the upper section of our NGO Task Publishing page. Logged-in NGO coordinators from authorized organizations (such as Kavalar Youth Welfare Foundation, Registration: NGO-TN-2021-00744) enter the Task Title, select from the six predefined social-service categories, specify required skills (comma-separated), author a comprehensive activity description, and enter the physical locality address.", width_in=5.4)
+        # 8. Figure 6.8: Community Task Card with Quota
+        curr_p = add_figure(curr_p, "fig6_7_card.png", "6.8", "Community Task Card with Real-Time Quota Counter",
+            "As shown in Figure 6.8, each Community Task Card features our real-time quota progress counter. The card clearly indicates the current enrollment status ('2 / 5 Filled') along with category badges, organization name, event address, and schedule. The 'Apply for Task' button is dynamically managed: once the volunteer applies, the button updates to 'Applied (Completed)', and if all slots are filled, the card disables further applications to prevent overcrowding.", width_in=3.6)
 
-        # 9. Figure 6.9: NGO Task Publishing - Bottom
-        curr_p = add_figure(curr_p, "fig6_pub_bottom.png", "6.9", "NGO Headcount Quota & Urgency Configuration Interface",
-            "Figure 6.9 demonstrates the lower configuration section of the NGO Task Publishing form. Organizers select the event city (Chennai), schedule date and time, define estimated service duration (3 Hours), enforce the exact Volunteer Quota (5 volunteers), specify the drive urgency level (Standard Priority), and document target beneficiaries (150 Primary School Children, 200 Families) before publishing.", width_in=5.4)
+        # 9. Figure 6.9: Skill-Based Match
+        curr_p = add_figure(curr_p, "fig6_1_skill.png", "6.9", "Skill-Based Volunteer Task Matching Feed",
+            "As shown in Figure 6.9, the Skill-Based Matching view under Explore Tasks demonstrates automated volunteer competency matching. When our test volunteer (Karthik Raman) logs in with skills including Clean-up, Logistics, and First Aid, our React frontend requests the matching tasks from the backend. The backend cross-references the volunteer's skill tags against task requirements and displays prominent '100% SKILL MATCH' badges on tasks like the Ganga Ghat Cleanliness Drive and Cyclone Shelter Readiness Drive, helping students quickly identify initiatives where their practical abilities are most needed.", width_in=5.6)
 
-        # 10. Figure 6.10: NGO Dashboard Overview
-        curr_p = add_figure(curr_p, "fig6_13_ngo_overview.png", "6.10", "NGO Organization Dashboard & Operations Overview",
-            "Figure 6.10 captures the NGO Coordinator Dashboard header for Kavalar Youth Welfare Foundation. The header highlights verified NGO credentials and displays dynamic operational metric cards: Tasks Created (2), Active Drives (1), Completed Drives (0), and Volunteers Assigned (2 / 3 total applicants), providing coordinators with instant operational visibility.", width_in=5.6)
+        # 10. Figure 6.10: Location-Based Match
+        curr_p = add_figure(curr_p, "fig6_2_loc.png", "6.10", "Location-Based Volunteer Task Matching Feed",
+            "As shown in Figure 6.10, the Location-Based Matching tab prioritizes municipal proximity. Because our test volunteer is registered with home city Chennai, our matching algorithm prioritizes local drives first under the banner 'LOCATION MATCH ACTIVE FOR: CHENNAI'. Community drives like the Coastal Cleanup Drive and Remedial Evening Coaching in Besant Nagar appear at the top, while opportunities in other cities (such as Bengaluru) are clearly tagged with an '[OTHER CITY: BENGALURU]' badge so students can make informed travel decisions.", width_in=5.6)
 
-        # 11. Figure 6.11: NGO Applicant Review
-        curr_p = add_figure(curr_p, "fig6_12_ngo_dash.png", "6.11", "NGO Volunteer Applications Review & Task Assignment Panel",
-            "Figure 6.11 illustrates the interactive Volunteer Applications & Task Assignment management table on the NGO dashboard. Coordinators inspect applicants (e.g., Priya Sundaram, Karthik Raman), review their verified skill tags and application notes, confirm completed service hours (`[COMPLETED]`), and manage active task statuses (Cancel, Edit, or Delete) with full administrative control.", width_in=5.6)
+        # 11. Figure 6.11: AI Recommendations
+        curr_p = add_figure(curr_p, "fig6_3_ai.png", "6.11", "Multi-Factor AI Task Recommendation Feed",
+            "As shown in Figure 6.11, our Multi-Factor AI Task Recommendation feed showcases intelligent task prioritization. Leveraging our AI & Data Science coursework, our team implemented a 100-point composite scoring formula combining skill match (40%), city proximity (30%), past service category history (20%), and task urgency (10%). Drives with high compatibility are highlighted with dynamic tags like '[RECOMMENDED: 70 PTS]', guiding volunteers toward opportunities where their contribution will have the highest immediate impact.", width_in=5.6)
 
-        # 12. Figure 6.12: Admin Portal
-        curr_p = add_figure(curr_p, "fig6_admin_portal.png", "6.12", "National Platform Governance & User Accounts Directory (Admin Portal)",
-            "Figure 6.12 displays the System Administrator Portal (National Platform Governance). Accessible exclusively by platform administrators, it displays global telemetry: Total Registered Users (69), Verified Partner NGOs (28), Active Volunteers (38), and Community Drives (41 / 375 verified service hours). The User Accounts Directory enables administrators to audit roles, inspect entities (including Kumaraguru College accounts like kct@org.com and student volunteers), and delete delinquent accounts.", width_in=5.6)
+        # 12. Figure 6.12: Certificate
+        curr_p = add_figure(curr_p, "fig6_8_cert.png", "6.12", "Official Verifiable Certificate of Appreciation",
+            "Figure 6.12 presents an Official Verifiable Certificate of Appreciation generated dynamically by our backend using PDFKit. When an NGO marks a volunteer's attendance as completed, the volunteer can download this landscape A4 certificate (Certificate ID: CHH-CERT-IND-CHN-1001). It formally certifies the volunteer's name (Karthik Raman), organization (Kavalar Youth Welfare Foundation), verified hours (4 hours), and category (Environment), providing students with a tamper-resistant credential for college portfolios and resumes.", width_in=5.6)
 
         # 13. Figure 6.13: Impact Dashboard
         curr_p = add_figure(curr_p, "fig6_analytics_impact.png", "6.13", "Community Impact Analytics Telemetry & Distributions",
@@ -809,9 +809,9 @@ def populate_report(remove_instructions=False):
         curr_p = add_figure(curr_p, "fig6_6_rank.png", "6.14", "Volunteer Ranking & Recognition Leaderboard",
             "Figure 6.14 showcases the Volunteer Ranking and Recognition Leaderboard. To encourage sustained community service, our team implemented a gamified ranking model that orders volunteers by verified completed tasks and logged service hours. Top volunteers like Karthik Raman (8 tasks, 28 hours) are awarded the '[GOLD CHAMPION]' badge, while active volunteers in lower tiers receive '[SILVER TIER]' badges, creating positive peer motivation among student volunteers.", width_in=5.4)
 
-        # 15. Figure 6.15: Certificate
-        curr_p = add_figure(curr_p, "fig6_8_cert.png", "6.15", "Official Verifiable Certificate of Appreciation",
-            "Figure 6.15 presents an Official Verifiable Certificate of Appreciation generated dynamically by our backend using PDFKit. When an NGO marks a volunteer's attendance as completed, the volunteer can download this landscape A4 certificate (Certificate ID: CHH-CERT-IND-CHN-1001). It formally certifies the volunteer's name (Karthik Raman), organization (Kavalar Youth Welfare Foundation), verified hours (4 hours), and category (Environment), providing students with a tamper-resistant credential for college portfolios and resumes.", width_in=5.6)
+        # 15. Figure 6.15: Admin Portal
+        curr_p = add_figure(curr_p, "fig6_admin_portal.png", "6.15", "National Platform Governance & User Accounts Directory (Admin Portal)",
+            "Figure 6.15 displays the System Administrator Portal (National Platform Governance). Accessible exclusively by platform administrators, it displays global telemetry: Total Registered Users (69), Verified Partner NGOs (28), Active Volunteers (38), and Community Drives (41 / 375 verified service hours). The User Accounts Directory enables administrators to audit roles, inspect entities (including Kumaraguru College accounts like kct@org.com and student volunteers), and delete delinquent accounts.", width_in=5.6)
 
     # --- Performance & Challenges (Student Written Tone) ---
     if 'c6_3' in p_map:
@@ -833,11 +833,11 @@ def populate_report(remove_instructions=False):
     t4 = doc.tables[4]
     obj_rows = [
         ("Allow users to register and log in securely using role-based JWT authentication and BCrypt password encryption.", "Achieved", "Implemented with 10 salt rounds and 7-day token expiration across Volunteer, NGO, and Admin roles; verified in Figure 6.1, 6.2, and 6.3."),
-        ("Provide full CRUD functionality for social service task authoring across the 6 mandatory categories.", "Achieved", "NGOs publish, edit, and close initiatives with categories, quotas, and skill tags; verified in production as illustrated in Figure 6.8 and 6.9."),
-        ("Implement a multi-factor AI recommendation engine to match volunteers to drives.", "Achieved", "100-point composite scoring model evaluating skills (40%), city proximity (30%), past history (20%), and quota urgency (10%); verified in Figure 6.6."),
-        ("Enforce automated capacity guards and real-time headcount reconciliation.", "Achieved", "Atomic checks in applicationRoutes.js prevent enrollment once volunteersAssigned equals volunteersRequired; verified on task card in Figure 6.7."),
-        ("Deliver dynamic impact tracking and deterministic volunteer leaderboard ranking.", "Achieved", "Dynamic hour calculations from verified applications eliminated 100% of data drift; verified on Leaderboard (Figure 6.14) and Admin Portal (Figure 6.12)."),
-        ("Generate official verifiable Certificates of Appreciation via server-side PDF compilation.", "Achieved", "PDFKit dynamically compiles landscape certificates with cryptographic tokens streamed directly to browser; verified as illustrated in Figure 6.15 (Certificate ID: CHH-CERT-IND-CHN-1001).")
+        ("Provide full CRUD functionality for social service task authoring across the 6 mandatory categories.", "Achieved", "NGOs publish, edit, and close initiatives with categories, quotas, and skill tags; verified in production as illustrated in Figure 6.4, 6.5, and 6.6."),
+        ("Implement a multi-factor AI recommendation engine to match volunteers to drives.", "Achieved", "100-point composite scoring model evaluating skills (40%), city proximity (30%), past history (20%), and quota urgency (10%); verified in Figure 6.11."),
+        ("Enforce automated capacity guards and real-time headcount reconciliation.", "Achieved", "Atomic checks in applicationRoutes.js prevent enrollment once volunteersAssigned equals volunteersRequired; verified on task card in Figure 6.8."),
+        ("Deliver dynamic impact tracking and deterministic volunteer leaderboard ranking.", "Achieved", "Dynamic hour calculations from verified applications eliminated 100% of data drift; verified on Leaderboard (Figure 6.14) and Impact Dashboard (Figure 6.13)."),
+        ("Generate official verifiable Certificates of Appreciation via server-side PDF compilation.", "Achieved", "PDFKit dynamically compiles landscape certificates with cryptographic tokens streamed directly to browser; verified as illustrated in Figure 6.12 (Certificate ID: CHH-CERT-IND-CHN-1001).")
     ]
     for r_idx, (obj, stat, rem) in enumerate(obj_rows):
         if r_idx + 1 < len(t4.rows):
