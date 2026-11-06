@@ -9,7 +9,8 @@ dist/
 client/dist/
 
 # Environment variables & secrets
-.env
+# .env included for faculty review and turnkey local evaluation
+#.env
 .env.local
 .env.*.local
 
