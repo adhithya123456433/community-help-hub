@@ -27,3 +27,6 @@ Thumbs.db
 # IDE & Editor files
 .vscode/
 .idea/
+
+# Local utility and report generation scripts
+scripts/
