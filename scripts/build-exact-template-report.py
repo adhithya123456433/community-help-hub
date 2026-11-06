@@ -280,9 +280,38 @@ def populate_report(remove_instructions=False):
         sectPr0.append(pg0)
         pPr.append(sectPr0)
 
-        # Set section 1 to Arabic starting at 1
+        # Helper to inject centered dynamic PAGE field
+        def setup_centered_page_number(footer):
+            p = footer.paragraphs[0]
+            p.text = ''
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            pPr = p._p.get_or_add_pPr()
+            jc = OxmlElement('w:jc')
+            jc.set(qn('w:val'), 'center')
+            pPr.append(jc)
+            for f_type in ['begin', 'separate', 'end']:
+                r = OxmlElement('w:r')
+                if f_type == 'separate':
+                    instr_r = OxmlElement('w:r')
+                    instr = OxmlElement('w:instrText')
+                    instr.set(qn('xml:space'), 'preserve')
+                    instr.text = 'PAGE'
+                    instr_r.append(instr)
+                    p._p.append(instr_r)
+                fld = OxmlElement('w:fldChar')
+                fld.set(qn('w:fldCharType'), f_type)
+                r.append(fld)
+                p._p.append(r)
+
+        # Setup Section 0 (Front Matter: Roman numerals i, ii, iii centered)
+        s0 = doc.sections[0]
+        setup_centered_page_number(s0.footer)
+
+        # Setup Section 1 (Chapters: Arabic numerals 1, 2, 3 starting at 1 centered)
         if len(doc.sections) > 1:
             s1 = doc.sections[1]
+            s1.footer.is_linked_to_previous = False
+            setup_centered_page_number(s1.footer)
             pg1 = OxmlElement('w:pgNumType')
             pg1.set(qn('w:start'), '1')
             pg1.set(qn('w:fmt'), 'decimal')
