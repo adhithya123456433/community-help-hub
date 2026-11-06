@@ -18,10 +18,11 @@ raw_images = {
     'fig6_1_skill.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895621133_9cb79e40.jpg",
     'fig6_2_loc.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895671006_0de20420.jpg",
     'fig6_3_ai.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895696897_da418848.jpg",
-    'fig6_4_dash.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895734828_a7ebf34c.png",
-    'fig6_5_rank.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895765040_dc6ee174.png",
-    'fig6_6_card.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793843766545_99d8a9c7.png",
-    'fig6_7_cert.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793928528190_b25b6be4.png"
+    'fig6_4_publish.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793928742608_c555a028.png",
+    'fig6_5_dash.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895734828_a7ebf34c.png",
+    'fig6_6_rank.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895765040_dc6ee174.png",
+    'fig6_7_card.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793843766545_99d8a9c7.png",
+    'fig6_8_cert.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793928528190_b25b6be4.png"
 }
 
 for name, src in raw_images.items():
@@ -518,7 +519,7 @@ def populate_report(remove_instructions=False):
             "user.volunteerStats.totalHours = dynamicHours;\n"
             "user.volunteerStats.tasksCompleted = completedApps.length;\n\n"
             "Listing 4.4: In-Memory PDF Certificate Generation (certificateController.js)\n"
-            "Streams tamper-evident PDF Certificates of Appreciation directly to memory buffers using PDFKit (as showcased in Figure 6.7):\n\n"
+            "Streams tamper-evident PDF Certificates of Appreciation directly to memory buffers using PDFKit (as showcased in Figure 6.8):\n\n"
             "const PDFDocument = require('pdfkit');\n"
             "exports.streamCertificatePDF = (certificate, res) => {\n"
             "  const doc = new PDFDocument({ layout: 'landscape', size: 'A4', margin: 40 });\n"
@@ -585,41 +586,50 @@ def populate_report(remove_instructions=False):
         curr_p = insert_after(curr_p, "Figure 6.3: Multi-Factor AI Task Recommendation Engine", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
         curr_p = insert_after(curr_p, "Figure 6.3 presents the AI Task Recommendations feed powered by the 100-point composite ranking model. Each initiative is evaluated on skill congruence (40 pts), municipal proximity (30 pts), historical category engagement (20 pts), and quota urgency (10 pts), displaying deterministic recommendation scores such as [RECOMMENDED: 70 PTS].", font_size=12)
 
-        # 4. Figure 6.4: Impact Dashboard Telemetry Charts
-        img_dash = os.path.join(REPORT_IMG_DIR, "fig6_4_dash.png")
-        if os.path.exists(img_dash):
+        # 4. Figure 6.4: NGO Task Authoring & Publishing Form
+        img_pub = os.path.join(REPORT_IMG_DIR, "fig6_4_publish.png")
+        if os.path.exists(img_pub):
             img_p4 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
-            img_p4.add_run().add_picture(img_dash, width=Inches(5.5))
+            img_p4.add_run().add_picture(img_pub, width=Inches(5.5))
             curr_p = img_p4
-        curr_p = insert_after(curr_p, "Figure 6.4: Impact Analytics Dashboard Telemetry (Category and City Breakdown)", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.4 depicts the public Impact Dashboard visual telemetry powered by Chart.js. The left doughnut chart maps task distribution across all six mandatory social service categories (Education, Food distribution, Environment, Elder support, Disaster support, Community service), while the right bar chart details regional initiative density across metropolitan cities (Delhi, Mumbai, Chennai, Lucknow, Hyderabad).", font_size=12)
+        curr_p = insert_after(curr_p, "Figure 6.4: NGO Coordinator Social Service Drive Authoring and Publishing Interface", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.4 illustrates the task authoring modal accessed by an authenticated NGO Coordinator (Kavalar Youth Welfare Foundation). The modal captures operational parameters including Area / Locality Address, City (Chennai), Date & Time picker (07-11-2026 09:00 AM), Estimated Service Duration (3 Hours), Volunteers Required quota (5), Priority Level (High Priority Drive), and Target Beneficiary community description (150 Primary School Children).", font_size=12)
 
-        # 5. Figure 6.5: Volunteer Ranking & Recognition Leaderboard
-        img_rank = os.path.join(REPORT_IMG_DIR, "fig6_5_rank.png")
-        if os.path.exists(img_rank):
+        # 5. Figure 6.5: Impact Dashboard Telemetry Charts
+        img_dash = os.path.join(REPORT_IMG_DIR, "fig6_5_dash.png")
+        if os.path.exists(img_dash):
             img_p5 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
-            img_p5.add_run().add_picture(img_rank, width=Inches(4.8))
+            img_p5.add_run().add_picture(img_dash, width=Inches(5.5))
             curr_p = img_p5
-        curr_p = insert_after(curr_p, "Figure 6.5: Volunteer Ranking and Gamified Recognition Leaderboard (#1 to #10)", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.5 displays the top volunteer ranking leaderboard ordered by verified service hours and completed initiatives. Volunteers earn gamified badges (e.g., [GOLD CHAMPION], [SILVER TIER]) and lifetime ranking points calculated dynamically from verified drive attendance.", font_size=12)
+        curr_p = insert_after(curr_p, "Figure 6.5: Impact Analytics Dashboard Telemetry (Category and City Breakdown)", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.5 depicts the public Impact Dashboard visual telemetry powered by Chart.js. The left doughnut chart maps task distribution across all six mandatory social service categories (Education, Food distribution, Environment, Elder support, Disaster support, Community service), while the right bar chart details regional initiative density across metropolitan cities (Delhi, Mumbai, Chennai, Lucknow, Hyderabad).", font_size=12)
 
-        # 6. Figure 6.6: Task Card with Quota Counter
-        img_card = os.path.join(REPORT_IMG_DIR, "fig6_6_card.png")
-        if os.path.exists(img_card):
+        # 6. Figure 6.6: Volunteer Ranking & Recognition Leaderboard
+        img_rank = os.path.join(REPORT_IMG_DIR, "fig6_6_rank.png")
+        if os.path.exists(img_rank):
             img_p6 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
-            img_p6.add_run().add_picture(img_card, width=Inches(3.6))
+            img_p6.add_run().add_picture(img_rank, width=Inches(4.8))
             curr_p = img_p6
-        curr_p = insert_after(curr_p, "Figure 6.6: Community Task Card Exhibiting Quota Counter (2 / 5 Filled) and Applied Status", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.6 depicts the Remedial Evening Coaching drive for coastal children organized by Kavalar Youth Welfare Foundation in Besant Nagar, Chennai. The card indicates current staffing (2 / 5 Filled) and confirmed volunteer participation.", font_size=12)
+        curr_p = insert_after(curr_p, "Figure 6.6: Volunteer Ranking and Gamified Recognition Leaderboard (#1 to #10)", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.6 displays the top volunteer ranking leaderboard ordered by verified service hours and completed initiatives. Volunteers earn gamified badges (e.g., [GOLD CHAMPION], [SILVER TIER]) and lifetime ranking points calculated dynamically from verified drive attendance.", font_size=12)
 
-        # 7. Figure 6.7: Verified Certificate of Appreciation
-        img_cert = os.path.join(REPORT_IMG_DIR, "fig6_7_cert.png")
-        if os.path.exists(img_cert):
+        # 7. Figure 6.7: Task Card with Quota Counter
+        img_card = os.path.join(REPORT_IMG_DIR, "fig6_7_card.png")
+        if os.path.exists(img_card):
             img_p7 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
-            img_p7.add_run().add_picture(img_cert, width=Inches(5.5))
+            img_p7.add_run().add_picture(img_card, width=Inches(3.6))
             curr_p = img_p7
-        curr_p = insert_after(curr_p, "Figure 6.7: Official Verifiable Certificate of Appreciation Generated via PDFKit Pipeline", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.7 exhibits the official Certificate of Appreciation compiled dynamically as a vector PDF document (Certificate-CHH-CERT-IND-CHN-1001.pdf). The certificate is awarded to volunteer Karthik Raman for contributing 4 verified community service hours to the 'Coastal Cleanup & Marine Microplastic Removal Drive' under the Environment category. Key verification metadata incorporates Certificate ID CHH-CERT-IND-CHN-1001, issue date (3 November 2026), status (Verified & Tamper-Proof), NGO registration number (NGO-TN-2021-00744), and authorized signatory authentication from Kavalar Youth Welfare Foundation.", font_size=12)
+        curr_p = insert_after(curr_p, "Figure 6.7: Community Task Card Exhibiting Quota Counter (2 / 5 Filled) and Applied Status", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.7 depicts the Remedial Evening Coaching drive for coastal children organized by Kavalar Youth Welfare Foundation in Besant Nagar, Chennai. The card indicates current staffing (2 / 5 Filled) and confirmed volunteer participation.", font_size=12)
+
+        # 8. Figure 6.8: Verified Certificate of Appreciation
+        img_cert = os.path.join(REPORT_IMG_DIR, "fig6_8_cert.png")
+        if os.path.exists(img_cert):
+            img_p8 = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
+            img_p8.add_run().add_picture(img_cert, width=Inches(5.5))
+            curr_p = img_p8
+        curr_p = insert_after(curr_p, "Figure 6.8: Official Verifiable Certificate of Appreciation Generated via PDFKit Pipeline", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, "Figure 6.8 exhibits the official Certificate of Appreciation compiled dynamically as a vector PDF document (Certificate-CHH-CERT-IND-CHN-1001.pdf). The certificate is awarded to volunteer Karthik Raman for contributing 4 verified community service hours to the 'Coastal Cleanup & Marine Microplastic Removal Drive' under the Environment category. Key verification metadata incorporates Certificate ID CHH-CERT-IND-CHN-1001, issue date (3 November 2026), status (Verified & Tamper-Proof), NGO registration number (NGO-TN-2021-00744), and authorized signatory authentication from Kavalar Youth Welfare Foundation.", font_size=12)
 
     if 'c6_3' in p_map:
         set_para(p_map['c6_3'],
@@ -635,11 +645,11 @@ def populate_report(remove_instructions=False):
     t4 = doc.tables[4]
     obj_rows = [
         ("Allow users to register and log in securely using role-based JWT authentication and BCrypt password encryption.", "Achieved", "Implemented with 10 salt rounds and 7-day token expiration across Volunteer, NGO, and Admin roles."),
-        ("Provide full CRUD functionality for social service task authoring across the 6 mandatory categories.", "Achieved", "NGOs publish, edit, and close initiatives with categories, quotas, and skill tags."),
+        ("Provide full CRUD functionality for social service task authoring across the 6 mandatory categories.", "Achieved", "NGOs publish, edit, and close initiatives with categories, quotas, and skill tags; verified in production as illustrated in Figure 6.4."),
         ("Implement a multi-factor AI recommendation engine to match volunteers to drives.", "Achieved", "100-point composite scoring model evaluating skills, municipal city proximity, past category history, and quota urgency."),
         ("Enforce automated capacity guards and real-time headcount reconciliation.", "Achieved", "Atomic checks in applicationRoutes.js prevent enrollment once volunteersAssigned equals volunteersRequired."),
         ("Deliver dynamic impact tracking and deterministic volunteer leaderboard ranking.", "Achieved", "Dynamic hour calculations from verified applications eliminated 100% of data drift."),
-        ("Generate official verifiable Certificates of Appreciation via server-side PDF compilation.", "Achieved", "PDFKit dynamically compiles landscape certificates with cryptographic tokens streamed directly to browser; verified as illustrated in Figure 6.7 (Certificate ID: CHH-CERT-IND-CHN-1001).")
+        ("Generate official verifiable Certificates of Appreciation via server-side PDF compilation.", "Achieved", "PDFKit dynamically compiles landscape certificates with cryptographic tokens streamed directly to browser; verified as illustrated in Figure 6.8 (Certificate ID: CHH-CERT-IND-CHN-1001).")
     ]
     for r_idx, (obj, stat, rem) in enumerate(obj_rows):
         if r_idx + 1 < len(t4.rows):
@@ -688,7 +698,7 @@ def populate_report(remove_instructions=False):
 
     return doc
 
-print("Generating exact template reports with all 7 figures (including Certificate)...")
+print("Generating exact template reports with all 8 figures (including NGO Publish Task)...")
 
 # 1. Full document keeping instructions page
 doc_with_instructions = populate_report(remove_instructions=False)
@@ -702,4 +712,4 @@ doc_submission.save(r"C:\Users\DELL\Desktop\CommunityHelp_Hub_FullStack_Report.d
 doc_submission.save(r"C:\Users\DELL\Desktop\community-help-hub\Full_Stack_Project_Report_Template.docx")
 doc_submission.save(r"C:\Users\DELL\Desktop\community-help-hub\CommunityHelp_Hub_FullStack_Report.docx")
 
-print("All DOCX files successfully created with all 7 figures (including Figure 6.7 Certificate).")
+print("All DOCX files successfully created with all 8 figures.")
