@@ -18,9 +18,22 @@
       }
     },
     {
-      "source": "/(.*)",
+      "source": "/assets/(.*)",
       "destination": {
         "service": "client"
+      }
+    },
+    {
+      "source": "/(.*\\.(?:ico|png|jpg|jpeg|svg|css|js|json|webmanifest|txt))",
+      "destination": {
+        "service": "client"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "client",
+        "path": "/index.html"
       }
     }
   ]
