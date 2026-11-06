@@ -21,11 +21,17 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const clientDistPath = path.join(__dirname, 'client', 'dist');
+const clientDistCandidates = [
+  path.resolve(__dirname, '../client/dist'),
+  path.resolve(__dirname, 'client/dist'),
+  path.resolve(__dirname, '../public'),
+  path.resolve(__dirname, 'public')
+];
+
+const clientDistPath = clientDistCandidates.find(p => fs.existsSync(p)) || path.resolve(__dirname, '../client/dist');
+
 if (fs.existsSync(clientDistPath)) {
-  app.use(express.static(clientDistPath));
-} else {
-  app.use(express.static(path.join(__dirname, 'public'), {
+  app.use(express.static(clientDistPath, {
     etag: false,
     maxAge: 0,
     setHeaders: (res) => {
@@ -52,11 +58,18 @@ app.get('/api/health', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  if (fs.existsSync(path.join(clientDistPath, 'index.html'))) {
-    res.sendFile(path.join(clientDistPath, 'index.html'));
-  } else {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  const indexCandidates = [
+    path.join(clientDistPath, 'index.html'),
+    path.resolve(__dirname, '../client/dist/index.html'),
+    path.resolve(__dirname, '../public/index.html'),
+    path.resolve(__dirname, 'public/index.html')
+  ];
+  for (const candidate of indexCandidates) {
+    if (fs.existsSync(candidate)) {
+      return res.sendFile(candidate);
+    }
   }
+  res.status(404).send('CommunityHelp Hub - Page Not Found');
 });
 
 app.use((err, req, res, next) => {
