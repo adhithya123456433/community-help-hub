@@ -243,7 +243,7 @@ def populate_report(remove_instructions=False):
     # --- Table 0: Team Members (Cover Page) ---
     t0 = doc.tables[0]
     team_members = [
-        ("Jeevaprakash S", "24BAD048", "Full Stack Architecture & Integration (MERN Stack)"),
+        ("Jeevaprakash S", "-", "Full Stack Architecture & Integration (MERN Stack)"),
         ("K Adhithya", "24BAD004", "Backend & REST API (Node.js/Express.js)"),
         ("Aswin S", "24BAD014", "Frontend & UI/UX (React.js)"),
         ("Kalvi Kannan B", "24BAD052", "Database & Data Modeling (MongoDB Atlas)")
@@ -893,7 +893,7 @@ def populate_report(remove_instructions=False):
     # --- Table 7.1: Individual Contribution Breakdown ---
     t5 = doc.tables[5]
     contrib_rows = [
-        ("Jeevaprakash S (24BAD048)", "Full stack architecture, MERN stack integration, client-server API pipeline, React Context state management, and production build optimization.", "25%"),
+        ("Jeevaprakash S (-)", "Full stack architecture, MERN stack integration, client-server API pipeline, React Context state management, and production build optimization.", "25%"),
         ("K Adhithya (24BAD004)", "Backend REST API engineering, Express routing, JWT authentication, BCrypt password hashing, PDFKit certificate generator.", "25%"),
         ("Aswin S (24BAD014)", "React frontend engineering, responsive CSS design system, component hierarchy, Context API state, Chart.js integrations.", "25%"),
         ("Kalvi Kannan B (24BAD052)", "Database modeling, MongoDB Atlas cluster configuration, Mongoose schema validators, aggregation pipelines, AI recommendation logic.", "25%")
@@ -938,13 +938,13 @@ safe_save(doc_with_instructions, r"C:\Users\DELL\Downloads\Full_Stack_Project_Re
 
 # 2. Primary submission document without instruction page (starts directly with Title Page)
 doc_submission = populate_report(remove_instructions=True)
-safe_save(doc_submission, r"C:\Users\DELL\Desktop\24BAD048_TeamHelpHub_FullStackReport.docx")
-safe_save(doc_submission, r"C:\Users\DELL\Desktop\community-help-hub\docs\24BAD048_TeamHelpHub_FullStackReport.docx")
-safe_save(doc_submission, r"C:\Users\DELL\Downloads\24BAD048_TeamHelpHub_FullStackReport.docx")
+safe_save(doc_submission, r"C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.docx")
+safe_save(doc_submission, r"C:\Users\DELL\Desktop\community-help-hub\docs\CommunityHelpHub_FullStackReport.docx")
+safe_save(doc_submission, r"C:\Users\DELL\Downloads\CommunityHelpHub_FullStackReport.docx")
 
 # Also save secondary naming alias RollNo_FullStackReport.docx
-safe_save(doc_submission, r"C:\Users\DELL\Desktop\24BAD048_FullStackReport.docx")
-safe_save(doc_submission, r"C:\Users\DELL\Desktop\community-help-hub\docs\24BAD048_FullStackReport.docx")
-safe_save(doc_submission, r"C:\Users\DELL\Downloads\24BAD048_FullStackReport.docx")
+safe_save(doc_submission, r"C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.docx")
+safe_save(doc_submission, r"C:\Users\DELL\Desktop\community-help-hub\docs\CommunityHelpHub_FullStackReport.docx")
+safe_save(doc_submission, r"C:\Users\DELL\Downloads\CommunityHelpHub_FullStackReport.docx")
 
 print("Generated all docx files successfully!")

@@ -281,7 +281,7 @@ def build_fullstack_report(output_path):
 
     # Team Members Table
     team_data = [
-        ("Jeevaprakash S", "24BAD048", "Team Lead & Full Stack Architecture"),
+        ("Jeevaprakash S", "-", "Team Lead & Full Stack Architecture"),
         ("K Adhithya", "24BAD004", "Backend & REST API (Node.js/Express.js)"),
         ("Aswin S", "24BAD014", "Frontend & UI/UX (React.js)"),
         ("Kalvi Kannan B", "24BAD052", "Database & Data Modeling (MongoDB Atlas)")
@@ -1013,7 +1013,7 @@ doc.end();""",
     add_heading_2(doc, "7.3 Individual Contribution and Work Distribution")
     add_body_p(doc, "Table 7.1 details the equal work distribution and specific modules handled by each team member:")
     contrib_data = [
-        ("Jeevaprakash S (24BAD048)", "Full stack architecture, system design, integration of client and server, deployment pipelines, performance optimization.", "25%"),
+        ("Jeevaprakash S (-)", "Full stack architecture, system design, integration of client and server, deployment pipelines, performance optimization.", "25%"),
         ("K Adhithya (24BAD004)", "Backend REST API engineering, Express routing, JWT authentication, BCrypt password hashing, PDFKit certificate generator.", "25%"),
         ("Aswin S (24BAD014)", "React frontend engineering, responsive CSS design system, component hierarchy, Context API state, Chart.js integrations.", "25%"),
         ("Kalvi Kannan B (24BAD052)", "Database modeling, MongoDB Atlas cluster configuration, Mongoose schema validators, aggregation pipelines, data reconciliation.", "25%")
@@ -1041,7 +1041,7 @@ if __name__ == '__main__':
     desktop_dir = r"C:\Users\DELL\Desktop"
     if os.path.exists(desktop_dir):
         # Save primary report as requested in template naming convention
-        d1 = os.path.join(desktop_dir, "24BAD048_TeamHelpHub_FullStackReport.docx")
+        d1 = os.path.join(desktop_dir, "CommunityHelpHub_FullStackReport.docx")
         d2 = os.path.join(desktop_dir, "CommunityHelp_Hub_FullStack_Report.docx")
         try:
             shutil.copyfile(local_target, d1)

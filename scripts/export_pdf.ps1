@@ -1,8 +1,8 @@
 try {
     $word = New-Object -ComObject Word.Application
     $word.Visible = $false
-    $inDoc = "C:\Users\DELL\Desktop\24BAD048_TeamHelpHub_FullStackReport.docx"
-    $outPdf = "C:\Users\DELL\Desktop\24BAD048_TeamHelpHub_FullStackReport.pdf"
+    $inDoc = "C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.docx"
+    $outPdf = "C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.pdf"
     $doc = $word.Documents.Open($inDoc)
     $doc.SaveAs([ref]$outPdf, [ref]17)
     $doc.Close()

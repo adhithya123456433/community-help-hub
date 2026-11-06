@@ -1,4 +1,4 @@
-$pdfPath = "C:\Users\DELL\Desktop\24BAD048_TeamHelpHub_FullStackReport.pdf"
+$pdfPath = "C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.pdf"
 if (Test-Path $pdfPath) {
     $bytes = [System.IO.File]::ReadAllBytes($pdfPath)
     $text = [System.Text.Encoding]::ASCII.GetString($bytes)

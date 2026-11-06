@@ -3,8 +3,8 @@ try {
     $word.Visible = $false
     
     $docs = @(
-        @{ In = "C:\Users\DELL\Desktop\24BAD048_TeamHelpHub_FullStackReport.docx"; Out = "C:\Users\DELL\Desktop\24BAD048_TeamHelpHub_FullStackReport.pdf" },
-        @{ In = "C:\Users\DELL\Desktop\24BAD048_FullStackReport.docx"; Out = "C:\Users\DELL\Desktop\24BAD048_FullStackReport.pdf" },
+        @{ In = "C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.docx"; Out = "C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.pdf" },
+        @{ In = "C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.docx"; Out = "C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.pdf" },
         @{ In = "C:\Users\DELL\Desktop\Full_Stack_Project_Report_Template.docx"; Out = "C:\Users\DELL\Desktop\Full_Stack_Project_Report_Template.pdf" }
     )
     

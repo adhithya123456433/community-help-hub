@@ -1,6 +1,6 @@
 import docx
 
-doc = docx.Document(r"C:\Users\DELL\Desktop\24BAD048_TeamHelpHub_FullStackReport.docx")
+doc = docx.Document(r"C:\Users\DELL\Desktop\CommunityHelpHub_FullStackReport.docx")
 print("Total sections:", len(doc.sections))
 
 for s_idx, sec in enumerate(doc.sections):
