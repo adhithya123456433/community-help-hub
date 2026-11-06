@@ -1,12 +1,8 @@
-const express = require('express');
-const router = express.Router();
 const Task = require('../models/Task');
 const NGO = require('../models/NGO');
 const Volunteer = require('../models/Volunteer');
 const Application = require('../models/Application');
 const Certificate = require('../models/Certificate');
-const { protect, requireNGO } = require('../middleware/authMiddleware');
-
 const VALID_CATEGORIES = [
   'Education',
   'Food distribution',
@@ -20,7 +16,7 @@ const VALID_STATUSES = ['Open', 'In Progress', 'Completed', 'Cancelled'];
 
 // Create a new task (NGO only)
 // POST /api/tasks
-router.post('/', protect, requireNGO, async (req, res) => {
+exports.createTask = async (req, res) => {
   try {
     const {
       title,
@@ -121,11 +117,11 @@ router.post('/', protect, requireNGO, async (req, res) => {
       error: error.message
     });
   }
-});
+};
 
 // Get all tasks with search and filtering
 // GET /api/tasks
-router.get('/', async (req, res) => {
+exports.getAllTasks = async (req, res) => {
   try {
     const { category, city, search, status } = req.query;
     let query = {};
@@ -177,11 +173,11 @@ router.get('/', async (req, res) => {
       error: error.message
     });
   }
-});
+};
 
 // Skill-Based Volunteer Matching
 // GET /api/tasks/matching/skills
-router.get('/matching/skills', protect, async (req, res) => {
+exports.getMatchingSkills = async (req, res) => {
   try {
     if (req.user.role !== 'volunteer') {
       return res.status(403).json({ success: false, message: 'Volunteers only' });
@@ -237,11 +233,11 @@ router.get('/matching/skills', protect, async (req, res) => {
       error: error.message
     });
   }
-});
+};
 
 // Location-Based Matching
 // GET /api/tasks/matching/location
-router.get('/matching/location', protect, async (req, res) => {
+exports.getMatchingLocation = async (req, res) => {
   try {
     if (req.user.role !== 'volunteer') {
       return res.status(403).json({ success: false, message: 'Volunteers only' });
@@ -289,12 +285,12 @@ router.get('/matching/location', protect, async (req, res) => {
       error: error.message
     });
   }
-});
+};
 
 // AI Task Recommendation
 // GET /api/tasks/recommendations/ai
 // Evaluates skills, user location, and previous volunteer applications to recommend best tasks
-router.get('/recommendations/ai', protect, async (req, res) => {
+exports.getRecommendationsAI = async (req, res) => {
   try {
     if (req.user.role !== 'volunteer') {
       return res.status(403).json({ success: false, message: 'Volunteers only' });
@@ -373,11 +369,11 @@ router.get('/recommendations/ai', protect, async (req, res) => {
       error: error.message
     });
   }
-});
+};
 
 // Get single task by ID
 // GET /api/tasks/:id
-router.get('/:id', async (req, res) => {
+exports.getTaskById = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id).populate(
       'createdBy',
@@ -396,11 +392,11 @@ router.get('/:id', async (req, res) => {
       error: error.message
     });
   }
-});
+};
 
 // Update task (NGO owner only)
 // PUT /api/tasks/:id
-router.put('/:id', protect, requireNGO, async (req, res) => {
+exports.updateTask = async (req, res) => {
   try {
     let task = await Task.findById(req.params.id);
     if (!task) {
@@ -495,11 +491,11 @@ router.put('/:id', protect, requireNGO, async (req, res) => {
       error: error.message
     });
   }
-});
+};
 
 // Delete task (NGO owner only)
 // DELETE /api/tasks/:id
-router.delete('/:id', protect, requireNGO, async (req, res) => {
+exports.deleteTask = async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) {
@@ -529,6 +525,4 @@ router.delete('/:id', protect, requireNGO, async (req, res) => {
       error: error.message
     });
   }
-});
-
-module.exports = router;
+};

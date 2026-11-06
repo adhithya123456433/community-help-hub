@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const User = require('./models/User');
-const Volunteer = require('./models/Volunteer');
-const NGO = require('./models/NGO');
-const Task = require('./models/Task');
-const Application = require('./models/Application');
-const Certificate = require('./models/Certificate');
+const User = require('./server/models/User');
+const Volunteer = require('./server/models/Volunteer');
+const NGO = require('./server/models/NGO');
+const Task = require('./server/models/Task');
+const Application = require('./server/models/Application');
+const Certificate = require('./server/models/Certificate');
 
 const seedData = async () => {
   try {

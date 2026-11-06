@@ -56,36 +56,54 @@ The official university laboratory reports are located in the docs/ directory:
 
 ## 3. Project Directory Structure
 
-```text
+`	ext
 community-help-hub/
-├── config/
-│   └── db.js                 # MongoDB Atlas connection logic using Mongoose
-├── middleware/
-│   └── authMiddleware.js     # JWT token verification and role guards
-├── models/
-│   ├── User.js               # User credentials and role definitions (Volunteer, NGO, Admin)
-│   ├── Task.js               # Task specifications, category enum, quotas, and skill prerequisites
-│   ├── Application.js        # Volunteer application and assignment tracking
-│   ├── Category.js           # Six core social-service categories with visual badges
-│   ├── Certificate.js        # Verifiable certificate metadata and cryptographic token records
-│   └── AuditLog.js           # Administrative telemetry and action logs
-├── routes/
-│   ├── authRoutes.js         # User registration, login, and profile management
-│   ├── taskRoutes.js         # CRUD operations, skill matching, location matching, AI recommendations
-│   ├── applicationRoutes.js  # Apply with atomic capacity guard, review applicants, approve completion
-│   ├── dashboardRoutes.js    # Volunteer statistics, NGO operations, impact stats, leaderboard
-│   └── certificateRoutes.js  # In-memory streaming of dynamic PDF Certificates using PDFKit
-├── public/                   # Client web assets, styles, and dashboard scripts
-│   ├── css/styles.css        # Responsive styling and design system
-│   ├── js/                   # Client-side API helpers and interactive logic
-│   └── index.html            # Landing page
-├── docs/                     # Official project reports (.docx and .pdf)
-├── scripts/                  # Automated report generation and Word COM export scripts
-├── .env                      # Environment variables (PORT, MONGO_URI, JWT_SECRET)
-├── package.json              # Project dependencies and npm scripts
+├── client/                   # React 18 Single-Page Application (Frontend)
+│   ├── public/               # Client static web assets
+│   ├── src/
+│   │   ├── api/              # Axios/Fetch API client adapters
+│   │   ├── components/       # Reusable UI components (Navbar, Footer, TaskCard, Modals)
+│   │   ├── context/          # React Context API state providers (Auth, Toast)
+│   │   ├── pages/            # View pages (Home, Tasks, Dashboards, Impact, Login, Register)
+│   │   ├── App.js            # Frontend application router & layout wrapper
+│   │   └── App.jsx
+│   └── package.json
+├── server/                   # Node.js + Express REST API (Backend)
+│   ├── config/
+│   │   └── db.js             # MongoDB Atlas connection logic using Mongoose
+│   ├── controllers/          # Controller layer encapsulating business logic
+│   │   ├── adminController.js
+│   │   ├── applicationController.js
+│   │   ├── authController.js
+│   │   ├── certificateController.js
+│   │   ├── dashboardController.js
+│   │   └── taskController.js
+│   ├── middleware/
+│   │   └── authMiddleware.js # Role-based access control and JWT verification
+│   ├── models/               # Mongoose data schemas (User, Task, Application, Certificate, etc.)
+│   │   ├── Application.js
+│   │   ├── AuditLog.js
+│   │   ├── Certificate.js
+│   │   ├── NGO.js
+│   │   ├── Task.js
+│   │   ├── User.js
+│   │   └── Volunteer.js
+│   ├── routes/               # Express API routing layer
+│   │   ├── adminRoutes.js
+│   │   ├── applicationRoutes.js
+│   │   ├── authRoutes.js
+│   │   ├── certificateRoutes.js
+│   │   ├── dashboardRoutes.js
+│   │   └── taskRoutes.js
+│   └── server.js             # Node + Express server configuration
+├── docs/                     # University submission reports
+│   ├── CommunityHelpHub_FullStackReport.docx
+│   └── CommunityHelpHub_FullStackReport.pdf
+├── public/                   # Static landing assets
 ├── seed.js                   # Demo data generator across all 6 categories
-└── server.js                 # Express server entry point
-```
+├── package.json              # Full-stack dependencies and scripts
+└── README.md
+`
 
 ---
 
