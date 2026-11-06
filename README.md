@@ -19,7 +19,7 @@ A full-stack web application designed to connect dedicated student volunteers wi
 
 | Roll Number | Team Member Name | Project Role | Contribution (%) |
 | :---: | :--- | :--- | :---: |
-| **24BAD048** | **Jeevaprakash S** | Full Stack Architecture & Integration (MERN Stack) | **25%** |
+| - | **Jeevaprakash S** | Full Stack Architecture & Integration (MERN Stack) | **25%** |
 | **24BAD004** | **K Adhithya** | Backend & REST API (Node.js/Express.js) | **25%** |
 | **24BAD014** | **Aswin S** | Frontend & UI/UX (React.js) | **25%** |
 | **24BAD052** | **Kalvi Kannan B** | Database & Data Modeling (MongoDB Atlas) | **25%** |
@@ -30,10 +30,8 @@ A full-stack web application designed to connect dedicated student volunteers wi
 
 The official university laboratory reports are located in the docs/ directory:
 
-- **Official Submission Report (PDF):** [docs/24BAD048_TeamHelpHub_FullStackReport.pdf](docs/24BAD048_TeamHelpHub_FullStackReport.pdf) (40 Pages, Times New Roman 12pt, 1.5 line spacing, 1-inch margins, Consolas 10pt code excerpts, complete figure screenshots)
-- **Official Submission Report (Word):** [docs/24BAD048_TeamHelpHub_FullStackReport.docx](docs/24BAD048_TeamHelpHub_FullStackReport.docx)
-- **CommunityHelpHub Report Alias (PDF):** [docs/CommunityHelpHub_FullStackReport.pdf](docs/CommunityHelpHub_FullStackReport.pdf)
-- **CommunityHelpHub Report Alias (Word):** [docs/CommunityHelpHub_FullStackReport.docx](docs/CommunityHelpHub_FullStackReport.docx)
+- **Official Submission Report (PDF):** [docs/CommunityHelpHub_FullStackReport.pdf](docs/CommunityHelpHub_FullStackReport.pdf) (40 Pages, Times New Roman 12pt, 1.5 line spacing, 1-inch margins, Consolas 10pt code excerpts, complete figure screenshots)
+- **Official Submission Report (Word):** [docs/CommunityHelpHub_FullStackReport.docx](docs/CommunityHelpHub_FullStackReport.docx)
 
 
 ---
@@ -189,5 +187,5 @@ community-help-hub/
 - [x] **Page Numbers:** Bottom centre, front matter in Roman numerals (`i, ii`), chapters in Arabic (`1, 2, 3...`).
 - [x] **Page Count:** 35 pages (well within the university requirement of 30–50 pages).
 - [x] **Application Screenshots:** 8 real application screenshots embedded.
-- [x] **Deliverable PDF:** Formatted and named strictly as `24BAD048_TeamHelpHub_FullStackReport.pdf`.
+- [x] **Deliverable PDF:** Formatted and named strictly as `CommunityHelpHub_FullStackReport.pdf`.
 - [x] **Public GitHub Repository:** Available at `https://github.com/adhithya123456433/community-help-hub.git` with comprehensive README setup instructions.
