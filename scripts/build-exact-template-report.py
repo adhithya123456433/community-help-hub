@@ -56,12 +56,22 @@ def set_para(p, text, font_name="Times New Roman", font_size=12, bold=False, ita
     p.alignment = align
     p.paragraph_format.line_spacing = line_spacing
     p.paragraph_format.space_after = Pt(space_after)
+    for r in p.runs:
+        r.text = ""
     run = p.add_run(text)
     run.font.name = font_name
     run.font.size = Pt(font_size)
     run.font.bold = bold
     run.font.italic = italic
     run.font.color.rgb = BLACK
+    
+    # Bulletproof font styling in Word OpenXML
+    rPr = run._r.get_or_add_rPr()
+    rFonts = OxmlElement('w:rFonts')
+    rFonts.set(qn('w:ascii'), font_name)
+    rFonts.set(qn('w:hAnsi'), font_name)
+    rFonts.set(qn('w:cs'), font_name)
+    rPr.append(rFonts)
     return p
 
 def insert_after(p, text, style_name="Normal", font_name="Times New Roman", font_size=12, bold=False, italic=False, align=WD_ALIGN_PARAGRAPH.LEFT, line_spacing=1.5, space_after=6):
@@ -92,7 +102,16 @@ def format_cell(cell, text, bold=False, italic=False, font_size=10, font_name="T
 def populate_report(remove_instructions=False):
     doc = docx.Document(PRISTINE_PATH)
 
-    # Configure styles to strict academic standards without modifying style names
+    # 1. Enforce strict A4 and 1-inch margins on all sections
+    for s in doc.sections:
+        s.page_width = Inches(8.27)
+        s.page_height = Inches(11.69)
+        s.top_margin = Inches(1.0)
+        s.bottom_margin = Inches(1.0)
+        s.left_margin = Inches(1.0)
+        s.right_margin = Inches(1.0)
+
+    # 2. Configure styles to strict academic standards without modifying style names
     for s_name in ['Normal', 'List Paragraph']:
         try:
             s = doc.styles[s_name]
@@ -147,6 +166,8 @@ def populate_report(remove_instructions=False):
             p_map['abstract'] = p
         elif txt.startswith('Keywords:'):
             p_map['keywords'] = p
+        elif 'Chapter 1: Introduction' in txt:
+            p_map['c1_heading'] = p
         elif '[The domain your project belongs to' in txt:
             p_map['c1_1'] = p
         elif '[The specific problem, stated in 3' in txt:
@@ -234,7 +255,7 @@ def populate_report(remove_instructions=False):
     if 'date' in p_map:
         set_para(p_map['date'], "Academic Year: 2026 - 2027 | November 2026", font_size=12, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER)
 
-    # --- Table 0: Team Members ---
+    # --- Table 0: Team Members (Cover Page) ---
     t0 = doc.tables[0]
     team_members = [
         ("Jeevaprakash S", "24BAD048", "Team Lead & Full Stack Architecture"),
@@ -260,6 +281,27 @@ def populate_report(remove_instructions=False):
             "As third-year undergraduate students in Artificial Intelligence and Data Science, we developed CommunityHelp Hub for our Full Stack Web Development Lab (Course Code: 21AD502) to solve real-world communication and coordination bottlenecks in local community volunteering. In our collegiate social activities with the National Service Scheme (NSS) and local welfare trusts, we observed that grassroots organizations frequently struggle to mobilize reliable volunteers for drives such as beach microplastic cleanups, evening tuition for school children, and disaster relief. At the same time, willing student volunteers receive unstructured messages through college WhatsApp groups, with no clear way to verify slot availability, match drives to their skills, or receive authentic certificates for their academic portfolios. To address these problems, our team engineered CommunityHelp Hub using the MERN stack (MongoDB Atlas, Express.js, React 18, and Node.js). The application serves Volunteers, NGO Coordinators, and Administrators. Key features include role-based JWT authentication, dynamic task publishing across six core social-service categories, real-time headcount quota guards to prevent overbooking, dynamic volunteer service hours calculation, and server-side PDF certificate compilation using PDFKit. Leveraging our AI and Data Science coursework, we designed a deterministic 100-point multi-factor recommendation engine that ranks open tasks based on volunteer skills (40%), city proximity (30%), past service category history (20%), and task urgency (10%). During laboratory testing, our platform demonstrated sub-45ms API response times, seamless responsiveness across desktop and mobile devices, and zero data drift between application logs and volunteer service hours.")
     if 'keywords' in p_map:
         set_para(p_map['keywords'], "Keywords: MERN Stack, React.js, Express.js, Node.js, MongoDB Atlas, RESTful API, AI Task Recommendation, Volunteer Management.")
+
+    # Configure Section Break and Page Numbering format (Roman for Front Matter, Arabic for Chapters)
+    if 'abstract' in p_map and 'c1_heading' in p_map:
+        p_abs = p_map.get('keywords', p_map['abstract'])
+        pPr = p_abs._element.get_or_add_pPr()
+        sectPr0 = OxmlElement('w:sectPr')
+        type_elem = OxmlElement('w:type')
+        type_elem.set(qn('w:val'), 'nextPage')
+        sectPr0.append(type_elem)
+        pg0 = OxmlElement('w:pgNumType')
+        pg0.set(qn('w:fmt'), 'lowerRoman')
+        sectPr0.append(pg0)
+        pPr.append(sectPr0)
+
+        # Set section 1 to Arabic starting at 1
+        if len(doc.sections) > 1:
+            s1 = doc.sections[1]
+            pg1 = OxmlElement('w:pgNumType')
+            pg1.set(qn('w:start'), '1')
+            pg1.set(qn('w:fmt'), 'decimal')
+            s1._sectPr.append(pg1)
 
     # --- Chapter 1: Introduction (Student Written Tone) ---
     if 'c1_1' in p_map:
@@ -343,7 +385,7 @@ def populate_report(remove_instructions=False):
             "2. NGO Coordinator: A verified representative of a non-profit trust or welfare foundation. Can create and publish community service drives across the six core categories, set volunteer headcount quotas and skill prerequisites, view registered applicants, inspect volunteer credentials and contact details, and approve attendance upon drive completion to award verified hours.\n"
             "3. System Administrator: A technical platform overseer who monitors system health, reviews aggregate telemetry on the impact dashboard, audits registered users and published drives, and ensures overall database integrity.")
 
-    # --- Table 1: Hardware and Software Requirements ---
+    # --- Table 2.1: Hardware and Software Requirements ---
     t1 = doc.tables[1]
     specs = [
         ("Operating System", "Windows 11 64-bit / Linux (Ubuntu 22.04 LTS)", "23H2"),
@@ -363,10 +405,10 @@ def populate_report(remove_instructions=False):
             format_cell(t1.rows[r_idx].cells[1], req)
             format_cell(t1.rows[r_idx].cells[2], ver, align=WD_ALIGN_PARAGRAPH.CENTER)
 
-    # --- Chapter 3: System Design (Student Written Tone) ---
+    # --- Chapter 3: System Design (Student Written Tone + Numbered Figures & Tables) ---
     if 'c3_1' in p_map:
         set_para(p_map['c3_1'],
-            "CommunityHelp Hub is designed using the classic Three-Tier Client-Server Architecture, separating presentation, business logic, and database storage:\n\n"
+            "CommunityHelp Hub is designed using the classic Three-Tier Client-Server Architecture, separating presentation, business logic, and database storage as illustrated in Figure 3.1:\n\n"
             "+-------------------------------------------------------------------------+\n"
             "|                         PRESENTATION TIER (CLIENT)                      |\n"
             "|   React 18 SPA | React Router DOM | Context API | Chart.js Data Visuals |\n"
@@ -392,6 +434,7 @@ def populate_report(remove_instructions=False):
             "|   MongoDB Atlas Cloud Database (Replica Set Cluster)                    |\n"
             "|   - users, tasks, applications, categories, certificates, auditlogs     |\n"
             "+-------------------------------------------------------------------------+\n\n"
+            "Figure 3.1: Three-Tier Client-Server Architecture Diagram\n\n"
             "Request and Response Flow:\n"
             "1. The user interacts with the React 18 frontend in their browser. For example, when Karthik Raman navigates to the 'Explore Tasks' page, React dispatches an asynchronous HTTP GET request using Axios to http://localhost:5000/api/tasks.\n"
             "2. If the volunteer accesses personalized views (like AI recommendations or applied tasks), Axios automatically attaches the user's stored token in the HTTP Authorization header as `Bearer <JWT_TOKEN>`.\n"
@@ -401,7 +444,7 @@ def populate_report(remove_instructions=False):
             "6. React receives the JSON response, updates component state via useState or Context API, and triggers an efficient DOM re-render showing real-time task cards and badges.")
     if 'c3_2' in p_map:
         set_para(p_map['c3_2'],
-            "The system defines three distinct actors: Volunteer, NGO Coordinator, and Administrator. Their relationships and use cases are modeled below:\n\n"
+            "The system defines three distinct actors: Volunteer, NGO Coordinator, and Administrator. Their relationships and use cases are modeled in Figure 3.2 below:\n\n"
             "                      +-----------------------------+\n"
             "                      |      COMMUNITYHELP HUB      |\n"
             "                      +-----------------------------+\n"
@@ -422,12 +465,14 @@ def populate_report(remove_instructions=False):
             "                                                               \n"
             " (Administrator) ------> [ View Impact Dashboard Analytics ]   \n"
             "      +----------------> [ Audit Users & Manage Tasks ]        \n\n"
-            "Detailed Actor Action Matrix:\n"
+            "Figure 3.2: CommunityHelp Hub Use Case Diagram\n\n"
+            "Actor Action Details:\n"
             "- Volunteer: Register, log in, manage skill tags and city, search community drives, view 100-point AI recommendations, apply with capacity guard, monitor application progress, review leaderboard ranking, and download official PDF certificates.\n"
             "- NGO Coordinator: Register organization, publish social service drives across six categories, configure headcount quotas, inspect applicant profiles, approve completion, and award verified hours.\n"
             "- Administrator: Monitor system health, view task distributions by category and city, audit user accounts, and resolve operational issues.")
     if 'c3_3' in p_map:
         set_para(p_map['c3_3'],
+            "The data flow through CommunityHelp Hub is depicted in Figure 3.3 across Level 0 (Context) and Level 1 decompositions:\n\n"
             "Level 0 (Context Level DFD):\n\n"
             "  +-------------+       User Credentials / Profile Data      +-------------------+\n"
             "  |             | -----------------------------------------> |                   |\n"
@@ -444,18 +489,19 @@ def populate_report(remove_instructions=False):
             "  |    ADMIN    | -----------------------------------------> |                   |\n"
             "  |             | <----------------------------------------- |                   |\n"
             "  +-------------+      System Analytics / User Audits        +-------------------+\n\n"
-            "Level 1 DFD (Decomposition into Sub-Processes):\n"
+            "Level 1 DFD (Process Decomposition):\n"
             "- Process 1.0 (User Authentication): Validates credentials against D1 (Users store) and generates signed JWT tokens.\n"
             "- Process 2.0 (Task Publishing & Management): Receives drive parameters from NGOs, validates category and quotas, and stores them in D2 (Tasks store).\n"
             "- Process 3.0 (Matching & Recommendation Engine): Reads volunteer profile from D1 and open drives from D2, computes the 100-point composite compatibility score, and returns sorted recommendations.\n"
             "- Process 4.0 (Application Processing & Capacity Guard): Checks remaining capacity in D2, verifies no duplicate application exists in D3 (Applications store), and creates an enrollment record.\n"
             "- Process 5.0 (Verification & Certificate Compilation): When NGO marks drive completed, updates application status in D3, increments verified hours in D1, and invokes PDFKit to stream verifiable certificate.\n"
-            "- Process 6.0 (Leaderboard & Analytics Telemetry): Aggregates completed drive hours from D3 and displays public leaderboards and Chart.js graphs.")
+            "- Process 6.0 (Leaderboard & Analytics Telemetry): Aggregates completed drive hours from D3 and displays public leaderboards and Chart.js graphs.\n\n"
+            "Figure 3.3: Data Flow Diagrams (Level 0 Context and Level 1 DFD)")
     if 'c3_4' in p_map:
         set_para(p_map['c3_4'],
-            "The database design utilizes MongoDB Atlas with Mongoose schemas. Collections are structured with appropriate indexing and relationships. Schemas for all six collections are specified in Table 2 below:")
+            "The database design utilizes MongoDB Atlas with Mongoose schemas. Collections are structured with appropriate indexing and relationships. Schemas for all six collections are detailed in Table 3.1 below:")
 
-    # --- Table 2: MongoDB Schemas ---
+    # --- Table 3.1: MongoDB Schemas ---
     t2 = doc.tables[2]
     schema_rows = [
         ("users", "email", "String", "required, unique", "Unique login email"),
@@ -504,9 +550,9 @@ def populate_report(remove_instructions=False):
     # --- API Design & Wireframes ---
     if 'c3_5' in p_map:
         set_para(p_map['c3_5'],
-            "The backend exposes 20 RESTful API endpoints adhering to standard HTTP methods, authentication guards, and predictable status codes. All endpoints are detailed in Table 3 below:")
+            "The backend exposes 20 RESTful API endpoints adhering to standard HTTP methods, authentication guards, and predictable status codes. All endpoints are listed in Table 3.2 below:")
 
-    # --- Table 3: REST Endpoints ---
+    # --- Table 3.2: REST Endpoints ---
     t3 = doc.tables[3]
     api_rows = [
         ("POST", "/api/auth/register", "Register new volunteer or NGO coordinator", "No", "{ name, email, password, role, city, skills }"),
@@ -604,10 +650,17 @@ def populate_report(remove_instructions=False):
             "2. The React client persists this token in `localStorage` and initializes the user profile in `AuthContext`.\n"
             "3. We configured an Axios API client that automatically attaches the `Authorization: Bearer <token>` header to all outgoing requests.\n"
             "4. If a 401 Unauthorized response is received (e.g., token expired), an Axios interceptor clears `localStorage` and redirects the user to the login page with an alert toast.")
+
+    # --- 4.7 Key Code Snippets (Formatted as Captions + Monospace Consolas 10pt Code Blocks) ---
     if 'c4_7' in p_map:
-        set_para(p_map['c4_7'],
-            "Listing 4.1: Multi-Factor AI Recommendation Engine (recommendationService.js)\n"
-            "Our team developed a 100-point composite scoring formula that dynamically ranks open tasks based on volunteer skills (40%), city proximity (30%), past service category history (20%), and task urgency (10%):\n\n"
+        curr_p = p_map['c4_7']
+        set_para(curr_p,
+            "In this section, we present five core code excerpts representing the essential architectural components of CommunityHelp Hub, including our AI recommendation algorithm, concurrency capacity guards, dynamic volunteer hours aggregation, server-side PDFKit certificate generation, and React protected routing. Full source code is maintained in our GitHub repository.")
+        
+        # Listing 4.1: AI Recommendation
+        curr_p = insert_after(curr_p, "Listing 4.1: Multi-Factor AI Recommendation Scoring Algorithm (recommendationService.js)", bold=True, italic=True, font_size=11, space_after=2)
+        curr_p = insert_after(curr_p, "Our team formulated a deterministic 100-point composite compatibility score combining volunteer skill match (40%), city proximity (30%), past service category history (20%), and task urgency (10%):", italic=True, font_size=11, space_after=4)
+        code1 = (
             "exports.calculateTaskMatchScore = (volunteer, task) => {\n"
             "  let score = 0;\n"
             "  const requiredSkills = task.requiredSkills || [];\n"
@@ -626,9 +679,14 @@ def populate_report(remove_instructions=False):
             "  if (slotsLeft > 0 && slotsLeft <= 2) { score += 10; }\n"
             "  else if (slotsLeft > 2) { score += 5; }\n"
             "  return Math.min(Math.round(score), 100);\n"
-            "};\n\n"
-            "Listing 4.2: Atomic Capacity Guard (applicationRoutes.js)\n"
-            "To prevent slot overbooking during concurrent volunteer sign-ups, we implemented an atomic verification check:\n\n"
+            "};"
+        )
+        curr_p = insert_after(curr_p, code1, font_name="Consolas", font_size=9.5, line_spacing=1.1, space_after=10)
+
+        # Listing 4.2: Capacity Guard
+        curr_p = insert_after(curr_p, "Listing 4.2: Atomic Capacity Guard for Volunteer Application (applicationRoutes.js)", bold=True, italic=True, font_size=11, space_after=2)
+        curr_p = insert_after(curr_p, "To prevent quota overbooking during concurrent volunteer sign-ups, we implemented an atomic verification check and counter increment:", italic=True, font_size=11, space_after=4)
+        code2 = (
             "router.post('/tasks/:id/apply', protect, async (req, res) => {\n"
             "  const task = await Task.findById(req.params.id);\n"
             "  if (!task) return res.status(404).json({ message: 'Task not found' });\n"
@@ -640,17 +698,28 @@ def populate_report(remove_instructions=False):
             "  const application = await Application.create({ taskId: task._id, userId: req.user._id, status: 'Applied' });\n"
             "  await Task.findByIdAndUpdate(task._id, { $inc: { volunteersAssigned: 1 } });\n"
             "  res.status(201).json(application);\n"
-            "});\n\n"
-            "Listing 4.3: Dynamic Volunteer Statistics Calculation (authController.js)\n"
-            "To avoid data drift between counter fields and actual completed drives, total hours are computed dynamically:\n\n"
+            "});"
+        )
+        curr_p = insert_after(curr_p, code2, font_name="Consolas", font_size=9.5, line_spacing=1.1, space_after=10)
+
+        # Listing 4.3: Dynamic Hours
+        curr_p = insert_after(curr_p, "Listing 4.3: Dynamic Volunteer Statistics Calculation (authController.js)", bold=True, italic=True, font_size=11, space_after=2)
+        curr_p = insert_after(curr_p, "To avoid data drift between counter fields and actual completed drives, total hours are computed dynamically from approved applications:", italic=True, font_size=11, space_after=4)
+        code3 = (
             "const completedApps = await Application.find({ userId: user._id, status: 'Completed' }).populate('taskId');\n"
             "const dynamicHours = completedApps.reduce((acc, app) => {\n"
             "  return acc + (app.taskId && app.taskId.durationHours ? app.taskId.durationHours : 0);\n"
             "}, 0);\n"
             "user.volunteerStats.totalHours = dynamicHours;\n"
-            "user.volunteerStats.tasksCompleted = completedApps.length;\n\n"
-            "Listing 4.4: In-Memory PDF Certificate Generation (certificateController.js)\n"
-            "Our server-side PDF engine compiles verifiable Certificates of Appreciation directly into memory buffers using PDFKit (as showcased in Figure 6.8):\n\n"
+            "user.volunteerStats.tasksCompleted = completedApps.length;\n"
+            "await user.save();"
+        )
+        curr_p = insert_after(curr_p, code3, font_name="Consolas", font_size=9.5, line_spacing=1.1, space_after=10)
+
+        # Listing 4.4: In-Memory PDF Certificate Generation
+        curr_p = insert_after(curr_p, "Listing 4.4: In-Memory PDF Certificate Generation using PDFKit (certificateController.js)", bold=True, italic=True, font_size=11, space_after=2)
+        curr_p = insert_after(curr_p, "Our server-side PDF engine compiles verifiable Certificates of Appreciation directly into memory buffers using PDFKit (as showcased in Figure 6.8):", italic=True, font_size=11, space_after=4)
+        code4 = (
             "const PDFDocument = require('pdfkit');\n"
             "exports.streamCertificatePDF = (certificate, res) => {\n"
             "  const doc = new PDFDocument({ layout: 'landscape', size: 'A4', margin: 40 });\n"
@@ -662,7 +731,27 @@ def populate_report(remove_instructions=False):
             "  doc.moveDown(0.8);\n"
             "  doc.fontSize(14).font('Helvetica').fillColor('#334155').text(`Presented to ${certificate.volunteerName} for contributing ${certificate.hoursServed} verified hours.`, { align: 'center' });\n"
             "  doc.end();\n"
-            "};")
+            "};"
+        )
+        curr_p = insert_after(curr_p, code4, font_name="Consolas", font_size=9.5, line_spacing=1.1, space_after=10)
+
+        # Listing 4.5: React Protected Route
+        curr_p = insert_after(curr_p, "Listing 4.5: React Protected Route Component (ProtectedRoute.jsx)", bold=True, italic=True, font_size=11, space_after=2)
+        curr_p = insert_after(curr_p, "Protects coordinator and volunteer dashboards against unauthorized access by verifying token presence in AuthContext:", italic=True, font_size=11, space_after=4)
+        code5 = (
+            "import { Navigate } from 'react-router-dom';\n"
+            "import { useAuth } from '../context/AuthContext';\n\n"
+            "export const ProtectedRoute = ({ children, allowedRoles }) => {\n"
+            "  const { user, token } = useAuth();\n"
+            "  if (!token) return <Navigate to=\"/login\" replace />;\n"
+            "  if (allowedRoles && !allowedRoles.includes(user.role)) {\n"
+            "    return <Navigate to=\"/\" replace />;\n"
+            "  }\n"
+            "  return children;\n"
+            "};"
+        )
+        curr_p = insert_after(curr_p, code5, font_name="Consolas", font_size=9.5, line_spacing=1.1, space_after=10)
+
     if 'c4_8' in p_map:
         set_para(p_map['c4_8'],
             "1. Environment Variable Protection: All sensitive credentials including `MONGO_URI`, `JWT_SECRET`, and `PORT` are stored in `.env` files and excluded from GitHub using `.gitignore`.\n"
@@ -693,7 +782,7 @@ def populate_report(remove_instructions=False):
     if 'c5_4' in p_map:
         set_para(p_map['c5_4'], "GitHub repository link: https://github.com/adhithya123456433/community-help-hub.git", bold=True)
 
-    # --- Chapter 6: Results and Discussion (Student Written Tone + 8 Images) ---
+    # --- Chapter 6: Results and Discussion (Student Written Tone + 8 Images with In-Text References) ---
     if 'c6_1' in p_map:
         curr_p = p_map['c6_1']
         curr_p.text = ""
@@ -704,7 +793,7 @@ def populate_report(remove_instructions=False):
             curr_p.add_run().add_picture(img_skill, width=Inches(5.5))
             curr_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         curr_p = insert_after(curr_p, "Figure 6.1: Skill-Based Volunteer Task Matching Interface", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.1 illustrates the Skill-Based Matching view under Explore Tasks. When our test volunteer (Karthik Raman) logs in with skills including Clean-up, Logistics, and First Aid, our React frontend requests the matching tasks from the backend. The backend cross-references the volunteer's skill tags against task requirements and displays prominent '100% SKILL MATCH' badges on tasks like the Ganga Ghat Cleanliness Drive and Cyclone Shelter Readiness Drive, helping students quickly identify initiatives where their practical abilities are most needed.", font_size=12)
+        curr_p = insert_after(curr_p, "As shown in Figure 6.1, the Skill-Based Matching view under Explore Tasks demonstrates automated volunteer competency matching. When our test volunteer (Karthik Raman) logs in with skills including Clean-up, Logistics, and First Aid, our React frontend requests the matching tasks from the backend. The backend cross-references the volunteer's skill tags against task requirements and displays prominent '100% SKILL MATCH' badges on tasks like the Ganga Ghat Cleanliness Drive and Cyclone Shelter Readiness Drive, helping students quickly identify initiatives where their practical abilities are most needed.", font_size=12)
 
         # 2. Figure 6.2: Location-Based Match
         img_loc = os.path.join(REPORT_IMG_DIR, "fig6_2_loc.png")
@@ -713,7 +802,7 @@ def populate_report(remove_instructions=False):
             img_p2.add_run().add_picture(img_loc, width=Inches(5.5))
             curr_p = img_p2
         curr_p = insert_after(curr_p, "Figure 6.2: Location-Based Volunteer Task Matching Interface", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.2 shows the Location-Based Matching tab. Because our test volunteer is registered with home city Chennai, our matching algorithm prioritizes local drives first under the banner 'LOCATION MATCH ACTIVE FOR: CHENNAI'. Community drives like the Coastal Cleanup Drive and Remedial Evening Coaching in Besant Nagar appear at the top, while opportunities in other cities (such as Bengaluru) are clearly tagged with an '[OTHER CITY: BENGALURU]' badge so students can make informed travel decisions.", font_size=12)
+        curr_p = insert_after(curr_p, "As shown in Figure 6.2, the Location-Based Matching tab prioritizes municipal proximity. Because our test volunteer is registered with home city Chennai, our matching algorithm prioritizes local drives first under the banner 'LOCATION MATCH ACTIVE FOR: CHENNAI'. Community drives like the Coastal Cleanup Drive and Remedial Evening Coaching in Besant Nagar appear at the top, while opportunities in other cities (such as Bengaluru) are clearly tagged with an '[OTHER CITY: BENGALURU]' badge so students can make informed travel decisions.", font_size=12)
 
         # 3. Figure 6.3: AI Recommendations
         img_ai = os.path.join(REPORT_IMG_DIR, "fig6_3_ai.png")
@@ -722,7 +811,7 @@ def populate_report(remove_instructions=False):
             img_p3.add_run().add_picture(img_ai, width=Inches(5.5))
             curr_p = img_p3
         curr_p = insert_after(curr_p, "Figure 6.3: Multi-Factor AI Task Recommendation Feed", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.3 showcases our Multi-Factor AI Task Recommendation feed. Leveraging our AI & Data Science coursework, our team implemented a 100-point composite scoring formula combining skill match (40%), city proximity (30%), past service category history (20%), and task urgency (10%). Drives with high compatibility are highlighted with dynamic tags like '[RECOMMENDED: 70 PTS]', guiding volunteers toward opportunities where their contribution will have the highest immediate impact.", font_size=12)
+        curr_p = insert_after(curr_p, "As shown in Figure 6.3, our Multi-Factor AI Task Recommendation feed showcases intelligent task prioritization. Leveraging our AI & Data Science coursework, our team implemented a 100-point composite scoring formula combining skill match (40%), city proximity (30%), past service category history (20%), and task urgency (10%). Drives with high compatibility are highlighted with dynamic tags like '[RECOMMENDED: 70 PTS]', guiding volunteers toward opportunities where their contribution will have the highest immediate impact.", font_size=12)
 
         # 4. Figure 6.4: NGO Publish Task Modal
         img_pub = os.path.join(REPORT_IMG_DIR, "fig6_4_publish.png")
@@ -731,7 +820,7 @@ def populate_report(remove_instructions=False):
             img_p4.add_run().add_picture(img_pub, width=Inches(5.5))
             curr_p = img_p4
         curr_p = insert_after(curr_p, "Figure 6.4: NGO Task Authoring & Headcount Quota Interface", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.4 illustrates our NGO Task Publishing Modal, as tested from the perspective of an organizer from Kavalar Youth Welfare Foundation. The coordinator enters the exact community address, selects the city (Chennai), specifies the scheduled date and time, defines estimated hours (3 Hours), sets the volunteer headcount quota (5 volunteers), selects urgency, and specifies target beneficiaries (e.g., 150 Primary School Children). This structured form guarantees consistent data entry.", font_size=12)
+        curr_p = insert_after(curr_p, "As illustrated in Figure 6.4, our NGO Task Publishing Modal allows organizations to set precise drive parameters. As tested from the perspective of an organizer from Kavalar Youth Welfare Foundation, the coordinator enters the exact community address, selects the city (Chennai), specifies the scheduled date and time, defines estimated hours (3 Hours), sets the volunteer headcount quota (5 volunteers), selects urgency, and specifies target beneficiaries (e.g., 150 Primary School Children). This structured form guarantees consistent data entry.", font_size=12)
 
         # 5. Figure 6.5: Impact Analytics Dashboard
         img_dash = os.path.join(REPORT_IMG_DIR, "fig6_5_dash.png")
@@ -740,7 +829,7 @@ def populate_report(remove_instructions=False):
             img_p5.add_run().add_picture(img_dash, width=Inches(5.5))
             curr_p = img_p5
         curr_p = insert_after(curr_p, "Figure 6.5: Impact Analytics Dashboard Telemetry", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.5 displays our Impact Analytics Dashboard created using Chart.js inside React. The left doughnut chart visualizes task distribution across all six core social-service categories (Education, Food distribution, Environment, Elder support, Disaster support, and Community service). The right bar chart displays community drives categorized by city (Delhi, Mumbai, Chennai, Lucknow, and Hyderabad), providing instant visual telemetry on regional volunteer coverage.", font_size=12)
+        curr_p = insert_after(curr_p, "As depicted in Figure 6.5, our Impact Analytics Dashboard provides high-level telemetry created using Chart.js inside React. The left doughnut chart visualizes task distribution across all six core social-service categories (Education, Food distribution, Environment, Elder support, Disaster support, and Community service). The right bar chart displays community drives categorized by city (Delhi, Mumbai, Chennai, Lucknow, and Hyderabad), providing instant visual telemetry on regional volunteer coverage.", font_size=12)
 
         # 6. Figure 6.6: Leaderboard
         img_rank = os.path.join(REPORT_IMG_DIR, "fig6_6_rank.png")
@@ -749,7 +838,7 @@ def populate_report(remove_instructions=False):
             img_p6.add_run().add_picture(img_rank, width=Inches(5.5))
             curr_p = img_p6
         curr_p = insert_after(curr_p, "Figure 6.6: Volunteer Ranking & Recognition Leaderboard", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.6 demonstrates the Volunteer Ranking and Recognition Leaderboard. To encourage sustained community service, our team implemented a gamified ranking model that orders volunteers by verified completed tasks and logged service hours. Top volunteers like Karthik Raman (8 tasks, 28 hours) are awarded the '[GOLD CHAMPION]' badge, while active volunteers in lower tiers receive '[SILVER TIER]' badges, creating positive peer motivation among student volunteers.", font_size=12)
+        curr_p = insert_after(curr_p, "As demonstrated in Figure 6.6, our Volunteer Ranking and Recognition Leaderboard fosters positive community competition. To encourage sustained community service, our team implemented a gamified ranking model that orders volunteers by verified completed tasks and logged service hours. Top volunteers like Karthik Raman (8 tasks, 28 hours) are awarded the '[GOLD CHAMPION]' badge, while active volunteers in lower tiers receive '[SILVER TIER]' badges, creating positive peer motivation among student volunteers.", font_size=12)
 
         # 7. Figure 6.7: Task Card with Quota
         img_card = os.path.join(REPORT_IMG_DIR, "fig6_7_card.png")
@@ -758,7 +847,7 @@ def populate_report(remove_instructions=False):
             img_p7.add_run().add_picture(img_card, width=Inches(5.5))
             curr_p = img_p7
         curr_p = insert_after(curr_p, "Figure 6.7: Community Task Card with Quota Progress Counter", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.7 displays a Community Task Card featuring our real-time quota progress counter. The card clearly indicates the current enrollment status ('2 / 5 Filled') along with category badges, organization name, event address, and schedule. The 'Apply for Task' button is dynamically managed: once the volunteer applies, the button updates to 'Applied (Completed)', and if all slots are filled, the card disables further applications to prevent overcrowding.", font_size=12)
+        curr_p = insert_after(curr_p, "As shown in Figure 6.7, each Community Task Card features our real-time quota progress counter. The card clearly indicates the current enrollment status ('2 / 5 Filled') along with category badges, organization name, event address, and schedule. The 'Apply for Task' button is dynamically managed: once the volunteer applies, the button updates to 'Applied (Completed)', and if all slots are filled, the card disables further applications to prevent overcrowding.", font_size=12)
 
         # 8. Figure 6.8: Certificate
         img_cert = os.path.join(REPORT_IMG_DIR, "fig6_8_cert.png")
@@ -767,7 +856,7 @@ def populate_report(remove_instructions=False):
             img_p8.add_run().add_picture(img_cert, width=Inches(5.5))
             curr_p = img_p8
         curr_p = insert_after(curr_p, "Figure 6.8: Official Verifiable Certificate of Appreciation", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
-        curr_p = insert_after(curr_p, "Figure 6.8 presents an Official Verifiable Certificate of Appreciation generated dynamically by our backend using PDFKit. When an NGO marks a volunteer's attendance as completed, the volunteer can download this landscape A4 certificate (Certificate ID: CHH-CERT-IND-CHN-1001). It formally certifies the volunteer's name (Karthik Raman), organization (Kavalar Youth Welfare Foundation), verified hours (4 hours), and category (Environment), providing students with a tamper-resistant credential for college portfolios and resumes.", font_size=12)
+        curr_p = insert_after(curr_p, "As shown in Figure 6.8, our backend generates an Official Verifiable Certificate of Appreciation dynamically using PDFKit. When an NGO marks a volunteer's attendance as completed, the volunteer can download this landscape A4 certificate (Certificate ID: CHH-CERT-IND-CHN-1001). It formally certifies the volunteer's name (Karthik Raman), organization (Kavalar Youth Welfare Foundation), verified hours (4 hours), and category (Environment), providing students with a tamper-resistant credential for college portfolios and resumes.", font_size=12)
 
     # --- Performance & Challenges (Student Written Tone) ---
     if 'c6_3' in p_map:
@@ -785,7 +874,7 @@ def populate_report(remove_instructions=False):
             "3. Service Hours Mismatch (Data Drift): We initially tried updating a volunteer's `totalHours` field manually in both the task controller and user controller. This occasionally led to discrepancies between total hours and completed drive logs. We resolved this by computing volunteer statistics dynamically by aggregating hours from completed application records upon status change, eliminating data drift.\n\n"
             "4. Server Memory Bloat during PDF Generation: When testing certificate downloads, writing temporary `.pdf` files to the server file system caused disk accumulation and file permission errors. We solved this by compiling the PDF document in memory using a streaming buffer and piping it directly into Express's HTTP response stream with `doc.pipe(res)`.")
 
-    # --- Table 4: Objectives Achieved ---
+    # --- Table 6.1: Objectives Achieved Matrix ---
     t4 = doc.tables[4]
     obj_rows = [
         ("Allow users to register and log in securely using role-based JWT authentication and BCrypt password encryption.", "Achieved", "Implemented with 10 salt rounds and 7-day token expiration across Volunteer, NGO, and Admin roles."),
@@ -817,7 +906,7 @@ def populate_report(remove_instructions=False):
             "3. QR Code Credential Verification: Embedding a cryptographic QR code on each downloaded PDF certificate linking directly to a public verification endpoint (`/api/certificates/verify/:id`) for one-click verification by employers or college evaluators.\n"
             "4. Mobile Application with React Native: Developing a dedicated cross-platform mobile application supporting push notifications for urgent nearby relief drives and offline task caching.")
 
-    # --- Table 5: Individual Contribution ---
+    # --- Table 7.1: Individual Contribution Breakdown ---
     t5 = doc.tables[5]
     contrib_rows = [
         ("Jeevaprakash S (24BAD048)", "Full stack architecture, system design, integration of client and server, deployment pipelines, performance optimization.", "25%"),
@@ -847,7 +936,7 @@ def populate_report(remove_instructions=False):
 
     return doc
 
-print("Generating student-written reports with exact template styling and all 8 figures...")
+print("Generating fully verified student-written reports with exact template styling, Consolas code snippets, and all 8 figures...")
 
 # 1. Full document keeping instructions page
 doc_with_instructions = populate_report(remove_instructions=False)
@@ -858,5 +947,9 @@ doc_with_instructions.save(r"C:\Users\DELL\Downloads\Full_Stack_Project_Report_T
 doc_submission = populate_report(remove_instructions=True)
 doc_submission.save(r"C:\Users\DELL\Desktop\24BAD048_TeamHelpHub_FullStackReport.docx")
 doc_submission.save(r"C:\Users\DELL\Downloads\24BAD048_TeamHelpHub_FullStackReport.docx")
+
+# Also save secondary naming alias RollNo_FullStackReport.docx
+doc_submission.save(r"C:\Users\DELL\Desktop\24BAD048_FullStackReport.docx")
+doc_submission.save(r"C:\Users\DELL\Downloads\24BAD048_FullStackReport.docx")
 
 print("Generated docx files successfully!")
