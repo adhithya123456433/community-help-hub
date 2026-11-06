@@ -243,7 +243,7 @@ def populate_report(remove_instructions=False):
     # --- Table 0: Team Members (Cover Page) ---
     t0 = doc.tables[0]
     team_members = [
-        ("Jeevaprakash S", "24BAD048", "Team Lead & Full Stack Architecture"),
+        ("Jeevaprakash S", "24BAD048", "Team Lead, Full-Stack Systems Architect & Cloud DevOps (Three-Tier Design, CI/CD, Concurrency Control)"),
         ("K Adhithya", "24BAD004", "Backend & REST API (Node.js/Express.js)"),
         ("Aswin S", "24BAD014", "Frontend & UI/UX (React.js)"),
         ("Kalvi Kannan B", "24BAD052", "Database & Data Modeling (MongoDB Atlas)")
@@ -864,7 +864,7 @@ def populate_report(remove_instructions=False):
     # --- Table 7.1: Individual Contribution Breakdown ---
     t5 = doc.tables[5]
     contrib_rows = [
-        ("Jeevaprakash S (24BAD048)", "Full stack architecture, system design, integration of client and server, deployment pipelines, performance optimization.", "25%"),
+        ("Jeevaprakash S (24BAD048)", "Full-stack systems architecture, Three-Tier client-server integration, Cloud DevOps pipelines (Render Web Service & Vercel edge deployment), atomic concurrency guards preventing slot overbooking race conditions, JWT session state hydration, and Lighthouse performance engineering (FCP 0.8s, sub-100ms API latency tuning).", "25%"),
         ("K Adhithya (24BAD004)", "Backend REST API engineering, Express routing, JWT authentication, BCrypt password hashing, PDFKit certificate generator.", "25%"),
         ("Aswin S (24BAD014)", "React frontend engineering, responsive CSS design system, component hierarchy, Context API state, Chart.js integrations.", "25%"),
         ("Kalvi Kannan B (24BAD052)", "Database modeling, MongoDB Atlas cluster configuration, Mongoose schema validators, aggregation pipelines, AI recommendation logic.", "25%")
