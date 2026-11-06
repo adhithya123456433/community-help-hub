@@ -17,6 +17,21 @@ try {
     }
     
     $word.Quit()
+
+    # Mirror exported PDFs to docs and Downloads
+    $mirrorDirs = @("C:\Users\DELL\Desktop\community-help-hub\docs", "C:\Users\DELL\Downloads")
+    foreach ($d in $mirrorDirs) {
+        if (-not (Test-Path $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }
+        foreach ($item in $docs) {
+            $dest = Join-Path $d (Split-Path $item.Out -Leaf)
+            try {
+                Copy-Item -Path $item.Out -Destination $dest -Force -ErrorAction Stop
+                Write-Output "Mirrored: $dest"
+            } catch {
+                Write-Output "Warning mirroring $dest : $_"
+            }
+        }
+    }
 } catch {
     Write-Output "Word COM Error: $_"
 }
