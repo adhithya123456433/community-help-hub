@@ -13,7 +13,13 @@ PRISTINE_PATH = r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16
 REPORT_IMG_DIR = r"C:\Users\DELL\Desktop\community-help-hub\scripts\report_images"
 os.makedirs(REPORT_IMG_DIR, exist_ok=True)
 
-# Prepare normalized PNG images
+# 1. Generate Architecture, Use Case, and DFD graphic diagrams if not already present
+for gen_script in ['generate_architecture_diagram.py', 'generate_usecase_diagram.py', 'generate_dfd_diagram.py']:
+    script_path = os.path.join(r"C:\Users\DELL\Desktop\community-help-hub\scripts", gen_script)
+    if os.path.exists(script_path):
+        os.system(f'python "{script_path}"')
+
+# Prepare normalized PNG application screenshots
 raw_images = {
     'fig6_1_skill.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895621133_9cb79e40.jpg",
     'fig6_2_loc.png': r"C:\Users\DELL\.gemini\antigravity\brain\9c0e4a12-b3c4-4844-b16f-3ac2a835cb60\.user_uploaded\media_1793895671006_0de20420.jpg",
@@ -405,98 +411,69 @@ def populate_report(remove_instructions=False):
             format_cell(t1.rows[r_idx].cells[1], req)
             format_cell(t1.rows[r_idx].cells[2], ver, align=WD_ALIGN_PARAGRAPH.CENTER)
 
-    # --- Chapter 3: System Design (Student Written Tone + Numbered Figures & Tables) ---
+    # --- Chapter 3: System Design (High-Resolution Graphic Diagrams) ---
     if 'c3_1' in p_map:
-        set_para(p_map['c3_1'],
-            "CommunityHelp Hub is designed using the classic Three-Tier Client-Server Architecture, separating presentation, business logic, and database storage as illustrated in Figure 3.1:\n\n"
-            "+-------------------------------------------------------------------------+\n"
-            "|                         PRESENTATION TIER (CLIENT)                      |\n"
-            "|   React 18 SPA | React Router DOM | Context API | Chart.js Data Visuals |\n"
-            "+-------------------------------------------------------------------------+\n"
-            "                                    |  ^                                   \n"
-            "                 HTTP/REST Requests |  | JSON Responses                    \n"
-            "                 (Bearer JWT Auth)  |  | (Status Codes & Data)             \n"
-            "                                    v  |                                   \n"
-            "+-------------------------------------------------------------------------+\n"
-            "|                     APPLICATION / BUSINESS LOGIC TIER                   |\n"
-            "|  Node.js + Express.js REST API Server (Port 5000)                        |\n"
-            "|  - Auth Middleware (BCrypt & JWT Verification)                          |\n"
-            "|  - Task & Application Controllers with Atomic Capacity Guards           |\n"
-            "|  - Multi-Factor AI Recommendation Engine (100-Point Scoring)            |\n"
-            "|  - Server-Side PDFKit Dynamic Certificate Compilation Engine            |\n"
-            "+-------------------------------------------------------------------------+\n"
-            "                                    |  ^                                   \n"
-            "                     Mongoose Queries|  | BSON Document Streams            \n"
-            "                     (CRUD & Indexes)|  | (Aggregations & Updates)         \n"
-            "                                    v  |                                   \n"
-            "+-------------------------------------------------------------------------+\n"
-            "|                          DATA PERSISTENCE TIER                          |\n"
-            "|   MongoDB Atlas Cloud Database (Replica Set Cluster)                    |\n"
-            "|   - users, tasks, applications, categories, certificates, auditlogs     |\n"
-            "+-------------------------------------------------------------------------+\n\n"
-            "Figure 3.1: Three-Tier Client-Server Architecture Diagram\n\n"
+        curr_p = p_map['c3_1']
+        set_para(curr_p, "CommunityHelp Hub is designed using the classic Three-Tier Client-Server Architecture, separating presentation, business logic, and database storage as illustrated in Figure 3.1:")
+        
+        # Embed Figure 3.1 Graphic Image
+        img_arch = os.path.join(REPORT_IMG_DIR, "fig3_1_architecture.png")
+        if os.path.exists(img_arch):
+            img_p = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
+            img_p.add_run().add_picture(img_arch, width=Inches(5.8))
+            curr_p = img_p
+        curr_p = insert_after(curr_p, "Figure 3.1: Three-Tier Client-Server Architecture Diagram", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p, 
             "Request and Response Flow:\n"
-            "1. The user interacts with the React 18 frontend in their browser. For example, when Karthik Raman navigates to the 'Explore Tasks' page, React dispatches an asynchronous HTTP GET request using Axios to http://localhost:5000/api/tasks.\n"
-            "2. If the volunteer accesses personalized views (like AI recommendations or applied tasks), Axios automatically attaches the user's stored token in the HTTP Authorization header as `Bearer <JWT_TOKEN>`.\n"
-            "3. The Express.js backend receives the request, routes it through our authentication middleware to verify token signature and validity, and forwards it to the taskController.\n"
-            "4. The controller invokes Mongoose ODM to query MongoDB Atlas with appropriate filters and projection, calculates real-time AI recommendation scores if requested, and formats the response.\n"
-            "5. The server sends back a standard JSON payload with an appropriate HTTP status code (200 OK, 201 Created, 400 Bad Request, or 401 Unauthorized).\n"
-            "6. React receives the JSON response, updates component state via useState or Context API, and triggers an efficient DOM re-render showing real-time task cards and badges.")
+            "1. Presentation Tier (Client): The user interacts with our React 18 Single-Page Application (SPA) in their web browser. When a volunteer navigates to the Explore Tasks page, React dispatches an asynchronous HTTP GET request using Axios to http://localhost:5000/api/tasks.\n"
+            "2. Secure Client-Server Communication: When accessing personalized views (such as AI recommendations or registered drives), Axios automatically attaches the volunteer's token in the HTTP Authorization header as Bearer <JWT_TOKEN>.\n"
+            "3. Application / Business Logic Tier (Server): The Express.js backend receives the request, routes it through our authentication middleware to verify token signature and validity, and invokes the appropriate taskController method.\n"
+            "4. Data Access & Computation: The controller invokes Mongoose ODM to query MongoDB Atlas with appropriate filters and projection, executes our 100-point AI recommendation scoring algorithm if requested, and formats the response.\n"
+            "5. Structured JSON Delivery: The server returns a standard JSON payload with standard HTTP status codes (200 OK, 201 Created, 400 Bad Request, or 401 Unauthorized).\n"
+            "6. Dynamic DOM Hydration: React receives the JSON response, updates component state via useState or Context API, and triggers an efficient DOM re-render showing real-time task cards and badges.",
+            font_size=12)
+
     if 'c3_2' in p_map:
-        set_para(p_map['c3_2'],
-            "The system defines three distinct actors: Volunteer, NGO Coordinator, and Administrator. Their relationships and use cases are modeled in Figure 3.2 below:\n\n"
-            "                      +-----------------------------+\n"
-            "                      |      COMMUNITYHELP HUB      |\n"
-            "                      +-----------------------------+\n"
-            " (Volunteer) ----------> [ Register / Login ] <---------- (NGO Coordinator)\n"
-            "      |                 [ Edit Profile & Skills ]              |\n"
-            "      |                      ^           ^                     |\n"
-            "      |                      | <<include>>                     |\n"
-            "      +----------------> [ Browse & Filter Tasks ]             |\n"
-            "      +----------------> [ View AI Recommendations ]           |\n"
-            "      +----------------> [ Apply for Task Drive ]              |\n"
-            "      +----------------> [ View Leaderboard ]                  |\n"
-            "      +----------------> [ Download PDF Certificate ]          |\n"
-            "                                                               |\n"
-            "                        [ Publish Volunteer Drive ] <----------+\n"
-            "                        [ Set Headcount Quota ]     <----------+\n"
-            "                        [ Review Applicant Roster ] <----------+\n"
-            "                        [ Mark Drive Completed ]    <----------+\n"
-            "                                                               \n"
-            " (Administrator) ------> [ View Impact Dashboard Analytics ]   \n"
-            "      +----------------> [ Audit Users & Manage Tasks ]        \n\n"
-            "Figure 3.2: CommunityHelp Hub Use Case Diagram\n\n"
-            "Actor Action Details:\n"
-            "- Volunteer: Register, log in, manage skill tags and city, search community drives, view 100-point AI recommendations, apply with capacity guard, monitor application progress, review leaderboard ranking, and download official PDF certificates.\n"
-            "- NGO Coordinator: Register organization, publish social service drives across six categories, configure headcount quotas, inspect applicant profiles, approve completion, and award verified hours.\n"
-            "- Administrator: Monitor system health, view task distributions by category and city, audit user accounts, and resolve operational issues.")
+        curr_p = p_map['c3_2']
+        set_para(curr_p, "The system defines three distinct actors: Volunteer, NGO Coordinator, and System Administrator. Their relationships and functional interactions are modeled in the UML Use Case Diagram shown in Figure 3.2:")
+        
+        # Embed Figure 3.2 Graphic Image
+        img_uc = os.path.join(REPORT_IMG_DIR, "fig3_2_usecase.png")
+        if os.path.exists(img_uc):
+            img_p = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
+            img_p.add_run().add_picture(img_uc, width=Inches(5.8))
+            curr_p = img_p
+        curr_p = insert_after(curr_p, "Figure 3.2: CommunityHelp Hub Use Case Diagram", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p,
+            "Actor Interaction Details:\n"
+            "- Volunteer (Student / Citizen): Can register, log in, maintain profile skills and home city, search community drives across all 4 filter modes, receive personalized 100-point AI recommendations, apply for tasks with atomic capacity guards, track application status, review the volunteer leaderboard, and download official PDF certificates upon completion.\n"
+            "- NGO Coordinator (Welfare Organization): Can register organization credentials, publish community service drives across the six core categories, configure volunteer quotas and skill prerequisites, review applicant rosters and volunteer contact details, approve attendance, and award verified service hours.\n"
+            "- System Administrator: Monitors overall platform health, reviews impact analytics telemetry (category doughnut and city bar charts), audits user accounts and published drives, and ensures system integrity.",
+            font_size=12)
+
     if 'c3_3' in p_map:
-        set_para(p_map['c3_3'],
-            "The data flow through CommunityHelp Hub is depicted in Figure 3.3 across Level 0 (Context) and Level 1 decompositions:\n\n"
-            "Level 0 (Context Level DFD):\n\n"
-            "  +-------------+       User Credentials / Profile Data      +-------------------+\n"
-            "  |             | -----------------------------------------> |                   |\n"
-            "  |  VOLUNTEER  | <----------------------------------------- |                   |\n"
-            "  |             |      Task Listings / AI Matches / PDF      |                   |\n"
-            "  +-------------+                                            |  COMMUNITYHELP    |\n"
-            "                                                             |       HUB         |\n"
-            "  +-------------+       Drive Specs / Quotas / Approvals     |     PLATFORM      |\n"
-            "  |     NGO     | -----------------------------------------> |    (SYSTEM 0.0)   |\n"
-            "  | COORDINATOR | <----------------------------------------- |                   |\n"
-            "  +-------------+      Applicant Roster / Telemetry Data     |                   |\n"
-            "                                                             |                   |\n"
-            "  +-------------+            Audit / Query Requests          |                   |\n"
-            "  |    ADMIN    | -----------------------------------------> |                   |\n"
-            "  |             | <----------------------------------------- |                   |\n"
-            "  +-------------+      System Analytics / User Audits        +-------------------+\n\n"
-            "Level 1 DFD (Process Decomposition):\n"
-            "- Process 1.0 (User Authentication): Validates credentials against D1 (Users store) and generates signed JWT tokens.\n"
-            "- Process 2.0 (Task Publishing & Management): Receives drive parameters from NGOs, validates category and quotas, and stores them in D2 (Tasks store).\n"
-            "- Process 3.0 (Matching & Recommendation Engine): Reads volunteer profile from D1 and open drives from D2, computes the 100-point composite compatibility score, and returns sorted recommendations.\n"
-            "- Process 4.0 (Application Processing & Capacity Guard): Checks remaining capacity in D2, verifies no duplicate application exists in D3 (Applications store), and creates an enrollment record.\n"
-            "- Process 5.0 (Verification & Certificate Compilation): When NGO marks drive completed, updates application status in D3, increments verified hours in D1, and invokes PDFKit to stream verifiable certificate.\n"
-            "- Process 6.0 (Leaderboard & Analytics Telemetry): Aggregates completed drive hours from D3 and displays public leaderboards and Chart.js graphs.\n\n"
-            "Figure 3.3: Data Flow Diagrams (Level 0 Context and Level 1 DFD)")
+        curr_p = p_map['c3_3']
+        set_para(curr_p, "The flow of data through CommunityHelp Hub is depicted in Figure 3.3 across Level 0 (Context Level) and Level 1 (Detailed Process Decomposition) Data Flow Diagrams:")
+        
+        # Embed Figure 3.3 Graphic Image
+        img_dfd = os.path.join(REPORT_IMG_DIR, "fig3_3_dfd.png")
+        if os.path.exists(img_dfd):
+            img_p = insert_after(curr_p, "", align=WD_ALIGN_PARAGRAPH.CENTER)
+            img_p.add_run().add_picture(img_dfd, width=Inches(5.8))
+            curr_p = img_p
+        curr_p = insert_after(curr_p, "Figure 3.3: Data Flow Diagrams (Level 0 Context and Level 1 Detailed DFD)", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, font_size=11)
+        curr_p = insert_after(curr_p,
+            "Data Flow Decomposition:\n"
+            "- Level 0 Context DFD (Top): Represents the high-level boundaries between external entities and System 0.0 (CommunityHelp Hub Platform). Volunteers send registration credentials, skill tags, and task applications, receiving task listings, AI recommendations, and verifiable certificates. NGO coordinators send drive specifications, quotas, and volunteer attendance approvals, receiving applicant rosters and drive status. Platform administrators query system logs and review aggregate metrics.\n"
+            "- Level 1 Detailed DFD (Bottom): Decomposes the platform into six operational sub-processes and four persistent data stores:\n"
+            "  * Process 1.0 (User Authentication): Validates credentials against D1 (Users Store) and issues signed JWT tokens.\n"
+            "  * Process 2.0 (Task Publishing & Quota Setup): Validates drive parameters from NGOs and commits them to D2 (Tasks Store).\n"
+            "  * Process 3.0 (AI Recommendation Engine): Reads volunteer profile from D1 and open initiatives from D2 to compute 100-point compatibility scores.\n"
+            "  * Process 4.0 (Application Processing & Capacity Guard): Evaluates remaining slots in D2, verifies no duplicate application exists in D3 (Applications Store), and records the enrollment.\n"
+            "  * Process 5.0 (Verification & PDF Certificate Engine): Updates status in D3, increments verified hours in D1, and streams dynamic certificates to D4 (Certificates Store).\n"
+            "  * Process 6.0 (Leaderboard & Analytics Telemetry): Aggregates verified hours from D3 and displays public leaderboards and category/city charts.",
+            font_size=12)
+
     if 'c3_4' in p_map:
         set_para(p_map['c3_4'],
             "The database design utilizes MongoDB Atlas with Mongoose schemas. Collections are structured with appropriate indexing and relationships. Schemas for all six collections are detailed in Table 3.1 below:")
@@ -936,7 +913,7 @@ def populate_report(remove_instructions=False):
 
     return doc
 
-print("Generating fully verified student-written reports with exact template styling, Consolas code snippets, and all 8 figures...")
+print("Generating fully verified student-written reports with professional graphic diagrams, Consolas code snippets, and all screenshots...")
 
 # 1. Full document keeping instructions page
 doc_with_instructions = populate_report(remove_instructions=False)
@@ -952,4 +929,4 @@ doc_submission.save(r"C:\Users\DELL\Downloads\24BAD048_TeamHelpHub_FullStackRepo
 doc_submission.save(r"C:\Users\DELL\Desktop\24BAD048_FullStackReport.docx")
 doc_submission.save(r"C:\Users\DELL\Downloads\24BAD048_FullStackReport.docx")
 
-print("Generated docx files successfully!")
+print("Generated docx files with high-res figures successfully!")
