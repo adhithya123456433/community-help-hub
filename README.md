@@ -17,7 +17,7 @@ A full-stack web application designed to connect dedicated student volunteers wi
 
 | Roll Number | Team Member Name | Project Role | Contribution (%) |
 | :---: | :--- | :--- | :---: |
-| **24BAD048** | **Jeevaprakash S** | Team Lead, Full-Stack Systems Architect & Cloud DevOps (Three-Tier Design, CI/CD, Concurrency Control) | **25%** |
+| **24BAD048** | **Jeevaprakash S** | Team Lead & Full Stack Integration (MERN Architecture) | **25%** |
 | **24BAD004** | **K Adhithya** | Backend & REST API (Node.js / Express.js) | **25%** |
 | **24BAD014** | **Aswin S** | Frontend & UI/UX (React.js) | **25%** |
 | **24BAD052** | **Kalvi Kannan B** | Database & Data Modeling (MongoDB Atlas) | **25%** |
